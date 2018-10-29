@@ -1,0 +1,36 @@
+{
+	"compilerOptions": {
+		"sourceRoot": "source",
+		"outDir": "dist",
+		"declarationDir": "types",
+		"noResolve": false,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"removeComments": false,
+		"sourceMap": true,
+		"inlineSources": true,
+		"noEmitOnError": true,
+		"declaration": true,
+		"noLib": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"target": "es6",
+		"lib": [
+			"es6"
+		]
+	},
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts",
+
+		"dist",
+		"test",
+		"build",
+		"**/build",
+		"types"
+	],
+	"include": [
+		"./source"
+	]
+}

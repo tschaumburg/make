@@ -4,3 +4,5 @@ src/
 .tern-port
 /.vs/slnx.sqlite
 /.vs
+/dist
+/types
