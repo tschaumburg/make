@@ -1,0 +1,22 @@
+{
+    "folders": [
+        {
+            "name": "Source",
+            "path": "./source"
+        },
+        {
+            "name": "Test",
+            "path": "./test"
+        },
+        {
+            "name": "Root",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "search.exclude": {
+            "**/bower_components": false,
+            "**/node_modules": false
+        }
+    },
+}

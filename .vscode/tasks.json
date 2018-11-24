@@ -1,0 +1,41 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Update 3rd party libraries (npm install)",
+            "type": "npm",
+            "script": "install",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "label": "Building npm-make",
+            "type": "typescript",
+            "dependsOn": ["Update 3rd party libraries (npm install)"],
+            "group": "build",
+            "tsconfig": "root\\tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "label": "Building unit tests",
+            "type": "typescript",
+            "dependsOn": ["Update 3rd party libraries (npm install)"],
+            "group": "build",
+            "tsconfig": "root\\test\\tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ]
+        },
+        {
+            "label": "Build all",
+            "dependsOn": ["Building npm-make", "Building unit tests"],
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

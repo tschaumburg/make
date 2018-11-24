@@ -1,8 +1,13 @@
 src
 node_modules/
-src/
+dist/
+test/build
+/types
+/coverage
 .tern-port
 /.vs/slnx.sqlite
 /.vs
 /dist
 /types
+.nyc_output
+test/build/fixtures/actual.js

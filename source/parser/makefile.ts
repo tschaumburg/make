@@ -1,109 +1,127 @@
+import * as exits from '../return-codes';
 import * as path from 'path';
-import * as fs from 'fs';
-import { Rule, Target } from './rule';
+import * as log from '../makelog';
+import { Target, Rule } from './rule';
 import { IMakefile, IRule, ITarget } from '../imakefile';
 
 export class Makefile implements IMakefile
 {
+    public readonly makefileNames: string[] = [];
+    public readonly variables: { [name: string]: string } = {};
+    public readonly targets: { [fullname: string]: Target } = {};
+    public readonly rules: IRule[] = [];
+    // reference to last parsed target
+    private currentRules: IRule[] = null;
+
+    public defaultTarget: string = null;
     findTarget(fullname: string): ITarget 
     {
         return this.targets[fullname];
     }
-    public readonly variables: { [name: string]: string } = {};
-    private readonly targets: { [fullname: string]: Target } = {};
-    public readonly rules: IRule[] = [];
-    // reference to last parsed target
-    private currentRule: Rule = null;
-    public readonly _makefileDir: string;
+    //public readonly _makefileDir: string;
 
-    constructor(private readonly _makefileName: string, importedVariables: { [name: string]: string })
+    constructor()//private readonly _makefileName: string, )
     {
-        for (var n in importedVariables)
-            this.variables[n] = importedVariables[n];
-
-        this._makefileDir = path.dirname(_makefileName);
+        //this._makefileDir = path.dirname(_makefileName);
     };
 
-    private _expandVariable(value: string): string
+    private createTarget(targetName: string, targetFullname: string, isOrderOnly: boolean): Target
     {
-        var self = this;
-        return value.replace(/\$(\w+)/g, function (match, name: string)
-        {
-            if (self.variables[name]) return self.variables[name];
-            return match;
-        });
-    }
-
-    public expandVariable(value: string): string
-    {
-        var previousValues: string[] = [];
-        for (var n = 0; n < 100; n++)
-        {
-            var newValue = this._expandVariable(value);
-
-            // Termination: when there is no more to expand
-            if (newValue === value)
-                return value;
-
-            // infinite recursion detection
-            if (previousValues.indexOf(newValue) >= 0)
-            {
-                throw new Error("Infinite recursion in variable expansion: " + previousValues.join(" => "));
-            }
-
-            value = newValue;
-            previousValues.push(value);
-        }
-        throw new Error("Variable expansion exceeded max recursion depth: " + previousValues.join(" => "));
-    }
-
-    public defineSimpleVariable(name: string, value: string): void
-    {
-        name = this.expandVariable(name);
-        value = this.expandVariable(value);
-
-        this.variables[name] = value;
-    }
-
-    public defineRecursiveVariable(name: string, value: string): void
-    {
-        name = this.expandVariable(name);
-        this.variables[name] = value;
-    }
-
-    private createTarget(targetName: string): Target
-    {
-        targetName = this.expandVariable(targetName);
-        var fullname = path.resolve(this._makefileDir, targetName);
-        var target = this.targets[fullname];
+        //var targetFullname = path.resolve(this._makefileDir, targetName);
+        var target = this.targets[targetFullname];
 
         if (!target)
         {
-            console.log("CREATING: " + fullname);
-            target = new Target(targetName, fullname);
-            this.targets[fullname] = target;
+            //console.log("CREATING: " + fullname);
+            target = new Target(targetName, targetFullname, isOrderOnly);
+            this.targets[targetFullname] = target;
         }
 
         return target;
     }
 
-    public startRule(targetName: string, prerequisiteName: string[]): void
+    public startRule(dirName: string, targetNames: string[], prerequisiteName: string[], orderOnlyPrerequisiteName: string[]): void
     {
-        var target = this.createTarget(targetName);// new Target(this.expandVariable(targetName), this._makefileDir);
+        if (!targetNames || targetNames.length == 0)
+            exits.ruleMissingTarget();
+
+        // Default target:
+        // ===============
+        // If this is the first target, mark it as the default
+        // for this makefile
+        if (!this.defaultTarget)
+            this.defaultTarget = targetNames.find(t => !t.startsWith(".") && !t.startsWith("@"));  
+
+        // Register prerequisites:
+        // =======================
         var prerequisites =
             prerequisiteName
-                .map((f) => this.expandVariable(f))
-                .map((f) => this.createTarget(f));// new Target(f, this._makefileDir));
+                .map((f) => this.createTarget(f, path.resolve(dirName, f), false));
 
-        this.currentRule = new Rule(target, prerequisites);
-        target.setProducedBy(this.currentRule);
-        this.rules.push(this.currentRule);
+        var orderOnlyPrerequisites =
+            orderOnlyPrerequisiteName
+                //.map((f) => this.expandVariable(f))
+                .map((f) => this.createTarget(f, path.resolve(dirName, f), true));
+
+        // Create a rule for each target:
+        // ==============================
+        // See gmake manual "4.10: Multiple targets in a rule"
+        this.currentRules = [];
+        for (let targetName of targetNames)
+        {
+            var self = this;
+            let target = self.createTarget(targetName, path.resolve(dirName, targetName), false);
+            let rule = target.producedBy() as Rule;
+            if (!rule)
+            {
+                // create a new rule:
+                rule = new Rule(target, prerequisites.concat(orderOnlyPrerequisites));
+                target.setProducedBy(rule);
+                this.rules.push(rule);
+            }
+            else
+            {
+                // merge into existing rule
+                for (let addpr of prerequisites.concat(orderOnlyPrerequisites))
+                {
+                    if (rule.prerequities.indexOf(addpr) < 0)
+                        rule.prerequities.push(addpr);
+                }
+            }
+
+            // OK, we're building on top of a previously defined rule
+            // - but if it already has a recipe, we cannot add to that
+            if (rule.recipe.steps.length > 0)
+                rule.lockRecipe();
+
+            this.currentRules.push(rule);
+
+            if (!this.defaultTarget)
+                this.defaultTarget = targetName;
+        }
+        //var self = this;
+        //var targets = targetNames.map(name => self.createTarget(name, false));
+        //this.currentRule = new Rule(targets, prerequisites.concat(orderOnlyPrerequisites));
+
+        //targets.forEach(t => t.setProducedBy(this.currentRule));
+        //this.rules.push(this.currentRule);
+
+        //if (!this.defaultTarget)
+        //    this.defaultTarget = this.currentRule.targets[0].name;
     }
 
     public recipeLine(line: string): void
     {
-        line = this.expandVariable(line);
-        this.currentRule.recipe.steps.push(line);
+        //line = this.expandVariable(line);
+        for (let rule of this.currentRules)
+        {
+            if (rule.recipe.isLocked())
+            {
+                exits.parseMultipleRulesForTarget(rule.target.name);
+            }
+
+            rule.recipe.steps.push(line);
+        }
     }
 
     public includeMakefile(included: IMakefile): void
@@ -118,7 +136,7 @@ export class Makefile implements IMakefile
     {
         var self = this;
 
-        var includedTarget = this.includeTarget(srcRule.target);
+        var includedTarget = this.includeTarget(srcRule.target);//srcRule.targets.map(t => self.includeTarget(t));
         var includedPrerequisites = srcRule.prerequities.map(pre => self.includeTarget(pre));
 
         var includedRule = new Rule(includedTarget, includedPrerequisites);
@@ -137,8 +155,8 @@ export class Makefile implements IMakefile
 
         if (!target)
         {
-            console.log("CREATING: " + fullname);
-            target = new Target(targetName, fullname);
+            //console.log("CREATING: " + fullname);
+            target = new Target(targetName, fullname, srcTarget.isOrderOnly);
             this.targets[fullname] = target;
         }
 

@@ -1,150 +1,234 @@
-const path = require('path');
+import * as exits from '../return-codes';
+//const path = require('path');
+import * as log from '../makelog';
+import * as path from 'path';
 import * as fs from 'fs';
+import { ParserBase } from "./parser-base";
 import { Makefile } from "./makefile";
 import { IMakefile } from '../imakefile';
+import { VariableManager } from './variable-manager';
+import { makefileMissingTarget } from '../return-codes';
+import { MakeOptions } from '../make-options';
+import { stringify } from 'querystring';
+//import { ParseFailure } from './failure';
 
-export function parse(makefilename: string, importedVariables: { [name: string]: string }): IMakefile
+function automakefiles(): string[]
 {
-    console.log("Parsing " + makefilename);
+    let mf = process.env['MAKEFILES'];
+
+    if (!!mf)
+    {
+        return mf.split(/\s+/g).filter(n => n.length>0);
+    }
+
+    return [];
+}
+
+export function parse(
+    makefilename: string,
+    options: MakeOptions,
+    importedVariables: { [name: string]: string }
+): IMakefile
+{
+    if (fs.existsSync(makefilename) == false)
+        exits.errorNoMakefile(makefilename);
 
     if (!importedVariables)
         importedVariables = process.env;
-    var parser = new Parser(makefilename, importedVariables);
 
-    return parser.parse();
+    var makefile = new Makefile();
+    for (let autofile of automakefiles().filter(fn => fs.existsSync(fn)))
+        parsefile(makefile, autofile, options, importedVariables);
+
+    makefile.defaultTarget = null;
+
+    parsefile(makefile, makefilename, options, importedVariables);
+    return makefile;
 }
 
-class Parser
+function parsefile(
+    result: Makefile,
+    makefilename: string,
+    options: MakeOptions,
+    importedVariables: { [name: string]: string }
+): void
 {
-    private readonly _makefile: Makefile;
-    private readonly _makefileName: string;
-    constructor(makefileName: string, importedVariables: { [name: string]: string })
-    {
-        this._makefileName = path.normalize(makefileName);
-        this._makefile = new Makefile(makefileName, importedVariables);
+    makefilename = path.normalize(makefilename);
+    let makefiledir = path.dirname(makefilename);
 
+    log.info("Parsing " + makefilename);
+
+    var parser = new Parser(result, options, makefiledir);
+    parser.parseMakefile(makefilename);
+}
+
+class Parser extends ParserBase
+{
+    constructor(
+        private readonly _makefile: Makefile,
+        private readonly options: MakeOptions,
+        private readonly dirName: string
+    )//, importedVariables: { [name: string]: string })
+    {
+        super(_makefile.variables);
         this.initializeParser();
     }
 
 
-    public parse(): Makefile
+    public parseMakefile(makefileName: string): void
     {
-        let content = fs.readFileSync(this._makefileName, 'utf8');
-        content = content.replace("\\\r\n", "").replace("\\\n\r", "").replace("\\\n", "");
-        var lines = content.split(/\r?\n/);
+        makefileName = path.normalize(makefileName);
 
-        for (var lineNo in lines)
-        {
-            var line = lines[lineNo];
-            try
-            {
-                this.parseLine(line);
-            } catch (reason)
-            {
-                console.error("Error in line\n   (" + lineNo + "): " + line);
-                throw reason;
-            }
-        }
+        if (this._makefile.makefileNames.indexOf(makefileName) < 0)
+            this._makefile.makefileNames.push(makefileName);
 
-        return this._makefile
+        if (!fs.existsSync(makefileName) && this.options && this.options.ignoreMissingIncludes)
+            return;
+
+        this.parseFile(makefileName);
     }
 
-    private parseIncluded(includedFile: string): IMakefile
+    protected initializeParser(): void
     {
-        includedFile = this._makefile.expandVariable(includedFile);
-        includedFile = path.resolve(this._makefile._makefileDir, includedFile);
-        var importedvariables = this._makefile.variables;
-
-        return parse(includedFile, importedvariables);
-        //    console.log("STEP included " + includedFile);
-        //    var includedTargets = [];
-        //    try
-        //    {
-        //        includedTargets = parseFile(includedFile);
-        //        console.log("PARSED");
-        //    } catch (reason)
-        //    {
-        //        console.error(reason);
-        //    }
-
-        //    if (includedTargets && includedTargets.targets)
-        //        includedTargets.targets.forEach((t) => targets.push(t));
-        //}
-    }
-
-    private parseLine(line: string): void
-    {
-        //console.log("line " + line);
-        var parsed = false;
-        for (var pattern of this.patterns)
-        {
-            parsed = pattern(line) || parsed;
-        }
-
-        if (!parsed)
-            throw new Error("Lime did not match Makefile syntax: " + line);
-    }
-    private patterns: ((line: string) => boolean)[] = [];
-    private pattern(regex: RegExp, onMatch: (groups: string[]) => void): void
-    {
-        this.patterns.push(
-            (line: string) =>
-            {
-                var parts = line.match(regex);
-                if (!!parts)
-                {
-                    //console.log("  matched by " + JSON.stringify(regex.source, null, 3));
-                    //console.log("  " + JSON.stringify(parts, null, 3));
-                    onMatch(parts);
-                    return true;
-                }
-
-                return false;
-            }
-        )
-    }
-
-    private initializeParser(): void
-    {
-        this.pattern(
+        //*********************************************
+        //* EMPTY LINES:
+        //* ============
+        //* Accepted and ignored
+        //*********************************************
+        this.addPattern(
             /^\s*$/,
             (matches: string[]) => { }
         );
 
-        this.pattern(
+        //*********************************************
+        //* WHOLE-LINE COMMENTS:
+        //* ====================
+        //*  # accepted and ignored
+        //*********************************************
+        this.addPattern(
             /^\s*#.*$/,
             (matches: string[]) => { }
         );
 
-        this.pattern(
-            /^(\w+)\s*=\s*"([^"]*)"/,
-            (matches: string[]) => this._makefile.defineRecursiveVariable(matches[1], matches[2])
+        //*********************************************
+        //* ONE-LINE VARIABLE DEFINITIONS:
+        //* ============================== 
+        //*  variable = ....
+        //*  variable ?= ....
+        //*  variable := ....
+        //*  variable ::= ....
+        //*********************************************
+        this.addPattern(
+            /^(\S[^:?=\s]*)\s*=\s*(.*)$/,
+            (matches: string[]) => this.variableManager.defineRecursiveVariable(matches[1], matches[2])
+        );
+        this.addPattern(
+            /^(\S[^:?=\s]*)\s*?=\s*(.*)$/,
+            (matches: string[]) => this.variableManager.defineRecursiveVariableIf(matches[1], matches[2])
+        );
+        this.addPattern(
+            /^(\S[^:=?\s]*)\s*:?:=\s*(.*)$/,
+            (matches: string[]) => this.variableManager.defineSimpleVariable(matches[1], matches[2])
         );
 
-        this.pattern(
+        //*********************************************
+        //* INCLUDES:
+        //* =========
+        //*  ...
+        //*  include ./subdir/Makefile
+        //*  ...
+        //*********************************************
+        this.addPattern(
             /^include\s+([^\s]+)[\s\t]*$/,
-            (matches: string[]) => this._makefile.includeMakefile(this.parseIncluded(matches[1]))
+            (matches: string[]) =>
+            {
+                try 
+                {
+                    this.parseIncluded(matches[1]);
+                }
+                catch (reason)
+                {
+                    exits.parseIncludeFailed(matches[1]);
+                }
+
+                //return this._makefile.includeMakefile(included);
+            }
         );
 
-        // TARGET : PREREQUISITE PREREQUISITE ...
+        //*********************************************
+        //* RULES:
+        //* ======
+        //*  ...
+        //*  target target : prerequisite prerequisite ...
+        //*     recipe; recipe
+        //*     recipe; recipe
+        //*  ...
+        //*********************************************
         // (see https://stackoverflow.com/a/3537914/5303042 for the repeating PREREQUISITE match)
-        this.pattern(
-            /^([^\s:]+)\s*:\s*((\S*\s*)*)\s*$/,
-            (matches: string[]) => this._makefile.startRule(matches[1], splitPrereqs(matches[2]))
+        this.addPattern(
+            /^([^\:]*):([^|]*)(|.*)?(#.*)?$/,
+            (matches: string[]) => this.parseStartRule(matches[1], this.removeComment(matches[2]), this.removeComment(matches[3]))
         );
 
-        this.pattern(
+        this.addPattern(
             /^[\s\t]+([^\s\t].*)/,
             (matches: string[]) => this._makefile.recipeLine(matches[1])
         );
     }
 
-}
+    private removeComment(src: string): string
+    {
+        if (!src)
+        {
+            return src;
+        }
 
-function splitPrereqs(src: string): string[]
-{
-    //console.log("splitting " + src);
-    var res = src.split(/\s+/).filter(s => !!s);
-    //console.log("   ...into " + JSON.stringify(res));
-    return res;
+        let idx = src.indexOf("#");
+        if (idx < 0)
+        {
+            return src;
+        }
+
+        return src.substring(0, idx);
+    }
+
+    private parseStartRule(
+        targetNames: string,
+        normalPrerequisiteNames: string,
+        orderOnlyPrerequisiteNames: string
+    )
+    {
+        var targets = this.splitTargets(targetNames);
+        var normalPrerequisites = this.splitTargets(normalPrerequisiteNames);
+        var orderOnlyPrerequisites = this.splitTargets(orderOnlyPrerequisiteNames);
+
+        return this._makefile.startRule(this.dirName, targets, normalPrerequisites, orderOnlyPrerequisites);
+    }
+
+    private parseIncluded(includedFile: string): void 
+    {
+        includedFile = this.variableManager.expandVariable(includedFile);
+        includedFile = path.resolve(this.dirName, includedFile);
+        log.info("INCLUDE " + includedFile);
+
+        //let sharedVariables = this._makefile.variables;
+        //let sharedTargets = this._makefile.targets;
+        //let sharedRules = this._makefile.rules;
+
+        //return parse(includedFile, sharedVariables);
+        var subParser = new Parser(this._makefile, this.options, this.dirName);// this.sharedVariables, sharedTargets, sharedRules);
+
+        subParser.parseMakefile(includedFile);
+        log.info("INCLUDE done " + includedFile);
+    }
+
+    private splitTargets(src: string): string[]
+    {
+        if (!src)
+            return [];
+
+        src = src.replace("|", "");
+
+        return src.split(/\s+/).filter(s => !!s);
+    }
 }

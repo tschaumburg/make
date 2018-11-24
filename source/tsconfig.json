@@ -1,9 +1,7 @@
 {
 	"compilerOptions": {
-		"sourceRoot": "source",
-		"outDir": "dist",
-		"declaration": true,
-		"declarationDir": "types",
+		"sourceRoot": "./source",
+		"outDir": "./build",
 		"noResolve": false,
 		"module": "commonjs",
 		"moduleResolution": "node",
@@ -21,15 +19,9 @@
 		]
 	},
 	"exclude": [
-		"node_modules",
-		"dist",
-		"test",
-		"**/*.spec.ts",
-		"build",
-		"**/build",
-		"types"
+		"build"
 	],
 	"include": [
-		"./source"
+		"source"
 	]
 }
