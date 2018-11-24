@@ -53,8 +53,6 @@ result.
  |    1     |       *        |    *     | Success (all recipes run)
  |    2     |       *        |    *     | Success (all recipes run for each target)
 
-</div>
-
 Please note: you need to put a tab character at the beginning of every 
 recipe line! This is an obscurity that catches the unwary. If you prefer 
 to prefix your recipes with a character other than tab, you can set 
@@ -81,3 +79,4 @@ A makefile may contain other text besides rules, but a simple makefile
 need only contain rules. Rules may look somewhat more complicated than 
 shown in this template, but all fit the pattern more or less.        
 
+</div>
