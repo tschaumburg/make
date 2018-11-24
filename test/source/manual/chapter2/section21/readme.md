@@ -1,6 +1,28 @@
 ## 2.1 What a Rule Looks Like
 <div>
-<style type="text/css"> @import url("../../testnote.css")  </style>
+<style type="text/css"> 
+.testnote {
+    border: 1px solid white; 
+    margin-left: 48px;
+    margin-right: 48px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding: 7px;
+    padding-left: 24px;
+}
+.testnote:before {
+     content: " " attr(data-title);
+     display: block; 
+     padding: 7px;
+    padding-left: 24px;
+     margin-left: -24px;
+     margin-right: -7px;
+     margin-top: -7px;
+     margin-bottom: 24px;
+     background-color: #7FCDF4; 
+     color: #2E708D; font-weight: bold;
+}
+</style>
 A simple makefile consists of "rules" with the following shape:
 
     target ... : prerequisites ...
