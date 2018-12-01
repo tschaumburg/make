@@ -1,0 +1,1 @@
+export { ITargetManager, createManager} from "./target-manager";

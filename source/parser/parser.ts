@@ -4,12 +4,11 @@ import * as log from '../makelog';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ParserBase } from "./parser-base";
-import { Makefile } from "./makefile";
-import { IMakefile } from '../imakefile';
 import { VariableManager } from './variable-manager';
 import { makefileMissingTarget } from '../return-codes';
 import { MakeOptions } from '../make-options';
 import { stringify } from 'querystring';
+import { IParseResult, ParseResult } from './parse-result';
 //import { ParseFailure } from './failure';
 
 function automakefiles(): string[]
@@ -28,7 +27,7 @@ export function parse(
     makefilename: string,
     options: MakeOptions,
     importedVariables: { [name: string]: string }
-): IMakefile
+): IParseResult
 {
     if (fs.existsSync(makefilename) == false)
         exits.errorNoMakefile(makefilename);
@@ -36,18 +35,18 @@ export function parse(
     if (!importedVariables)
         importedVariables = process.env;
 
-    var makefile = new Makefile();
+    var parseResult = new ParseResult();
     for (let autofile of automakefiles().filter(fn => fs.existsSync(fn)))
-        parsefile(makefile, autofile, options, importedVariables);
+        parsefile(parseResult, autofile, options, importedVariables);
 
-    makefile.defaultTarget = null;
+    parseResult.clearDefaultTarget();
 
-    parsefile(makefile, makefilename, options, importedVariables);
-    return makefile;
+    parsefile(parseResult, makefilename, options, importedVariables);
+    return parseResult;
 }
 
 function parsefile(
-    result: Makefile,
+    result: ParseResult,
     makefilename: string,
     options: MakeOptions,
     importedVariables: { [name: string]: string }
@@ -65,12 +64,12 @@ function parsefile(
 class Parser extends ParserBase
 {
     constructor(
-        private readonly _makefile: Makefile,
+        private readonly _parseResult: ParseResult,
         private readonly options: MakeOptions,
         private readonly dirName: string
     )//, importedVariables: { [name: string]: string })
     {
-        super(_makefile.variables);
+        super(_parseResult.variables);
         this.initializeParser();
     }
 
@@ -79,13 +78,15 @@ class Parser extends ParserBase
     {
         makefileName = path.normalize(makefileName);
 
-        if (this._makefile.makefileNames.indexOf(makefileName) < 0)
-            this._makefile.makefileNames.push(makefileName);
+        // if (this._makefile.makefileNames.indexOf(makefileName) < 0)
+        //     this._makefile.makefileNames.push(makefileName);
 
         if (!fs.existsSync(makefileName) && this.options && this.options.ignoreMissingIncludes)
             return;
 
         this.parseFile(makefileName);
+
+        this.endRule();
     }
 
     protected initializeParser(): void
@@ -165,6 +166,19 @@ class Parser extends ParserBase
         //*  ...
         //*********************************************
         // (see https://stackoverflow.com/a/3537914/5303042 for the repeating PREREQUISITE match)
+
+        // let namechar = "[^:%\\s\\|]";
+        // let colon = "\\s*:\\s*";
+        // let pipe = "\\s*\\|\\s*";
+        // let target = `${namechar}+`;
+        // let targetlist = `${target}(?:\\s*${target})*`;
+        // let pattern = `${namechar}*%${namechar}*`;
+        // let patternlist = `${pattern}(?:\\s*${pattern})*`;
+        // let comment = "\\s*(?:#.*)?";
+
+        // let staticPatternRule = `^${targetlist}${colon}${pattern}${colon}${patternlist}(?:${pipe}${patternlist})?${comment}\$`;
+        // console.error(staticPatternRule);
+
         this.addPattern(
             /^([^\:]*):([^|]*)(|.*)?(#.*)?$/,
             (matches: string[]) => this.parseStartRule(matches[1], this.removeComment(matches[2]), this.removeComment(matches[3]))
@@ -172,7 +186,7 @@ class Parser extends ParserBase
 
         this.addPattern(
             /^[\s\t]+([^\s\t].*)/,
-            (matches: string[]) => this._makefile.recipeLine(matches[1])
+            (matches: string[]) => this.recipeLine(matches[1])
         );
     }
 
@@ -192,17 +206,51 @@ class Parser extends ParserBase
         return src.substring(0, idx);
     }
 
+    private currentRule: {dirName: string, targets: string[], normalPrerequisites: string[], orderOnlyPrerequisites: string[], recipe: string[]} = null;
     private parseStartRule(
         targetNames: string,
         normalPrerequisiteNames: string,
         orderOnlyPrerequisiteNames: string
     )
     {
+        this.endRule();
+
         var targets = this.splitTargets(targetNames);
         var normalPrerequisites = this.splitTargets(normalPrerequisiteNames);
         var orderOnlyPrerequisites = this.splitTargets(orderOnlyPrerequisiteNames);
 
-        return this._makefile.startRule(this.dirName, targets, normalPrerequisites, orderOnlyPrerequisites);
+        this.currentRule = 
+        {
+            dirName: this.dirName, 
+            targets: targets, 
+            normalPrerequisites: normalPrerequisites,
+            orderOnlyPrerequisites: orderOnlyPrerequisites,
+            recipe: []
+        }
+    }
+    private recipeLine(line: string)
+    {
+        if (!this.currentRule)
+            return;
+        
+        this.currentRule.recipe.push(line);
+    }
+    private endRule()
+    {
+        if (!this.currentRule)
+            return;
+        
+        var res =
+         this._parseResult.rules.addStaticRule(
+            this.currentRule.dirName, 
+            this.currentRule.targets, 
+            this.currentRule.normalPrerequisites, 
+            this.currentRule.orderOnlyPrerequisites,
+            this.currentRule.recipe
+        );
+
+        this.currentRule = null;
+        return res;
     }
 
     private parseIncluded(includedFile: string): void 
@@ -216,7 +264,7 @@ class Parser extends ParserBase
         //let sharedRules = this._makefile.rules;
 
         //return parse(includedFile, sharedVariables);
-        var subParser = new Parser(this._makefile, this.options, this.dirName);// this.sharedVariables, sharedTargets, sharedRules);
+        var subParser = new Parser(this._parseResult, this.options, this.dirName);// this.sharedVariables, sharedTargets, sharedRules);
 
         subParser.parseMakefile(includedFile);
         log.info("INCLUDE done " + includedFile);

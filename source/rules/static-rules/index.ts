@@ -1,0 +1,1 @@
+export {createManager, IStaticRuleManager} from "./static-rule-manager";

@@ -1,8 +1,6 @@
 import * as exits from '../return-codes';
 import * as path from 'path';
 import * as log from '../makelog';
-import { Target, Rule } from './rule';
-import { IMakefile, IRule, ITarget } from '../imakefile';
 
 export class VariableManager
 {

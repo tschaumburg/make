@@ -3,8 +3,6 @@ const path = require('path');
 import { VariableManager } from './variable-manager';
 import * as log from '../makelog';
 import * as fs from 'fs';
-import { Makefile } from "./makefile";
-import { IMakefile } from '../imakefile';
 import { fail } from 'assert';
 
 export abstract class ParserBase

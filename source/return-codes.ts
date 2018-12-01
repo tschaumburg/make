@@ -1,43 +1,13 @@
 import * as log from './makelog';
 
-export const COMMAND_UNKNOWN_GOAL = 106;
-export function commandUnknownGoal(goalName: string)
+export const RULE_MISSING_TARGET = 101;
+export function ruleMissingTarget()
 {
-    var msg = "Target " + goalName + " not defined in makefile";
+    var msg = "Rule must contain at least one target";
 
     console.error(msg);
     log.fatal(msg);
-    process.exit(COMMAND_UNKNOWN_GOAL);
-}
-
-export const PARSE_UNDEFINED_VARIABLE = 105;
-export function parseUndefinedVariable(varname: string)
-{
-    var msg = "Undefined variable " + varname;
-
-    console.error(msg);
-    log.fatal(msg);
-    process.exit(PARSE_UNDEFINED_VARIABLE);
-}
-
-export const PARSE_UNEXPECTED_EXCEPTION = 104;
-export function parseUnexpectedException(details: string, line: string, lineNo: number)
-{
-    var msg = "Unexpected exception in line\n(" + lineNo + ") " + line + "\n" + details;
-
-    console.error(msg);
-    log.fatal(msg);
-    process.exit(PARSE_UNEXPECTED_EXCEPTION);
-}
-
-export const PARSE_INCLUDE_FAILED = 103;
-export function parseIncludeFailed(includedFile: string)
-{
-    var msg = "Error including file " + includedFile;
-
-    console.error(msg);
-    log.fatal(msg);
-    process.exit(PARSE_INCLUDE_FAILED);
+    process.exit(RULE_MISSING_TARGET);
 }
 
 export const PARSE_NO_MATCH = 102;
@@ -50,14 +20,44 @@ export function parseNoMatch(line: string, lineNo: number)
     process.exit(PARSE_NO_MATCH);
 }
 
-export const RULE_MISSING_TARGET = 101;
-export function ruleMissingTarget()
+export const PARSE_INCLUDE_FAILED = 103;
+export function parseIncludeFailed(includedFile: string)
 {
-    var msg = "Rule must contain at least one target";
+    var msg = "Error including file " + includedFile;
 
     console.error(msg);
     log.fatal(msg);
-    process.exit(RULE_MISSING_TARGET);
+    process.exit(PARSE_INCLUDE_FAILED);
+}
+
+export const PARSE_UNEXPECTED_EXCEPTION = 104;
+export function parseUnexpectedException(details: string, line: string, lineNo: number)
+{
+    var msg = "Unexpected exception in line\n(" + lineNo + ") " + line + "\n" + details;
+
+    console.error(msg);
+    log.fatal(msg);
+    process.exit(PARSE_UNEXPECTED_EXCEPTION);
+}
+
+export const PARSE_UNDEFINED_VARIABLE = 105;
+export function parseUndefinedVariable(varname: string)
+{
+    var msg = "Undefined variable " + varname;
+
+    console.error(msg);
+    log.fatal(msg);
+    process.exit(PARSE_UNDEFINED_VARIABLE);
+}
+
+export const COMMAND_UNKNOWN_GOAL = 106;
+export function commandUnknownGoal(goalName: string)
+{
+    var msg = "Target " + goalName + " not defined in makefile";
+
+    console.error(msg);
+    log.fatal(msg);
+    process.exit(COMMAND_UNKNOWN_GOAL);
 }
 
 export const MAKEFILE_MISSING_TARGET = 107;
@@ -114,6 +114,16 @@ export function errorNoMakefile(filename: string)
     console.error(msg);
     log.fatal(msg);
     process.exit(ERROR_NO_MAKEFILE);
+}
+
+export const APPLICATION_ERROR_REDEFINING_TARGET = 112;
+export function applicationErrorRedefiningTarget(targetname: string)
+{
+    var msg =
+        "Application Error: attempting to redefine rule for target '" + targetname +"'";
+    console.error(msg);
+    log.fatal(msg);
+    process.exit(APPLICATION_ERROR_REDEFINING_TARGET);
 }
 
 

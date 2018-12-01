@@ -2,20 +2,20 @@ import * as exits from '../return-codes';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as log from '../makelog';
-import { IMakefile, ITarget, IRule, IRecipe, IPlan } from '../imakefile';
-import { Plan } from './plan';
+import { Plan, IPlan } from './plan';
 import * as asciiTree from "ascii-tree";
 import { resolve } from 'dns';
+import { ITarget, IRuleManager } from '../rules';
 
 const UNKNOWN_TARGET = 'target:unknown';
 
-export function plan(makefile: IMakefile, targets: string[]): IPlan
+export function plan(makefile: IRuleManager, targets: string[]): IPlan
 {
     let engine = new Engine(makefile);
     return engine.updateTargets(targets);
 }
 
-export function toTree(makefile: IMakefile, targetName: string): string
+export function toTree(makefile: IRuleManager, targetName: string): string
 {
     let target: ITarget = makefile.findTarget(path.resolve(".", targetName));
     if (!target)
@@ -49,7 +49,7 @@ function _toTree(target: ITarget, prefix: string): string
 export class Engine
 {
     private plan: Plan = new Plan();
-    constructor(private readonly makefile: IMakefile) 
+    constructor(private readonly makefile: IRuleManager) 
     {}
 
     public updateTargets(goalNames: string[]): IPlan
@@ -58,6 +58,10 @@ export class Engine
         {
             let fullname = path.resolve(targetName);
             let target: ITarget = this.makefile.findTarget(fullname);
+            // if (!target)
+            // {
+            //     target = this.makefile.applyImplicitRule(path.normalize("."), targetName);
+            // }
             if (!target)
             {
                 exits.commandUnknownGoal(targetName);

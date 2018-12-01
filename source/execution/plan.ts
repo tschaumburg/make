@@ -1,6 +1,12 @@
 import * as log from '../makelog';
-import { IMakefile, IRecipe, IPlan, ITarget } from "../imakefile";
 import { runRecipe } from "./run-recipe";
+import { IRecipe, ITarget } from '../rules';
+
+export interface IPlan
+{
+    isEmpty(): boolean;
+    run(): void;
+}
 
 export class Plan implements IPlan
 {
@@ -64,14 +70,22 @@ class PlannedRecipe
         if (this.target !== other.target)
             return false;
 
-        if (this.prerequisites.length !== other.prerequisites.length)
+        if (!listsEqual(this.prerequisites, other.prerequisites))
             return false;
 
-        for (let p of this.prerequisites)
-        {
-            if (other.prerequisites.indexOf(p) < 0)
-                return false;
-        }
         return true;
     }
+}
+
+function listsEqual(first: ITarget[], second: ITarget[]): boolean
+{
+    if (first.length !== second.length)
+        return false;
+
+    for (let p of first)
+    {
+        if (second.indexOf(p) < 0)
+            return false;
+    }
+    return true;
 }

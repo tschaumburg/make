@@ -5,9 +5,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { parse } from "./parser";
 import { plan, toTree } from "./execution";
-import { Recipe } from "./parser/rule";
 import { exists } from 'fs';
-import { IMakefile } from './imakefile';
+import { IParseResult } from './parser';
 var program = require('commander');
 var pkg = require("../package.json");
 
@@ -71,47 +70,47 @@ program
 
 log.init();
 
-let makefile: IMakefile = null;
+let parseResult: IParseResult = null;
 do
 {
     log.info("Parsing Makefile");
-    makefile = parse("Makefile", { ignoreMissingIncludes: true }, process.env);
+    parseResult = parse("Makefile", { ignoreMissingIncludes: true }, process.env);
 
     //if (!makefile)
     //{
     //    exits.ruleMissingTarget();
     //}
-} while (remakeMakefiles(makefile));
+} while (remakeMakefiles(parseResult));
 
 var targets = program.args;
 if (targets.length == 0)
 {
-    if (!makefile.defaultTarget)
+    if (!parseResult.defaultTarget)
         exits.makefileMissingTarget();
-    targets = [makefile.defaultTarget];
+    targets = [parseResult.defaultTarget.name];
 }
 
 log.info("Making targets %j", targets);
 
-var _plan = plan(makefile, targets);
+var _plan = plan(parseResult.rules, targets);
 _plan.run();
 log.flush();
 
-function remakeMakefiles(dependencyGraph: IMakefile): boolean
+function remakeMakefiles(parseResult: IParseResult): boolean
 {
     var makefiles =
-        makefile
+    parseResult
             .makefileNames
-            .map(name => dependencyGraph.findTarget(path.resolve('.', name)))
+            .map(name => parseResult.rules.findTarget(path.resolve('.', name)))
             .filter(target => target != null)
             .map(target => target.fullName);
 
-    log.info("updating " + JSON.stringify(makefile.makefileNames));
+    log.info("updating " + JSON.stringify(parseResult.makefileNames));
     log.info("updating " + JSON.stringify(makefiles));
 
     var _plan =
         plan(
-            dependencyGraph,
+            parseResult.rules,
             makefiles
          );
 

@@ -2,8 +2,8 @@ import * as path from "path";
 import * as exits from '../return-codes';
 import * as log from '../makelog';
 import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
-import { IRecipe, ITarget } from "../imakefile";
 import * as fs from 'fs';
+import { ITarget, IRecipe } from "../rules";
 const os = require('os')
 
 function newerThan(target: ITarget, prerequisites: ITarget[]): ITarget[]

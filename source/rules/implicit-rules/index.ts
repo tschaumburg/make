@@ -1,0 +1,1 @@
+export {IImplicitRuleManager, createManager} from "./implicit-rule-manager";
