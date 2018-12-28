@@ -1,19 +1,18 @@
-import * as exits from '../return-codes';
+import * as exits from '../../return-codes';
 const path = require('path');
-import { VariableManager } from './variable-manager';
-import * as log from '../makelog';
+import * as log from '../../makelog';
 import * as fs from 'fs';
-import { fail } from 'assert';
 
 export abstract class ParserBase
 {
-    protected readonly variableManager: VariableManager;
-    constructor(importedVariables: { [name: string]: string })
+    // protected readonly variableManager: VariableManager;
+    constructor()//importedVariables: { [name: string]: string })
     {
-        this.variableManager = new VariableManager(importedVariables);
+        // this.variableManager = new VariableManager(importedVariables);
         this.initializeParser();
     }
 
+    abstract expandVariable(src: string): string;
 
     protected parseFile(fileName: string): void
     {
@@ -48,7 +47,7 @@ export abstract class ParserBase
     private parseLine(line: string, lineNo: number): void
     {
         log.info("(" + lineNo + "): " + line)
-        var line = this.variableManager.expandVariable(line);
+        var line = this.expandVariable(line);
         //log.info("(" + lineNo + "): " + line)
 
         for (var pattern of this.patterns)

@@ -1,6 +1,5 @@
-import * as exits from '../return-codes';
-import * as path from 'path';
-import * as log from '../makelog';
+import * as exits from '../../../return-codes';
+import * as log from '../../../makelog';
 
 export class VariableManager
 {

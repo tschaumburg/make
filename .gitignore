@@ -11,3 +11,4 @@ test/build
 /types
 .nyc_output
 test/build/fixtures/actual.js
+source/parser/jison/makefile-syntax.js

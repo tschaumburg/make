@@ -1,1 +1,1 @@
-export {IImplicitRuleManager, createManager} from "./implicit-rule-manager";
+// export {IImplicitRuleManager, createManager} from "./implicit-rule-manager";

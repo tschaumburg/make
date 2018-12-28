@@ -1,5 +1,13 @@
 import * as log from './makelog';
 
+export function warnStaticPatternMismatch(targetname: string, pattern: string)
+{
+    var msg =
+        "Application Warning: target '" + targetname +"' doesn't match target pattern '" + pattern + "'";
+    console.warn(msg);
+    log.warning(msg);
+}
+
 export const RULE_MISSING_TARGET = 101;
 export function ruleMissingTarget()
 {
@@ -33,7 +41,7 @@ export function parseIncludeFailed(includedFile: string)
 export const PARSE_UNEXPECTED_EXCEPTION = 104;
 export function parseUnexpectedException(details: string, line: string, lineNo: number)
 {
-    var msg = "Unexpected exception in line\n(" + lineNo + ") " + line + "\n" + details;
+    var msg = "Unexpected exception in line\n(" + lineNo + ") " + line + "\n" + details['stack'];
 
     console.error(msg);
     log.fatal(msg);

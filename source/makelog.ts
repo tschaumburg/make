@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as options from './options';
 import { format } from 'util';
 const chalk  = require('chalk');
 const npmlog = require('npmlog');
@@ -50,6 +51,14 @@ export function info(...args: string[]): void
     let msg = format.apply(null, args);
     npmlog.info(prefix(), msg);
     autoflush();
+};
+
+export function locateFiles(args: () => string): void
+{
+    if (options.logLocateFiles)
+    {
+        this.info(args());
+    }
 };
 
 export function error(...args: string[]): void

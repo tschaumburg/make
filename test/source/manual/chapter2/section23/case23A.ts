@@ -89,7 +89,7 @@ export function loadTests(): void
             },
             {
                 title: "global-use header changed",
-                prepare: () => { touchFiles('defs.h'); },
+                prepare: () => { touchFiles('defs.h', ''); },
                 targets: ["edit"],
                 expect:
                     [

@@ -1,2 +1,2 @@
-export { IParseResult } from "./parse-result";
-export { parse } from "./parser";
+export { IParseResult } from "./result";
+export { IParser } from "./parser";
