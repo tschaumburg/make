@@ -1,312 +1,867 @@
-0 info [6980] [2018-12-27T08:42:09.908Z] Log opened
-1 info [6980] [2018-12-27T08:42:09.911Z] Parsing Makefile
-2 info [6980] [2018-12-27T08:42:09.914Z] Parsing Makefile
-3 info [6980] [2018-12-27T08:42:09.917Z] (0): hello:
-4 info [6980] [2018-12-27T08:42:09.920Z] (1): 	    echo hello
-5 info [6980] [2018-12-27T08:42:09.922Z] parse: {
-5 info [6980] [2018-12-27T08:42:09.922Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-5 info [6980] [2018-12-27T08:42:09.922Z]    "importedVariables": {
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ADT_HOME": "C:\\Program Files (x86)\\Android\\android-sdk",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ALLUSERSPROFILE": "C:\\ProgramData",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "APPDATA": "C:\\Users\\Thomas\\AppData\\Roaming",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "asl.log": "Destination=file",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "BINTRAY_API_KEY": "5309bf320e59c89e27b64174b501b3dedaa4869b",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "BINTRAY_USER": "tschaumburg",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "CommonProgramFiles": "C:\\Program Files\\Common Files",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "CommonProgramW6432": "C:\\Program Files\\Common Files",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "COMMPath": "C:\\Program Files\\Lenovo\\Communications Utility",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "COMPUTERNAME": "THOMAS-PC",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ComSpec": "C:\\WINDOWS\\system32\\cmd.exe",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "configsetroot": "C:\\WINDOWS\\ConfigSetRoot",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "DNX_HOME": "%USERPROFILE%\\.dnx",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "FPS_BROWSER_APP_PROFILE_STRING": "Internet Explorer",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "FPS_BROWSER_USER_PROFILE_STRING": "Default",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "FP_NO_HOST_CHECK": "NO",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "HOMEDRIVE": "C:",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "HOMEPATH": "\\Users\\Thomas",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "LOCALAPPDATA": "C:\\Users\\Thomas\\AppData\\Local",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "LOGONSERVER": "\\\\THOMAS-PC",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "NUMBER_OF_PROCESSORS": "8",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "OneDrive": "C:\\Users\\Thomas\\OneDrive",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "OS": "Windows_NT",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "Path": "C:\\Program Files\\Docker\\Docker\\Resources\\bin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Lenovo\\Fingerprint Manager Pro\\;C:\\Program Files (x86)\\Common Files\\Lenovo;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\Java\\jdk1.8.0_161\\bin;C:\\Program Files\\Microsoft\\Web Platform Installer\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Users\\Thomas\\AppData\\Local\\Android\\sdk\\tools;C:\\Users\\Thomas\\AppData\\Local\\Android\\sdk\\platform-tools;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files (x86)\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Windows Live\\Shared;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files\\dotnet\\;C:\\Program Files (x86)\\nodejs\\;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\;C:\\Program Files\\Microsoft Service Fabric\\bin\\Fabric\\Fabric.Code;C:\\Program Files\\Microsoft SDKs\\Service Fabric\\Tools\\ServiceFabricLocalClusterManager;C:\\Program Files (x86)\\Yarn\\bin\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Users\\Thomas\\.dnx\\bin;C:\\Program Files (x86)\\Android\\android-sdk\\tools;C:\\Program Files (x86)\\Android\\android-sdk\\platform-tools;C:\\Users\\Thomas\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\NuGet;C:\\Users\\Thomas\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\Google\\Chrome\\Application;C:\\Users\\Thomas\\AppData\\Local\\Yarn\\bin;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Program Files (x86)\\GnuWin32\\bin;",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_ARCHITECTURE": "AMD64",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 60 Stepping 3, GenuineIntel",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_LEVEL": "6",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_REVISION": "3c03",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ProgramData": "C:\\ProgramData",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ProgramFiles": "C:\\Program Files",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ProgramFiles(x86)": "C:\\Program Files (x86)",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "ProgramW6432": "C:\\Program Files",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PROMPT": "$P$G",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PSModulePath": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\AutoIt3\\AutoItX",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "PUBLIC": "C:\\Users\\Public",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "READYAPPS": "C:\\ProgramData\\Lenovo\\ReadyApps",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "RR": "C:\\Program Files (x86)\\Lenovo\\Rescue and Recovery",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "SESSIONNAME": "Console",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "SWSHARE": "C:\\SWSHARE",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "SystemDrive": "C:",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "SystemRoot": "C:\\WINDOWS",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TEMP": "C:\\Users\\Thomas\\AppData\\Local\\Temp",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TMP": "C:\\Users\\Thomas\\AppData\\Local\\Temp",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TVT": "C:\\Program Files (x86)\\Lenovo",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TVTCOMMON": "C:\\Program Files (x86)\\Common Files\\Lenovo",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TVTPYDIR": "C:\\Program Files (x86)\\Common Files\\Lenovo\\Python26",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "UOIPME_REG_PATH": "C:\\Program Files\\Intel Corporation\\USB over IP",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "USERDOMAIN": "Thomas-PC",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "USERDOMAIN_ROAMINGPROFILE": "Thomas-PC",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "USERNAME": "Thomas",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "USERPROFILE": "C:\\Users\\Thomas",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "VS110COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "VS120COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Common7\\Tools\\",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "VS140COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Common7\\Tools\\",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "VSCODE_CWD": "C:\\Program Files\\Microsoft VS Code",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "VSSDK140Install": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VSSDK\\",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "windir": "C:\\WINDOWS",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "windows_tracing_flags": "3",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "windows_tracing_logfile": "C:\\BVTBin\\Tests\\installpackage\\csilogfile.log",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "xxxx": "blah2",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TERM_PROGRAM": "vscode",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "TERM_PROGRAM_VERSION": "1.29.1",
-5 info [6980] [2018-12-27T08:42:09.922Z]       "LANG": "en_US.UTF-8"
-5 info [6980] [2018-12-27T08:42:09.922Z]    },
-5 info [6980] [2018-12-27T08:42:09.922Z]    "explicitRules": [
-5 info [6980] [2018-12-27T08:42:09.922Z]       {
-5 info [6980] [2018-12-27T08:42:09.922Z]          "recipe": {
-5 info [6980] [2018-12-27T08:42:09.922Z]             "steps": [
-5 info [6980] [2018-12-27T08:42:09.922Z]                "echo hello"
-5 info [6980] [2018-12-27T08:42:09.922Z]             ]
-5 info [6980] [2018-12-27T08:42:09.922Z]          },
-5 info [6980] [2018-12-27T08:42:09.922Z]          "targets": [
-5 info [6980] [2018-12-27T08:42:09.922Z]             {
-5 info [6980] [2018-12-27T08:42:09.922Z]                "location": {
-5 info [6980] [2018-12-27T08:42:09.922Z]                   "filename": "fooboo",
-5 info [6980] [2018-12-27T08:42:09.922Z]                   "lineNo": 123,
-5 info [6980] [2018-12-27T08:42:09.922Z]                   "colNo": 456
-5 info [6980] [2018-12-27T08:42:09.922Z]                },
-5 info [6980] [2018-12-27T08:42:09.922Z]                "parseContext": {
-5 info [6980] [2018-12-27T08:42:09.922Z]                   "vpath": []
-5 info [6980] [2018-12-27T08:42:09.922Z]                },
-5 info [6980] [2018-12-27T08:42:09.922Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-5 info [6980] [2018-12-27T08:42:09.922Z]                "relname": "hello"
-5 info [6980] [2018-12-27T08:42:09.922Z]             }
-5 info [6980] [2018-12-27T08:42:09.922Z]          ],
-5 info [6980] [2018-12-27T08:42:09.922Z]          "prereqs": [],
-5 info [6980] [2018-12-27T08:42:09.922Z]          "orderOnly": []
-5 info [6980] [2018-12-27T08:42:09.922Z]       }
-5 info [6980] [2018-12-27T08:42:09.922Z]    ],
-5 info [6980] [2018-12-27T08:42:09.922Z]    "implicitRules": [],
-5 info [6980] [2018-12-27T08:42:09.922Z]    "staticPatternRules": [],
-5 info [6980] [2018-12-27T08:42:09.922Z]    "makefileNames": [],
-5 info [6980] [2018-12-27T08:42:09.922Z]    "defaultTarget": null
-5 info [6980] [2018-12-27T08:42:09.922Z] }
-6 info [6980] [2018-12-27T08:42:09.932Z] Resolving target 'hello' ref. from 'C:\Users\Thomas\Source\Repos\npm-make':
-7 info [6980] [2018-12-27T08:42:09.935Z] updating []
-8 info [6980] [2018-12-27T08:42:09.937Z] plan: {
-8 info [6980] [2018-12-27T08:42:09.937Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-8 info [6980] [2018-12-27T08:42:09.937Z]    "makefileNames": [],
-8 info [6980] [2018-12-27T08:42:09.937Z]    "filerefs": {
-8 info [6980] [2018-12-27T08:42:09.937Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello": {
-8 info [6980] [2018-12-27T08:42:09.937Z]          "file": {
-8 info [6980] [2018-12-27T08:42:09.937Z]             "orgname": "hello",
-8 info [6980] [2018-12-27T08:42:09.937Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello"
-8 info [6980] [2018-12-27T08:42:09.937Z]          },
-8 info [6980] [2018-12-27T08:42:09.937Z]          "producedBy": {
-8 info [6980] [2018-12-27T08:42:09.937Z]             "prerequisites": [],
-8 info [6980] [2018-12-27T08:42:09.937Z]             "orderOnly": [],
-8 info [6980] [2018-12-27T08:42:09.937Z]             "recipe": [
-8 info [6980] [2018-12-27T08:42:09.937Z]                "echo hello"
-8 info [6980] [2018-12-27T08:42:09.937Z]             ]
-8 info [6980] [2018-12-27T08:42:09.937Z]          },
-8 info [6980] [2018-12-27T08:42:09.937Z]          "vpath": null
-8 info [6980] [2018-12-27T08:42:09.937Z]       }
-8 info [6980] [2018-12-27T08:42:09.937Z]    }
-8 info [6980] [2018-12-27T08:42:09.937Z] }
-9 info [6980] [2018-12-27T08:42:09.939Z] plan: {
-9 info [6980] [2018-12-27T08:42:09.939Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-9 info [6980] [2018-12-27T08:42:09.939Z]    "makefileNames": [],
-9 info [6980] [2018-12-27T08:42:09.939Z]    "filerefs": {
-9 info [6980] [2018-12-27T08:42:09.939Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello": {
-9 info [6980] [2018-12-27T08:42:09.939Z]          "file": {
-9 info [6980] [2018-12-27T08:42:09.939Z]             "orgname": "hello",
-9 info [6980] [2018-12-27T08:42:09.939Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello"
-9 info [6980] [2018-12-27T08:42:09.939Z]          },
-9 info [6980] [2018-12-27T08:42:09.939Z]          "producedBy": {
-9 info [6980] [2018-12-27T08:42:09.939Z]             "prerequisites": [],
-9 info [6980] [2018-12-27T08:42:09.939Z]             "orderOnly": [],
-9 info [6980] [2018-12-27T08:42:09.939Z]             "recipe": [
-9 info [6980] [2018-12-27T08:42:09.939Z]                "echo hello"
-9 info [6980] [2018-12-27T08:42:09.939Z]             ]
-9 info [6980] [2018-12-27T08:42:09.939Z]          },
-9 info [6980] [2018-12-27T08:42:09.939Z]          "vpath": null
-9 info [6980] [2018-12-27T08:42:09.939Z]       }
-9 info [6980] [2018-12-27T08:42:09.939Z]    }
-9 info [6980] [2018-12-27T08:42:09.939Z] }
-10 info [6980] [2018-12-27T08:42:09.946Z] *SCHEDULING(C:\Users\Thomas\Source\Repos\npm-make\hello): C:\Users\Thomas\Source\Repos\npm-make\hello is .PHONY
-11 info [6980] [2018-12-27T08:42:09.949Z] C:\WINDOWS\system32\cmd.exe /d /s /c echo hello
-12 info [6980] [2018-12-27T08:42:09.963Z] STDOUT:
-13 info [6980] [2018-12-27T08:42:09.965Z] *SCHEDULING(C:\Users\Thomas\Source\Repos\npm-make\hello) because file C:\Users\Thomas\Source\Repos\npm-make\hello doesn't exist
-14 info [6980] [2018-12-27T08:42:09.967Z] C:\WINDOWS\system32\cmd.exe /d /s /c echo hello
-15 info [6980] [2018-12-27T08:42:09.979Z] STDOUT:
-info [6980] [2018-12-27T08:42:09.908Z] Log opened
-info [6980] [2018-12-27T08:42:09.911Z] Parsing Makefile
-info [6980] [2018-12-27T08:42:09.914Z] Parsing Makefile
-info [6980] [2018-12-27T08:42:09.917Z] (0): hello: 
-info [6980] [2018-12-27T08:42:09.920Z] (1): 	    echo hello
-info [6980] [2018-12-27T08:42:09.922Z] parse: {
-info [6980] [2018-12-27T08:42:09.922Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-info [6980] [2018-12-27T08:42:09.922Z]    "importedVariables": {
-info [6980] [2018-12-27T08:42:09.922Z]       "ADT_HOME": "C:\\Program Files (x86)\\Android\\android-sdk",
-info [6980] [2018-12-27T08:42:09.922Z]       "ALLUSERSPROFILE": "C:\\ProgramData",
-info [6980] [2018-12-27T08:42:09.922Z]       "APPDATA": "C:\\Users\\Thomas\\AppData\\Roaming",
-info [6980] [2018-12-27T08:42:09.922Z]       "asl.log": "Destination=file",
-info [6980] [2018-12-27T08:42:09.922Z]       "BINTRAY_API_KEY": "5309bf320e59c89e27b64174b501b3dedaa4869b",
-info [6980] [2018-12-27T08:42:09.922Z]       "BINTRAY_USER": "tschaumburg",
-info [6980] [2018-12-27T08:42:09.922Z]       "CommonProgramFiles": "C:\\Program Files\\Common Files",
-info [6980] [2018-12-27T08:42:09.922Z]       "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
-info [6980] [2018-12-27T08:42:09.922Z]       "CommonProgramW6432": "C:\\Program Files\\Common Files",
-info [6980] [2018-12-27T08:42:09.922Z]       "COMMPath": "C:\\Program Files\\Lenovo\\Communications Utility",
-info [6980] [2018-12-27T08:42:09.922Z]       "COMPUTERNAME": "THOMAS-PC",
-info [6980] [2018-12-27T08:42:09.922Z]       "ComSpec": "C:\\WINDOWS\\system32\\cmd.exe",
-info [6980] [2018-12-27T08:42:09.922Z]       "configsetroot": "C:\\WINDOWS\\ConfigSetRoot",
-info [6980] [2018-12-27T08:42:09.922Z]       "DNX_HOME": "%USERPROFILE%\\.dnx",
-info [6980] [2018-12-27T08:42:09.922Z]       "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
-info [6980] [2018-12-27T08:42:09.922Z]       "FPS_BROWSER_APP_PROFILE_STRING": "Internet Explorer",
-info [6980] [2018-12-27T08:42:09.922Z]       "FPS_BROWSER_USER_PROFILE_STRING": "Default",
-info [6980] [2018-12-27T08:42:09.922Z]       "FP_NO_HOST_CHECK": "NO",
-info [6980] [2018-12-27T08:42:09.922Z]       "HOMEDRIVE": "C:",
-info [6980] [2018-12-27T08:42:09.922Z]       "HOMEPATH": "\\Users\\Thomas",
-info [6980] [2018-12-27T08:42:09.922Z]       "LOCALAPPDATA": "C:\\Users\\Thomas\\AppData\\Local",
-info [6980] [2018-12-27T08:42:09.922Z]       "LOGONSERVER": "\\\\THOMAS-PC",
-info [6980] [2018-12-27T08:42:09.922Z]       "NUMBER_OF_PROCESSORS": "8",
-info [6980] [2018-12-27T08:42:09.922Z]       "OneDrive": "C:\\Users\\Thomas\\OneDrive",
-info [6980] [2018-12-27T08:42:09.922Z]       "OS": "Windows_NT",
-info [6980] [2018-12-27T08:42:09.922Z]       "Path": "C:\\Program Files\\Docker\\Docker\\Resources\\bin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Lenovo\\Fingerprint Manager Pro\\;C:\\Program Files (x86)\\Common Files\\Lenovo;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\Java\\jdk1.8.0_161\\bin;C:\\Program Files\\Microsoft\\Web Platform Installer\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Users\\Thomas\\AppData\\Local\\Android\\sdk\\tools;C:\\Users\\Thomas\\AppData\\Local\\Android\\sdk\\platform-tools;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files (x86)\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Windows Live\\Shared;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files\\dotnet\\;C:\\Program Files (x86)\\nodejs\\;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\;C:\\Program Files\\Microsoft Service Fabric\\bin\\Fabric\\Fabric.Code;C:\\Program Files\\Microsoft SDKs\\Service Fabric\\Tools\\ServiceFabricLocalClusterManager;C:\\Program Files (x86)\\Yarn\\bin\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Users\\Thomas\\.dnx\\bin;C:\\Program Files (x86)\\Android\\android-sdk\\tools;C:\\Program Files (x86)\\Android\\android-sdk\\platform-tools;C:\\Users\\Thomas\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\NuGet;C:\\Users\\Thomas\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\Google\\Chrome\\Application;C:\\Users\\Thomas\\AppData\\Local\\Yarn\\bin;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Program Files (x86)\\GnuWin32\\bin;",
-info [6980] [2018-12-27T08:42:09.922Z]       "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
-info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_ARCHITECTURE": "AMD64",
-info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 60 Stepping 3, GenuineIntel",
-info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_LEVEL": "6",
-info [6980] [2018-12-27T08:42:09.922Z]       "PROCESSOR_REVISION": "3c03",
-info [6980] [2018-12-27T08:42:09.922Z]       "ProgramData": "C:\\ProgramData",
-info [6980] [2018-12-27T08:42:09.922Z]       "ProgramFiles": "C:\\Program Files",
-info [6980] [2018-12-27T08:42:09.922Z]       "ProgramFiles(x86)": "C:\\Program Files (x86)",
-info [6980] [2018-12-27T08:42:09.922Z]       "ProgramW6432": "C:\\Program Files",
-info [6980] [2018-12-27T08:42:09.922Z]       "PROMPT": "$P$G",
-info [6980] [2018-12-27T08:42:09.922Z]       "PSModulePath": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\AutoIt3\\AutoItX",
-info [6980] [2018-12-27T08:42:09.922Z]       "PUBLIC": "C:\\Users\\Public",
-info [6980] [2018-12-27T08:42:09.922Z]       "READYAPPS": "C:\\ProgramData\\Lenovo\\ReadyApps",
-info [6980] [2018-12-27T08:42:09.922Z]       "RR": "C:\\Program Files (x86)\\Lenovo\\Rescue and Recovery",
-info [6980] [2018-12-27T08:42:09.922Z]       "SESSIONNAME": "Console",
-info [6980] [2018-12-27T08:42:09.922Z]       "SWSHARE": "C:\\SWSHARE",
-info [6980] [2018-12-27T08:42:09.922Z]       "SystemDrive": "C:",
-info [6980] [2018-12-27T08:42:09.922Z]       "SystemRoot": "C:\\WINDOWS",
-info [6980] [2018-12-27T08:42:09.922Z]       "TEMP": "C:\\Users\\Thomas\\AppData\\Local\\Temp",
-info [6980] [2018-12-27T08:42:09.922Z]       "TMP": "C:\\Users\\Thomas\\AppData\\Local\\Temp",
-info [6980] [2018-12-27T08:42:09.922Z]       "TVT": "C:\\Program Files (x86)\\Lenovo",
-info [6980] [2018-12-27T08:42:09.922Z]       "TVTCOMMON": "C:\\Program Files (x86)\\Common Files\\Lenovo",
-info [6980] [2018-12-27T08:42:09.922Z]       "TVTPYDIR": "C:\\Program Files (x86)\\Common Files\\Lenovo\\Python26",
-info [6980] [2018-12-27T08:42:09.922Z]       "UOIPME_REG_PATH": "C:\\Program Files\\Intel Corporation\\USB over IP",
-info [6980] [2018-12-27T08:42:09.922Z]       "USERDOMAIN": "Thomas-PC",
-info [6980] [2018-12-27T08:42:09.922Z]       "USERDOMAIN_ROAMINGPROFILE": "Thomas-PC",
-info [6980] [2018-12-27T08:42:09.922Z]       "USERNAME": "Thomas",
-info [6980] [2018-12-27T08:42:09.922Z]       "USERPROFILE": "C:\\Users\\Thomas",
-info [6980] [2018-12-27T08:42:09.922Z]       "VS110COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\",
-info [6980] [2018-12-27T08:42:09.922Z]       "VS120COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Common7\\Tools\\",
-info [6980] [2018-12-27T08:42:09.922Z]       "VS140COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Common7\\Tools\\",
-info [6980] [2018-12-27T08:42:09.922Z]       "VSCODE_CWD": "C:\\Program Files\\Microsoft VS Code",
-info [6980] [2018-12-27T08:42:09.922Z]       "VSSDK140Install": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VSSDK\\",
-info [6980] [2018-12-27T08:42:09.922Z]       "windir": "C:\\WINDOWS",
-info [6980] [2018-12-27T08:42:09.922Z]       "windows_tracing_flags": "3",
-info [6980] [2018-12-27T08:42:09.922Z]       "windows_tracing_logfile": "C:\\BVTBin\\Tests\\installpackage\\csilogfile.log",
-info [6980] [2018-12-27T08:42:09.922Z]       "xxxx": "blah2",
-info [6980] [2018-12-27T08:42:09.922Z]       "TERM_PROGRAM": "vscode",
-info [6980] [2018-12-27T08:42:09.922Z]       "TERM_PROGRAM_VERSION": "1.29.1",
-info [6980] [2018-12-27T08:42:09.922Z]       "LANG": "en_US.UTF-8"
-info [6980] [2018-12-27T08:42:09.922Z]    },
-info [6980] [2018-12-27T08:42:09.922Z]    "explicitRules": [
-info [6980] [2018-12-27T08:42:09.922Z]       {
-info [6980] [2018-12-27T08:42:09.922Z]          "recipe": {
-info [6980] [2018-12-27T08:42:09.922Z]             "steps": [
-info [6980] [2018-12-27T08:42:09.922Z]                "echo hello"
-info [6980] [2018-12-27T08:42:09.922Z]             ]
-info [6980] [2018-12-27T08:42:09.922Z]          },
-info [6980] [2018-12-27T08:42:09.922Z]          "targets": [
-info [6980] [2018-12-27T08:42:09.922Z]             {
-info [6980] [2018-12-27T08:42:09.922Z]                "location": {
-info [6980] [2018-12-27T08:42:09.922Z]                   "filename": "fooboo",
-info [6980] [2018-12-27T08:42:09.922Z]                   "lineNo": 123,
-info [6980] [2018-12-27T08:42:09.922Z]                   "colNo": 456
-info [6980] [2018-12-27T08:42:09.922Z]                },
-info [6980] [2018-12-27T08:42:09.922Z]                "parseContext": {
-info [6980] [2018-12-27T08:42:09.922Z]                   "vpath": []
-info [6980] [2018-12-27T08:42:09.922Z]                },
-info [6980] [2018-12-27T08:42:09.922Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-info [6980] [2018-12-27T08:42:09.922Z]                "relname": "hello"
-info [6980] [2018-12-27T08:42:09.922Z]             }
-info [6980] [2018-12-27T08:42:09.922Z]          ],
-info [6980] [2018-12-27T08:42:09.922Z]          "prereqs": [],
-info [6980] [2018-12-27T08:42:09.922Z]          "orderOnly": []
-info [6980] [2018-12-27T08:42:09.922Z]       }
-info [6980] [2018-12-27T08:42:09.922Z]    ],
-info [6980] [2018-12-27T08:42:09.922Z]    "implicitRules": [],
-info [6980] [2018-12-27T08:42:09.922Z]    "staticPatternRules": [],
-info [6980] [2018-12-27T08:42:09.922Z]    "makefileNames": [],
-info [6980] [2018-12-27T08:42:09.922Z]    "defaultTarget": null
-info [6980] [2018-12-27T08:42:09.922Z] }
-info [6980] [2018-12-27T08:42:09.932Z] Resolving target 'hello' ref. from 'C:\Users\Thomas\Source\Repos\npm-make':
-info [6980] [2018-12-27T08:42:09.935Z] updating []
-info [6980] [2018-12-27T08:42:09.937Z] plan: {
-info [6980] [2018-12-27T08:42:09.937Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-info [6980] [2018-12-27T08:42:09.937Z]    "makefileNames": [],
-info [6980] [2018-12-27T08:42:09.937Z]    "filerefs": {
-info [6980] [2018-12-27T08:42:09.937Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello": {
-info [6980] [2018-12-27T08:42:09.937Z]          "file": {
-info [6980] [2018-12-27T08:42:09.937Z]             "orgname": "hello",
-info [6980] [2018-12-27T08:42:09.937Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello"
-info [6980] [2018-12-27T08:42:09.937Z]          },
-info [6980] [2018-12-27T08:42:09.937Z]          "producedBy": {
-info [6980] [2018-12-27T08:42:09.937Z]             "prerequisites": [],
-info [6980] [2018-12-27T08:42:09.937Z]             "orderOnly": [],
-info [6980] [2018-12-27T08:42:09.937Z]             "recipe": [
-info [6980] [2018-12-27T08:42:09.937Z]                "echo hello"
-info [6980] [2018-12-27T08:42:09.937Z]             ]
-info [6980] [2018-12-27T08:42:09.937Z]          },
-info [6980] [2018-12-27T08:42:09.937Z]          "vpath": null
-info [6980] [2018-12-27T08:42:09.937Z]       }
-info [6980] [2018-12-27T08:42:09.937Z]    }
-info [6980] [2018-12-27T08:42:09.937Z] }
-info [6980] [2018-12-27T08:42:09.939Z] plan: {
-info [6980] [2018-12-27T08:42:09.939Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
-info [6980] [2018-12-27T08:42:09.939Z]    "makefileNames": [],
-info [6980] [2018-12-27T08:42:09.939Z]    "filerefs": {
-info [6980] [2018-12-27T08:42:09.939Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello": {
-info [6980] [2018-12-27T08:42:09.939Z]          "file": {
-info [6980] [2018-12-27T08:42:09.939Z]             "orgname": "hello",
-info [6980] [2018-12-27T08:42:09.939Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\hello"
-info [6980] [2018-12-27T08:42:09.939Z]          },
-info [6980] [2018-12-27T08:42:09.939Z]          "producedBy": {
-info [6980] [2018-12-27T08:42:09.939Z]             "prerequisites": [],
-info [6980] [2018-12-27T08:42:09.939Z]             "orderOnly": [],
-info [6980] [2018-12-27T08:42:09.939Z]             "recipe": [
-info [6980] [2018-12-27T08:42:09.939Z]                "echo hello"
-info [6980] [2018-12-27T08:42:09.939Z]             ]
-info [6980] [2018-12-27T08:42:09.939Z]          },
-info [6980] [2018-12-27T08:42:09.939Z]          "vpath": null
-info [6980] [2018-12-27T08:42:09.939Z]       }
-info [6980] [2018-12-27T08:42:09.939Z]    }
-info [6980] [2018-12-27T08:42:09.939Z] }
-info [6980] [2018-12-27T08:42:09.946Z] *SCHEDULING(C:\Users\Thomas\Source\Repos\npm-make\hello): C:\Users\Thomas\Source\Repos\npm-make\hello is .PHONY
-info [6980] [2018-12-27T08:42:09.949Z] C:\WINDOWS\system32\cmd.exe /d /s /c echo hello
-info [6980] [2018-12-27T08:42:09.963Z] STDOUT:
-info [6980] [2018-12-27T08:42:09.963Z]     
-info [6980] [2018-12-27T08:42:09.963Z]     
-info [6980] [2018-12-27T08:42:09.963Z]     
-info [6980] [2018-12-27T08:42:09.965Z] *SCHEDULING(C:\Users\Thomas\Source\Repos\npm-make\hello) because file C:\Users\Thomas\Source\Repos\npm-make\hello doesn't exist
-info [6980] [2018-12-27T08:42:09.967Z] C:\WINDOWS\system32\cmd.exe /d /s /c echo hello
-info [6980] [2018-12-27T08:42:09.979Z] STDOUT:
-info [6980] [2018-12-27T08:42:09.979Z]     
-info [6980] [2018-12-27T08:42:09.979Z]     
-info [6980] [2018-12-27T08:42:09.979Z]     
+0 info [23508] [2019-01-01T07:58:51.250Z] Log opened
+1 info [23508] [2019-01-01T07:58:51.254Z] Parsing Makefile
+2 info [23508] [2019-01-01T07:58:51.256Z] Parsing C:\Users\Thomas\Source\Repos\npm-make\Makefile
+3 info [23508] [2019-01-01T07:58:51.267Z] DEFINE RECURSIVE: 'objects' = 'main.o kbd.o'
+4 info [23508] [2019-01-01T07:58:51.269Z] REPLACING '"objects"' => 'main.o kbd.o'
+5 info [23508] [2019-01-01T07:58:51.274Z] REPLACING '"objects"' => 'main.o kbd.o'
+6 info [23508] [2019-01-01T07:58:51.276Z] parse: {
+6 info [23508] [2019-01-01T07:58:51.276Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]    "importedVariables": {
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ADT_HOME": "C:\\Program Files (x86)\\Android\\android-sdk",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ALLUSERSPROFILE": "C:\\ProgramData",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "APPDATA": "C:\\Users\\Thomas\\AppData\\Roaming",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "asl.log": "Destination=file",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "BINTRAY_API_KEY": "5309bf320e59c89e27b64174b501b3dedaa4869b",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "BINTRAY_USER": "tschaumburg",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "CommonProgramFiles": "C:\\Program Files\\Common Files",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "CommonProgramW6432": "C:\\Program Files\\Common Files",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "COMMPath": "C:\\Program Files\\Lenovo\\Communications Utility",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "COMPUTERNAME": "THOMAS-PC",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ComSpec": "C:\\WINDOWS\\system32\\cmd.exe",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "configsetroot": "C:\\WINDOWS\\ConfigSetRoot",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "DNX_HOME": "%USERPROFILE%\\.dnx",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "FPS_BROWSER_APP_PROFILE_STRING": "Internet Explorer",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "FPS_BROWSER_USER_PROFILE_STRING": "Default",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "FP_NO_HOST_CHECK": "NO",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "HOMEDRIVE": "C:",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "HOMEPATH": "\\Users\\Thomas",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "LOCALAPPDATA": "C:\\Users\\Thomas\\AppData\\Local",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "LOGONSERVER": "\\\\THOMAS-PC",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "NUMBER_OF_PROCESSORS": "8",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "OneDrive": "C:\\Users\\Thomas\\OneDrive",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "OS": "Windows_NT",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "Path": "C:\\Program Files\\Docker\\Docker\\Resources\\bin;C:\\Program Files (x86)\\Common Files\\Oracle\\Java\\javapath;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Lenovo\\Fingerprint Manager Pro\\;C:\\Program Files (x86)\\Common Files\\Lenovo;C:\\ProgramData\\Lenovo\\ReadyApps;C:\\Program Files\\Java\\jdk1.8.0_161\\bin;C:\\Program Files\\Microsoft\\Web Platform Installer\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\DTS\\Binn\\;C:\\Users\\Thomas\\AppData\\Local\\Android\\sdk\\tools;C:\\Users\\Thomas\\AppData\\Local\\Android\\sdk\\platform-tools;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files (x86)\\Microsoft SQL Server\\Client SDK\\ODBC\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Windows Live\\Shared;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files\\dotnet\\;C:\\Program Files (x86)\\nodejs\\;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files\\MiKTeX 2.9\\miktex\\bin\\x64\\;C:\\Program Files\\Microsoft Service Fabric\\bin\\Fabric\\Fabric.Code;C:\\Program Files\\Microsoft SDKs\\Service Fabric\\Tools\\ServiceFabricLocalClusterManager;C:\\Program Files (x86)\\Yarn\\bin\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Microsoft VS Code\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Users\\Thomas\\.dnx\\bin;C:\\Program Files (x86)\\Android\\android-sdk\\tools;C:\\Program Files (x86)\\Android\\android-sdk\\platform-tools;C:\\Users\\Thomas\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files (x86)\\NuGet;C:\\Users\\Thomas\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\Google\\Chrome\\Application;C:\\Users\\Thomas\\AppData\\Local\\Yarn\\bin;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Program Files (x86)\\GnuWin32\\bin;",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PROCESSOR_ARCHITECTURE": "AMD64",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 60 Stepping 3, GenuineIntel",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PROCESSOR_LEVEL": "6",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PROCESSOR_REVISION": "3c03",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ProgramData": "C:\\ProgramData",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ProgramFiles": "C:\\Program Files",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ProgramFiles(x86)": "C:\\Program Files (x86)",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "ProgramW6432": "C:\\Program Files",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PROMPT": "$P$G",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PSModulePath": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\120\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\130\\Tools\\PowerShell\\Modules\\;C:\\Program Files (x86)\\AutoIt3\\AutoItX",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "PUBLIC": "C:\\Users\\Public",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "READYAPPS": "C:\\ProgramData\\Lenovo\\ReadyApps",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "RR": "C:\\Program Files (x86)\\Lenovo\\Rescue and Recovery",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "SESSIONNAME": "Console",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "SWSHARE": "C:\\SWSHARE",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "SystemDrive": "C:",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "SystemRoot": "C:\\WINDOWS",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "TEMP": "C:\\Users\\Thomas\\AppData\\Local\\Temp",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "TMP": "C:\\Users\\Thomas\\AppData\\Local\\Temp",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "TVT": "C:\\Program Files (x86)\\Lenovo",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "TVTCOMMON": "C:\\Program Files (x86)\\Common Files\\Lenovo",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "TVTPYDIR": "C:\\Program Files (x86)\\Common Files\\Lenovo\\Python26",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "UOIPME_REG_PATH": "C:\\Program Files\\Intel Corporation\\USB over IP",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "USERDOMAIN": "Thomas-PC",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "USERDOMAIN_ROAMINGPROFILE": "Thomas-PC",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "USERNAME": "Thomas",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "USERPROFILE": "C:\\Users\\Thomas",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "VS110COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\Common7\\Tools\\",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "VS120COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\Common7\\Tools\\",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "VS140COMNTOOLS": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Common7\\Tools\\",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "VSSDK140Install": "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VSSDK\\",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "windir": "C:\\WINDOWS",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "windows_tracing_flags": "3",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "windows_tracing_logfile": "C:\\BVTBin\\Tests\\installpackage\\csilogfile.log",
+6 info [23508] [2019-01-01T07:58:51.276Z]       "xxxx": "blah2"
+6 info [23508] [2019-01-01T07:58:51.276Z]    },
+6 info [23508] [2019-01-01T07:58:51.276Z]    "explicitRules": [
+6 info [23508] [2019-01-01T07:58:51.276Z]       {
+6 info [23508] [2019-01-01T07:58:51.276Z]          "recipe": {
+6 info [23508] [2019-01-01T07:58:51.276Z]             "steps": [
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\techo build edit\n",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\tnodetouch edit\n"
+6 info [23508] [2019-01-01T07:58:51.276Z]             ]
+6 info [23508] [2019-01-01T07:58:51.276Z]          },
+6 info [23508] [2019-01-01T07:58:51.276Z]          "targets": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "edit"
+6 info [23508] [2019-01-01T07:58:51.276Z]             },
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "foo"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "prereqs": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "main.o"
+6 info [23508] [2019-01-01T07:58:51.276Z]             },
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "kbd.o"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "orderOnly": []
+6 info [23508] [2019-01-01T07:58:51.276Z]       },
+6 info [23508] [2019-01-01T07:58:51.276Z]       {
+6 info [23508] [2019-01-01T07:58:51.276Z]          "recipe": {
+6 info [23508] [2019-01-01T07:58:51.276Z]             "steps": [
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\techo build main.o\n",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\tnodetouch main.o\n"
+6 info [23508] [2019-01-01T07:58:51.276Z]             ]
+6 info [23508] [2019-01-01T07:58:51.276Z]          },
+6 info [23508] [2019-01-01T07:58:51.276Z]          "targets": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "main.o"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "prereqs": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "main.c"
+6 info [23508] [2019-01-01T07:58:51.276Z]             },
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "defs.h"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "orderOnly": []
+6 info [23508] [2019-01-01T07:58:51.276Z]       },
+6 info [23508] [2019-01-01T07:58:51.276Z]       {
+6 info [23508] [2019-01-01T07:58:51.276Z]          "recipe": {
+6 info [23508] [2019-01-01T07:58:51.276Z]             "steps": [
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\techo build kbd.o\n",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\tnodetouch kbd.o\n"
+6 info [23508] [2019-01-01T07:58:51.276Z]             ]
+6 info [23508] [2019-01-01T07:58:51.276Z]          },
+6 info [23508] [2019-01-01T07:58:51.276Z]          "targets": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "kbd.o"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "prereqs": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "kbd.c"
+6 info [23508] [2019-01-01T07:58:51.276Z]             },
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "defs.h"
+6 info [23508] [2019-01-01T07:58:51.276Z]             },
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "command.h"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "orderOnly": []
+6 info [23508] [2019-01-01T07:58:51.276Z]       },
+6 info [23508] [2019-01-01T07:58:51.276Z]       {
+6 info [23508] [2019-01-01T07:58:51.276Z]          "recipe": {
+6 info [23508] [2019-01-01T07:58:51.276Z]             "steps": [
+6 info [23508] [2019-01-01T07:58:51.276Z]                "\trm edit main.o kbd.o\n"
+6 info [23508] [2019-01-01T07:58:51.276Z]             ]
+6 info [23508] [2019-01-01T07:58:51.276Z]          },
+6 info [23508] [2019-01-01T07:58:51.276Z]          "targets": [
+6 info [23508] [2019-01-01T07:58:51.276Z]             {
+6 info [23508] [2019-01-01T07:58:51.276Z]                "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]                   "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]                },
+6 info [23508] [2019-01-01T07:58:51.276Z]                "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]                "relname": "clean"
+6 info [23508] [2019-01-01T07:58:51.276Z]             }
+6 info [23508] [2019-01-01T07:58:51.276Z]          ],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "prereqs": [],
+6 info [23508] [2019-01-01T07:58:51.276Z]          "orderOnly": []
+6 info [23508] [2019-01-01T07:58:51.276Z]       }
+6 info [23508] [2019-01-01T07:58:51.276Z]    ],
+6 info [23508] [2019-01-01T07:58:51.276Z]    "implicitRules": [],
+6 info [23508] [2019-01-01T07:58:51.276Z]    "staticPatternRules": [],
+6 info [23508] [2019-01-01T07:58:51.276Z]    "makefileNames": [],
+6 info [23508] [2019-01-01T07:58:51.276Z]    "goals": [
+6 info [23508] [2019-01-01T07:58:51.276Z]       {
+6 info [23508] [2019-01-01T07:58:51.276Z]          "location": {
+6 info [23508] [2019-01-01T07:58:51.276Z]             "filename": "Makefile",
+6 info [23508] [2019-01-01T07:58:51.276Z]             "lineNo": 1,
+6 info [23508] [2019-01-01T07:58:51.276Z]             "colNo": 0
+6 info [23508] [2019-01-01T07:58:51.276Z]          },
+6 info [23508] [2019-01-01T07:58:51.276Z]          "parseContext": {
+6 info [23508] [2019-01-01T07:58:51.276Z]             "vpath": []
+6 info [23508] [2019-01-01T07:58:51.276Z]          },
+6 info [23508] [2019-01-01T07:58:51.276Z]          "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+6 info [23508] [2019-01-01T07:58:51.276Z]          "relname": "edit"
+6 info [23508] [2019-01-01T07:58:51.276Z]       }
+6 info [23508] [2019-01-01T07:58:51.276Z]    ]
+6 info [23508] [2019-01-01T07:58:51.276Z] }
+7 info [23508] [2019-01-01T07:58:51.287Z] Resolving target 'edit' ref. from 'C:\Users\Thomas\Source\Repos\npm-make':
+8 info [23508] [2019-01-01T07:58:51.290Z] Resolving target 'main.o' ref. from 'C:\Users\Thomas\Source\Repos\npm-make':
+9 info [23508] [2019-01-01T07:58:51.293Z] Resolving target 'kbd.o' ref. from 'C:\Users\Thomas\Source\Repos\npm-make':
+10 info [23508] [2019-01-01T07:58:51.296Z] updating []
+11 info [23508] [2019-01-01T07:58:51.298Z] plan: {
+11 info [23508] [2019-01-01T07:58:51.298Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+11 info [23508] [2019-01-01T07:58:51.298Z]    "makefileNames": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]    "goals": [
+11 info [23508] [2019-01-01T07:58:51.298Z]       {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "edit",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\edit"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "main.o",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "main.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         },
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         }
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\techo build main.o\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\tnodetouch main.o\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ]
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                },
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "kbd.o",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "kbd.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         },
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         },
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "command.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         }
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\techo build kbd.o\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\tnodetouch kbd.o\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ]
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                }
+11 info [23508] [2019-01-01T07:58:51.298Z]             ],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\techo build edit\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\tnodetouch edit\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]             ]
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       }
+11 info [23508] [2019-01-01T07:58:51.298Z]    ],
+11 info [23508] [2019-01-01T07:58:51.298Z]    "filerefs": {
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "main.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       },
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       },
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "main.o",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "main.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                },
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                }
+11 info [23508] [2019-01-01T07:58:51.298Z]             ],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\techo build main.o\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\tnodetouch main.o\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]             ]
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       },
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "kbd.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       },
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "command.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       },
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "kbd.o",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "kbd.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                },
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                },
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "command.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                }
+11 info [23508] [2019-01-01T07:58:51.298Z]             ],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\techo build kbd.o\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\tnodetouch kbd.o\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]             ]
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       },
+11 info [23508] [2019-01-01T07:58:51.298Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\edit": {
+11 info [23508] [2019-01-01T07:58:51.298Z]          "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orgname": "edit",
+11 info [23508] [2019-01-01T07:58:51.298Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\edit"
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]             "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "main.o",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "main.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         },
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         }
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\techo build main.o\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\tnodetouch main.o\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ]
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                },
+11 info [23508] [2019-01-01T07:58:51.298Z]                {
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orgname": "kbd.o",
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o"
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "producedBy": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "prerequisites": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "kbd.c",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         },
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "defs.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         },
+11 info [23508] [2019-01-01T07:58:51.298Z]                         {
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "file": {
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "orgname": "command.h",
+11 info [23508] [2019-01-01T07:58:51.298Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+11 info [23508] [2019-01-01T07:58:51.298Z]                            },
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "producedBy": null,
+11 info [23508] [2019-01-01T07:58:51.298Z]                            "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                         }
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]                      "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\techo build kbd.o\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                         "\tnodetouch kbd.o\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]                      ]
+11 info [23508] [2019-01-01T07:58:51.298Z]                   },
+11 info [23508] [2019-01-01T07:58:51.298Z]                   "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]                }
+11 info [23508] [2019-01-01T07:58:51.298Z]             ],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "orderOnly": [],
+11 info [23508] [2019-01-01T07:58:51.298Z]             "recipe": [
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\techo build edit\n",
+11 info [23508] [2019-01-01T07:58:51.298Z]                "\tnodetouch edit\n"
+11 info [23508] [2019-01-01T07:58:51.298Z]             ]
+11 info [23508] [2019-01-01T07:58:51.298Z]          },
+11 info [23508] [2019-01-01T07:58:51.298Z]          "vpath": null
+11 info [23508] [2019-01-01T07:58:51.298Z]       }
+11 info [23508] [2019-01-01T07:58:51.298Z]    }
+11 info [23508] [2019-01-01T07:58:51.298Z] }
+12 info [23508] [2019-01-01T07:58:51.304Z] plan: {
+12 info [23508] [2019-01-01T07:58:51.304Z]    "basedir": "C:\\Users\\Thomas\\Source\\Repos\\npm-make",
+12 info [23508] [2019-01-01T07:58:51.304Z]    "makefileNames": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]    "goals": [
+12 info [23508] [2019-01-01T07:58:51.304Z]       {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "edit",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\edit"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "main.o",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "main.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         },
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         }
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\techo build main.o\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\tnodetouch main.o\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ]
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                },
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "kbd.o",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "kbd.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         },
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         },
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "command.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         }
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\techo build kbd.o\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\tnodetouch kbd.o\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ]
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                }
+12 info [23508] [2019-01-01T07:58:51.304Z]             ],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\techo build edit\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\tnodetouch edit\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]             ]
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       }
+12 info [23508] [2019-01-01T07:58:51.304Z]    ],
+12 info [23508] [2019-01-01T07:58:51.304Z]    "filerefs": {
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "main.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       },
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       },
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "main.o",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "main.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                },
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                }
+12 info [23508] [2019-01-01T07:58:51.304Z]             ],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\techo build main.o\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\tnodetouch main.o\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]             ]
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       },
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "kbd.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       },
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "command.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       },
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "kbd.o",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "kbd.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                },
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                },
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "command.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                }
+12 info [23508] [2019-01-01T07:58:51.304Z]             ],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\techo build kbd.o\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\tnodetouch kbd.o\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]             ]
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       },
+12 info [23508] [2019-01-01T07:58:51.304Z]       "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\edit": {
+12 info [23508] [2019-01-01T07:58:51.304Z]          "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orgname": "edit",
+12 info [23508] [2019-01-01T07:58:51.304Z]             "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\edit"
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]             "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "main.o",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.o"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "main.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\main.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         },
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         }
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\techo build main.o\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\tnodetouch main.o\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ]
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                },
+12 info [23508] [2019-01-01T07:58:51.304Z]                {
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orgname": "kbd.o",
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.o"
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "producedBy": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "prerequisites": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "kbd.c",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\kbd.c"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         },
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "defs.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\defs.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         },
+12 info [23508] [2019-01-01T07:58:51.304Z]                         {
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "file": {
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "orgname": "command.h",
+12 info [23508] [2019-01-01T07:58:51.304Z]                               "fullname": "C:\\Users\\Thomas\\Source\\Repos\\npm-make\\command.h"
+12 info [23508] [2019-01-01T07:58:51.304Z]                            },
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "producedBy": null,
+12 info [23508] [2019-01-01T07:58:51.304Z]                            "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                         }
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]                      "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\techo build kbd.o\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                         "\tnodetouch kbd.o\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]                      ]
+12 info [23508] [2019-01-01T07:58:51.304Z]                   },
+12 info [23508] [2019-01-01T07:58:51.304Z]                   "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]                }
+12 info [23508] [2019-01-01T07:58:51.304Z]             ],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "orderOnly": [],
+12 info [23508] [2019-01-01T07:58:51.304Z]             "recipe": [
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\techo build edit\n",
+12 info [23508] [2019-01-01T07:58:51.304Z]                "\tnodetouch edit\n"
+12 info [23508] [2019-01-01T07:58:51.304Z]             ]
+12 info [23508] [2019-01-01T07:58:51.304Z]          },
+12 info [23508] [2019-01-01T07:58:51.304Z]          "vpath": null
+12 info [23508] [2019-01-01T07:58:51.304Z]       }
+12 info [23508] [2019-01-01T07:58:51.304Z]    }
+12 info [23508] [2019-01-01T07:58:51.304Z] }
+13 error [23508] [2019-01-01T07:58:51.320Z] Target C:\Users\Thomas\Source\Repos\npm-make\main.c (C:\Users\Thomas\Source\Repos\npm-make\main.c) does not exist, and there's no rule to build it

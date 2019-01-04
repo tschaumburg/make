@@ -34,33 +34,18 @@ export class Planner implements IPlanner
     {
         let parseResult = this.parser.parse();
         let basedir = parseResult.basedir;
+        //console.log("PARSING - starting a new context");
         let builder = new PlanBuilder(basedir, parseResult.makefileNames);
         let planManager = new PlanManager(builder, parseResult.explicitRules);
 
-        // let explicitGoals = this.options.goals;
-
-        // if (!explicitGoals || explicitGoals.length == 0)
-        // {
-        //     planManager.planGoal(parseResult.defaultTarget.basedir, parseResult.defaultTarget.relname);
-        // }
-        // else
-        // {
-        //     for (var goalName of explicitGoals)
-        //     {
-        //         planManager.planGoal(basedir, goalName);
-        //     }
-        // }
-
         for (var target of parseResult.goals)
         {
-            let goal = planManager.planGoal(target.basedir, target.relname);
+            planManager.planGoal(target.basedir, target.relname);
+        }
 
-            if (!goal)
-            {
-                exits.commandUnknownGoal(target.relname);
-            }
-
-            builder.goals.push(goal);
+        for (var makefile of parseResult.makefileNames)
+        {
+            planManager.planMakefile(path.dirname(makefile), path.basename(makefile));
         }
         
         var res = builder.build();

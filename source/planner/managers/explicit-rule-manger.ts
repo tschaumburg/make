@@ -22,6 +22,7 @@ export class ExplicitRuleHandler
         fileFullname: string
         ): IFilePlan 
     {
+        let res: IFilePlan = null;
 
         for (var rule of this._srcRules)
         {
@@ -31,15 +32,16 @@ export class ExplicitRuleHandler
                 if (!!fileref)
                 {
                     var vpath = filemanager.resolveVpath(target.basedir, target.parseContext.vpath, target.relname);
-                    return this.createPlanFromExplicitRule(fileref, fileFullname, rule, vpath);
+                    res = this.updatePlanFromExplicitRule(res, fileref, fileFullname, rule, vpath);
                 }
             }
         }
 
-        return null;
+        return res;
     }
 
-    private createPlanFromExplicitRule(
+    private updatePlanFromExplicitRule(
+        plan: IFilePlan,
         targetfile: IFileRef, 
         fileFullname: string, 
         explicitRule: ExplicitRule,

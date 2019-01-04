@@ -28,16 +28,6 @@ export function parseNoMatch(line: string, lineNo: number)
     process.exit(PARSE_NO_MATCH);
 }
 
-export const PARSE_INCLUDE_FAILED = 103;
-export function parseIncludeFailed(includedFile: string)
-{
-    var msg = "Error including file " + includedFile;
-
-    console.error(msg);
-    log.fatal(msg);
-    process.exit(PARSE_INCLUDE_FAILED);
-}
-
 export const PARSE_UNEXPECTED_EXCEPTION = 104;
 export function parseUnexpectedException(details: string, line: string, lineNo: number)
 {

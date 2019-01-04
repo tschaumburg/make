@@ -28,21 +28,21 @@ export class ExplicitRule extends BaseRule
                 location,
                 context,
                 basedir,
-                targetNames
+                targetNames || []
             );
         this.prereqs = 
             TargetNameFactory.createList(
                 location,
                 context,
                 basedir,
-                prereqNames
+                prereqNames || []
             );
         this.orderOnly = 
             TargetNameFactory.createList(
                 location,
                 context,
                 basedir,
-                orderOnlyNames
+                orderOnlyNames || []
             );
     }
 }

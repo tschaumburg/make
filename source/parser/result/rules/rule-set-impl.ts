@@ -1,3 +1,4 @@
+import * as exits from '../../../return-codes';
 import { ExplicitRule } from "./explicit-rule";
 import { ImplicitRule } from "./implicit-rule";
 import { StaticPatternRule } from "./static-pattern-rule";
@@ -16,6 +17,7 @@ class RuleSet implements IRuleSet
 {
     private _defaultTarget: TargetName = null;
     public get defaultTarget(): TargetName { return this._defaultTarget; }
+    public clearDefaultTarget(): void { this._defaultTarget = null; }
     public readonly explicitRules: ExplicitRule[] = [];
     public readonly implicitRules: ImplicitRule[] = [];
     public readonly staticPatternRules: StaticPatternRule[] = [];
@@ -78,6 +80,7 @@ class RuleSet implements IRuleSet
             if (!this._defaultTarget)
             {
                 let targetname = implicitRule.targetPatterns.find(t => !TargetPatternFactory.isPattern(t.relname)) as TargetName;
+                // console.log("   DEFAULT TARGET : " + JSON.stringify(targetname));
                 if (!!targetname)
                 {
                     this._defaultTarget = targetname;
@@ -100,6 +103,7 @@ class RuleSet implements IRuleSet
                     inlineRecipe 
                 );
             
+            //console.log("   DEFAULT TARGET 0: " + JSON.stringify(explicitRule.targets[0]));
             if (!this._defaultTarget)
             {
                 this._defaultTarget = explicitRule.targets[0];

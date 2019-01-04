@@ -6,10 +6,21 @@ import { ParseResultImpl } from './result-impl';
 import { Target, TargetName } from '../targets';
 import { IParseResult } from '../result';
 import { BaseRule, IRuleSet, createRuleset } from '../rules';
+import { exists } from "fs";
 
-export function createResultBuilder(basedir: string, importedVariables: { [name: string]: string }): IParseResultBuilder
+export interface IBuilderOptions
 {
-    return new ParseResultBuilderImpl(basedir, importedVariables);
+    basedir?: string;
+    importedVariables?: { [name: string]: string } ;   
+}
+export function createResultBuilder(builderOptions?: IBuilderOptions): IParseResultBuilder
+{
+    builderOptions = builderOptions || {};
+    builderOptions.basedir = builderOptions.basedir || options.basedir
+    builderOptions.importedVariables = builderOptions.importedVariables || process.env;
+    // let basedir = path.dirname(path.resolve(this.makefilename));
+    // importedVariables = process.env;
+    return new ParseResultBuilderImpl(builderOptions.basedir, builderOptions.importedVariables);
 }
 
 class ParseResultBuilderImpl implements IParseResultBuilder
@@ -28,6 +39,11 @@ class ParseResultBuilderImpl implements IParseResultBuilder
         this.rules = createRuleset(); // createManager();
         this.variableManager = new VariableManager(importedVariables);
     };
+
+    public startMakefile(fullMakefileName: string): void
+    {
+        this.makefileNames.push(fullMakefileName);
+    }
 
     /*********************************************************************
      * 
@@ -57,10 +73,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
                 inlineRecipe
             );
 
-        if (!this.defaultTarget)
-        {
-            this.defaultTarget = this.rules.defaultTarget;
-        }
+        this.setDefaultTarget(this.rules.defaultTarget);
     }
 
     public recipeLine(line: string): void
@@ -68,7 +81,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
         if (!this.currentRule)
             return;
 
-        line = this.expandVariable(line);
+        line = this.expandVariables(line);
         
         this.currentRule.recipe.steps.push(line);
     }
@@ -83,8 +96,43 @@ class ParseResultBuilderImpl implements IParseResultBuilder
      * 
      * 
      *********************************************************************/
+    // public defineVariable(kind: string, name: string, value: string): void
+    // {
+    //     // console.error("VARIABLE kind='" + kind + "', name='" + name + "', value='" + value + "'");
+    //     if (kind==='simple')
+    //     {
+    //         return this.defineSimpleVariable(name, value);
+    //     }
+        
+    //     if (kind==='recursive')
+    //     {
+    //         return this.defineRecursiveVariable(name, value);
+    //     }
+        
+    //     if (kind==='append')
+    //     {
+    //         return this.defineAppendVariable(name, value);
+    //     }
+        
+    //     if (kind==='conditional')
+    //     {
+    //         return this.defineConditionalVariable(name, value);
+    //     }
+        
+    //     if (kind==='shell')
+    //     {
+    //         return this.defineShellVariable(name, value);
+    //     }
+
+    //     // console.error   ("Unknown variable definition kind '" + kind + "' (supported kinds: 'simple', 'recursive', 'append', 'conditional' and 'shell')");
+        
+    //     // console.error("VARIABLE " + name + " = '" + value + "'");
+    //     this.variableManager.defineSimpleVariable(name, value);
+    // }
+
     public defineSimpleVariable(name: string, value: string): void
     {
+        // console.error("VARIABLE " + name + " = '" + value + "'");
         this.variableManager.defineSimpleVariable(name, value);
     }
 
@@ -93,14 +141,24 @@ class ParseResultBuilderImpl implements IParseResultBuilder
         this.variableManager.defineRecursiveVariable(name, value);
     }
 
-    public defineRecursiveVariableIf(name: string, value: string): void
+    public defineAppendVariable(name: string, value: string): void
     {
-        this.variableManager.defineRecursiveVariableIf(name, value);
+        this.variableManager.defineAppendVariable(name, value);
     }
 
-    public expandVariable(value: string): string
+    public defineConditionalVariable(name: string, value: string): void
     {
-        return this.variableManager.expandVariable(value);
+        this.variableManager.defineConditionalVariable(name, value);
+    }
+
+    public defineShellVariable(name: string, value: string): void
+    {
+        this.variableManager.defineShellVariable(name, value);
+    }
+
+    public expandVariables(value: string): string
+    {
+        return this.variableManager.expandVariables(value);
     }
 
     private _vpathDirective: string[] = []
@@ -115,10 +173,19 @@ class ParseResultBuilderImpl implements IParseResultBuilder
      *********************************************************************/
     public setDefaultTarget(val: TargetName): void 
     {
+       // console.log("   DEFAULT TARGET: " + JSON.stringify(val));
+
         if (!this.defaultTarget)
+        {
             this.defaultTarget = val;
+        }
     }
-    public clearDefaultTarget(): void { this.defaultTarget = null; }
+    public clearDefaultTarget(): void 
+    { 
+        //console.log("   DEFAULT TARGET: <clear>");
+        this.defaultTarget = null;
+        this.rules.clearDefaultTarget();
+    }
 
      /*********************************************************************
      * 

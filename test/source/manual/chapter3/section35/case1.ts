@@ -1,4 +1,4 @@
-import { deleteFiles, touchFiles } from "../../../test-utils"
+import { deleteFiles, touchFiles, touchFilesRelative } from "../../../test-utils"
 import { TestStep } from "../../../fixtures";
 
 export var makefile =
@@ -20,13 +20,21 @@ export const steps: TestStep[] =
     [
         {
             title: 'No changes',
-            prepare: () => { touchFiles('Makefile'); },
+            prepare: () => 
+                {
+                    touchFilesRelative(-10000, 'Makefile.template'); 
+                    touchFilesRelative(0, 'Makefile'); 
+                },
             targets: ['run'],
             expect: ['Makefile unchanged'],
         },
         {
             title: 'Update',
-            prepare: () => { touchFiles('Makefile.template'); },
+            prepare: () => 
+                {
+                    touchFilesRelative(-10000, 'Makefile'); 
+                    touchFilesRelative(0, 'Makefile.template'); 
+                },
             targets: ['run'],
             expect: ['Makefile updated'],
         }

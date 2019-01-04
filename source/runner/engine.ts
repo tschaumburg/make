@@ -15,24 +15,15 @@ export class Engine
     constructor(private readonly plan: IPlan) 
     {}
 
-    public updateGoals(goals: IFilePlan[]): void
+    public updateGoals(goals: IFilePlan[]): boolean
     {
-        //console.error("goalNamesx = " + JSON.stringify(goalNames));
+        let res = false;
         for (let goal of goals)
         {
-            //let file = this.plan.getFilePlan(path.join(goal.basedir, goalName));
-            //console.error("GOAL " + path.join(this.plan.basedir, goalName) + " returns " + JSON.stringify(file, null, 3));
-            // if (!target)
-            // {
-            //     target = this.makefile.applyImplicitRule(path.normalize("."), targetName);
-            // }
-            // if (!file)
-            // {
-            //     exits.commandUnknownGoal(goalName);
-            // }
-
-            this._updateTarget(goal, "*");
+            res = this._updateTarget(goal, "*") || res;
         }
+
+        return res;
     }
 
     /**
@@ -99,7 +90,7 @@ export class Engine
             );
             this._execute(fileplan);
             return true;
-            //return this.plan.addStep(rule.recipe, target, []);
+            //return this.lan.addStep(rule.recipe, target, []);
         }
 
         // Depth-first recursion:

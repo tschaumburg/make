@@ -3,14 +3,24 @@ import * as touch from "touch";
 
 export function touchFiles(...files: string[]): void
 {
-    for (let pattern of files)
+    touchFilesRelative(0, ...files);
+}
+
+export function touchFilesRelative(relativeMillis: number , ...files: string[]): void
+{
+    if (relativeMillis==undefined)
     {
-        touch.sync(pattern, { time: Date.now(), mtime: true });
-        // for (let f of glob.sync(pattern))
-        // {
-        //     console.error("touching " + f + " at " + Date.now());
-        //     touch.sync(f, { time: Date.now(), mtime: true });
-        // }
+        relativeMillis = 0;
+    }
+
+    var timestamp = Date.now() + relativeMillis;
+
+    for (let _pattern of files)
+    {
+        for (let f of glob.sync(_pattern)||[])
+        {
+            touch.sync(f, { time: timestamp, mtime: true });
+        }
     }
 }
 

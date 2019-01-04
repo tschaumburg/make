@@ -1,3 +1,4 @@
+import * as exits from '../../return-codes';
 import * as path from "path";
 import { IFilePlan, PlanBuilder } from "../plan";
 import { ExplicitRuleHandler } from "./explicit-rule-manger";
@@ -11,16 +12,37 @@ export class PlanManager
     constructor(private readonly builder: PlanBuilder, explicitRules: ExplicitRule[])
     {
         let self = this;
-
         this.explicitRuleHandler = 
             new ExplicitRuleHandler(
-                (target) => self.planGoal(target.basedir, target.relname),
+                (target) => self.planTargetFile(target.basedir, target.relname),
                 explicitRules, 
                 this.builder
             );
     }
 
-    public planGoal(basedir: string, relname: string): IFilePlan
+    public planGoal(basedir: string, relname: string): void
+    {
+        let goal = this.planTargetFile(basedir, relname);
+
+        if (!goal)
+        {
+            exits.commandUnknownGoal(relname);
+        }
+
+        this.builder.goals.push(goal);
+    }
+
+    public planMakefile(basedir: string, relname: string): void
+    {
+        let goal = this.planTargetFile(basedir, relname);
+
+        if (!!goal)
+        {
+            this.builder.goals.push(goal);
+        }
+    }
+
+    private planTargetFile(basedir: string, relname: string): IFilePlan
     {
         //console.error("planGoal(" + basedir + ", " + relname + ")");
         let res: IFilePlan = null;

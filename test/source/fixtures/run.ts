@@ -3,9 +3,13 @@ import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
 import { IActualResult } from "./actual";
 const os = require('os')
 
-function addToPath(env: { [key: string]: string | undefined; }, dirname: string): { [key: string]: string | undefined;}
+function addToPath(
+    env: { [key: string]: string | undefined; }, 
+    env2: { [key: string]: string | undefined; }, 
+    dirname: string
+): { [key: string]: string | undefined;}
 {
-    let res = Object.assign({}, env);
+    let res = Object.assign({}, env, env2);
     res["Path"] += path.delimiter + dirname;
     //console.error("Path = " + JSON.stringify(res["Path"]));
     return res;
@@ -23,7 +27,7 @@ export function run(
     {
         stdio: 'pipe',
         cwd: wd,
-        env: addToPath(process.env, binpath),
+        env: addToPath(process.env, env, binpath),
         encoding: 'utf8'
     };
 

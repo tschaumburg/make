@@ -41,7 +41,7 @@ export function success(...args: string[]): void
 export function warning(...args: string[]): void
 {
     let msg = format.apply(null, args);
-    npmlog.warning(prefix(), msg);
+    npmlog.warn(prefix(), msg);
     autoflush();
 };
 

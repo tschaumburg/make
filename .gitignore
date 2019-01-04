@@ -12,3 +12,6 @@ test/build
 .nyc_output
 test/build/fixtures/actual.js
 source/parser/jison/makefile-syntax.js
+.makelog
+source/parser/jison/makefile.test
+source/tsconfig.json.bak

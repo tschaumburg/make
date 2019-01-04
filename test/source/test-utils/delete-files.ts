@@ -7,10 +7,11 @@ export function deleteFiles(...files: string[]): void
 {
     for (let pattern of files)
     {
-        for (let f of glob.sync(pattern))
+        for (let f of glob.sync(pattern)||[])
         {
             //console.log("touching " + f + " at " + Date.now());
-            touch.sync(f, { time: Date.now(), mtime: true });
+            // touch.sync(f, { time: Date.now(), mtime: true });
+            del.sync(f);
         }
     }
 }

@@ -4,8 +4,9 @@
     "description": "gmake-like task-runner for the Node/npm ecosystem",
     "main": "dist/index.js",
     "scripts": {
-        "test": "mocha test",
-        "build": "tsc && tsc -p test/source"
+        "jison": "( cd source/parser/jison-parser/makefile-syntax && jison makefile-syntax.jison makefile-syntax.jisonlex -m commonjs)",
+        "build": "tsc && tsc -p test/source && copy source\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js dist\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js",
+        "test": "mocha test"
     },
     "devDependencies": {
         "@types/assert": "^1.4.0",

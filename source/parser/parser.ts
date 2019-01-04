@@ -12,6 +12,7 @@ import * as result from './result';
 import { IParseResult } from './result';
 //import { ParseFailure } from './failure';
 import * as regexParser from "./regex-parser";
+import * as jisonParser from "./jison-parser";
 
 export interface IParser
 {
@@ -44,7 +45,7 @@ export class Parser implements IParser
         // } while (remakeMakefiles(parseResult));
 
         let basedir = path.dirname(path.resolve(this.makefilename));
-        var resultBuilder = result.createResultBuilder(basedir,  this.importedVariables);
+        var resultBuilder = result.createResultBuilder({ basedir: basedir, importedVariables: this.importedVariables});
         
         for (let autofile of automakefiles().filter(fn => fs.existsSync(fn)))
             parsefile(resultBuilder, autofile);
@@ -82,5 +83,6 @@ function parsefile(
 {
     makefilename = path.normalize(makefilename);
     
-    regexParser.parsefile(resultBuilder, makefilename);
+    // regexParser.parsefile(resultBuilder, makefilename);
+    jisonParser.parsefile(resultBuilder, makefilename);
 }

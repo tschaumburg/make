@@ -78,6 +78,7 @@ export function init(): MakeOptions
 }
 
 export var makefile: string = "Makefile";
+export var basedir: string = process.cwd();
 export var logLocateFiles = true;
 export var ignoreMissingIncludes = false;
 export var goals: string[] = [];

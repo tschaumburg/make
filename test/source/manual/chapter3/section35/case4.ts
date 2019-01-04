@@ -116,7 +116,7 @@ export const steps: TestStep[] =
     ];
 function setLatestVersion(version: number): void
 {
-    //console.log("checkin v." + version);
+    console.log("checkin v." + version);
     deleteFiles("latest-version/*");
     fse.copySync("tmp/" + version + "/", "latest-version/");
     touchFiles("latest-version/*");

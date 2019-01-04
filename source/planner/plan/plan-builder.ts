@@ -53,9 +53,12 @@ export class PlanBuilder implements IPlanBuilder
             exits.parseMultipleRulesForTarget(target.fullname);
         }
 
-        plan.producedBy.prerequisites.push(...action.prerequisites);
-        plan.producedBy.orderOnly.push(...action.orderOnly);
-        plan.producedBy.recipe.push(...action.recipe);
+        // plan.producedBy.prerequisites.push(...action.prerequisites);
+        // plan.producedBy.orderOnly.push(...action.orderOnly);
+        // plan.producedBy.recipe.push(...action.recipe);
+        addMissing(plan.producedBy.prerequisites, action.prerequisites);
+        addMissing(plan.producedBy.orderOnly, action.orderOnly);
+        addMissing(plan.producedBy.recipe, action.recipe);
 
         return plan;
     }
@@ -69,5 +72,16 @@ export class PlanBuilder implements IPlanBuilder
     public existingPlan(filename: string): IFilePlan
     {
         return this.fileplans[filename];
+    }
+}
+
+function addMissing<T>(target: T[], candidates: T[]): void
+{
+    for (var c of candidates)
+    {
+        if (target.findIndex((t) => t===c) < 0)
+        {
+            target.push(c);
+        }
     }
 }

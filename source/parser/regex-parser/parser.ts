@@ -1,4 +1,4 @@
-import * as exits from '../../return-codes';
+import * as warn from '../../make-warnings';
 //const path = require('path');
 import * as log from '../../makelog';
 import * as path from 'path';
@@ -86,7 +86,7 @@ class Parser extends ParserBase
         );
         this.addPattern(
             /^(\S[^:?=\s]*)\s*?=\s*(.*)$/,
-            (matches: string[]) => this._parseResult.defineRecursiveVariableIf(matches[1], matches[2])
+            (matches: string[]) => this._parseResult.defineConditionalVariable(matches[1], matches[2])
         );
         this.addPattern(
             /^(\S[^:=?\s]*)\s*:?:=\s*(.*)$/,
@@ -106,12 +106,12 @@ class Parser extends ParserBase
             {
                 try 
                 {
-                    let includedFile = this._parseResult.expandVariable(matches[1]);
+                    let includedFile = this._parseResult.expandVariables(matches[1]);
                     this.parseIncluded(includedFile);
                 }
                 catch (reason)
                 {
-                    exits.parseIncludeFailed(matches[1]);
+                    warn.parseIncludeFailed(matches[1]);
                 }
 
                 //return this._makefile.includeMakefile(included);
@@ -249,8 +249,8 @@ class Parser extends ParserBase
         return src.split(/\s+/).filter(s => !!s);
     }
     
-    expandVariable(src: string): string
+    expandVariables(src: string): string
     {
-        return this._parseResult.expandVariable(src);
+        return this._parseResult.expandVariables(src);
     }
 }

@@ -35,7 +35,7 @@ export class VariableManager
         });
     }
 
-    public expandVariable(value: string): string
+    public expandVariables(value: string): string
     {
         let orgValue = value;
         var previousValues: string[] = [];
@@ -46,7 +46,7 @@ export class VariableManager
             // Termination: when there is no more to expand
             if (newValue === value)
             {
-                //log.info("EXPAND '" + value + "' => '" + value + "'");
+                //log.info("EXPAND '" + orgValue + "' => '" + value + "'");
                 return value;
             }
 
@@ -64,10 +64,10 @@ export class VariableManager
 
     public defineSimpleVariable(name: string, value: string): void
     {
-        log.info("DEFINE: '" + name + "' = '" + value + "'");
-        name = this.expandVariable(name.trim());
-        value = this.expandVariable(value);
+        name = this.expandVariables(name.trim());
+        value = this.expandVariables(value);
 
+        log.info("DEFINE: '" + name + "' = '" + value + "'");
         this.variables[name] = value;
 
         //console.log("VARIABLES:\n" + JSON.stringify(this.variables));
@@ -75,17 +75,27 @@ export class VariableManager
 
     public defineRecursiveVariable(name: string, value: string): void
     {
-        log.info("DEFINE: '" + name + "' = '" + value+"'");
-        name = this.expandVariable(name.trim());
+        log.info("DEFINE RECURSIVE: '" + name + "' = '" + value+"'");
+        name = this.expandVariables(name.trim());
         this.variables[name] = value;
     }
 
-    public defineRecursiveVariableIf(name: string, value: string): void
+    public defineConditionalVariable(name: string, value: string): void
     {
         if (this.variables[name] == null)
         {
             log.info("DEFINE: '" + name + " = '" + value+"'");
             return this.defineRecursiveVariable(name, value);
         }
+    }
+
+    public defineShellVariable(name: string, value: string): any
+    {
+        return this.defineSimpleVariable(name, value);
+    }
+
+    public defineAppendVariable(name: string, value: string): any
+    {
+        return this.defineSimpleVariable(name, value);
     }
 }

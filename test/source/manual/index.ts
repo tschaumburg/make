@@ -8,6 +8,6 @@ export function loadTests()
     {
         this.timeout(10000);
         chapter2.loadTests();
-        //chapter3.loadTests();
+        chapter3.loadTests();
     });
 }

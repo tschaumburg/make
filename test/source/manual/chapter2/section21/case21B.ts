@@ -64,7 +64,7 @@ export function loadTests(): void
                             title: '' + ntargets + ' targets, ' + nprerequisites + ' prerequisites, ' + nrecipes + ' recipes',
                             prepare: () => { },
                             targets: ["all"],
-                            expect: (ntargets == 0) ? error() : output
+                            expect: (ntargets == 0) ? error(101, "Rule must contain at least one target") : output
                         }
                     );
                 }
@@ -74,14 +74,14 @@ export function loadTests(): void
         multiTestcase(
             {
                 id: "21C",
-                title: 'updates out-of-date targets',
+                title: "",
                 makefile: [
                     'hello.exe: hello.c  # comment',
-                    '   echo cc hello.c -o hello.exe'
+                    '\techo cc hello.c -o hello.exe'
                 ],
             },
             {
-                title: "",
+                title: 'updates out-of-date targets',
                 prepare: () =>
                     {
                         deleteFiles("hello.exe");

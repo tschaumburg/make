@@ -8,6 +8,7 @@ import { TargetName } from "../targets";
 export interface IRuleSet
 {
     readonly defaultTarget: TargetName;
+    clearDefaultTarget(): void;
     readonly explicitRules: ExplicitRule[];
     readonly implicitRules: ImplicitRule[];
     readonly staticPatternRules: StaticPatternRule[];

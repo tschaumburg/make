@@ -12,7 +12,7 @@ export abstract class ParserBase
         this.initializeParser();
     }
 
-    abstract expandVariable(src: string): string;
+    abstract expandVariables(src: string): string;
 
     protected parseFile(fileName: string): void
     {
@@ -47,7 +47,7 @@ export abstract class ParserBase
     private parseLine(line: string, lineNo: number): void
     {
         log.info("(" + lineNo + "): " + line)
-        var line = this.expandVariable(line);
+        var line = this.expandVariables(line);
         //log.info("(" + lineNo + "): " + line)
 
         for (var pattern of this.patterns)

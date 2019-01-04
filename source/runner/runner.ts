@@ -29,11 +29,11 @@ export class Runner implements IRunner
         this._run(plan, plan.goals); // this.options.goals);// plan.goalNames);
     }
     
-    private _run(plan: IPlan, goals: IFilePlan[]): void //Names: string[]): void 
+    private _run(plan: IPlan, goals: IFilePlan[]): boolean //Names: string[]): void 
     {
         log.info("plan: " + JSON.stringify(plan, null, 3));
         var engine = new Engine(plan);
-        engine.updateGoals(goals); //goalNames);
+        return engine.updateGoals(goals); //goalNames);
     }
     
     watch(onChange: () => void): void 
@@ -41,12 +41,13 @@ export class Runner implements IRunner
         // throw new Error("Method not implemented.");
     }
     
-    updateMakefiles(plan: IPlan): any 
+    updateMakefiles(plan: IPlan): boolean 
     {
         var makefiles = plan.makefileNames;
+        var makefilePlans = makefiles.map(f => plan.getFilePlan(f)).filter(fp => !!fp);
 
-        log.info("updating " + JSON.stringify(makefiles));
+        log.info("updating " + JSON.stringify(makefiles) + "\n\n\n==> " + makefilePlans.length + ": " +  JSON.stringify(makefilePlans, null, 3));
 
-        return this._run(plan, makefiles.map(f => plan.getFilePlan(f)).filter(fp => !!fp));
+        return this._run(plan, makefilePlans);
     }
 }

@@ -1,8 +1,0 @@
-target0 : tar%get1  : das | xxx
-
-target0 deedd: target1 : target4
-target2 : pre3;ASD
-target0: target1 :  target4
-target0: target1:target4| t6
-target0: target1:target4 target5| t6
-${ref} : bb; cc
