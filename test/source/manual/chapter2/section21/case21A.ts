@@ -9,8 +9,8 @@ export function loadTests(): void
             {
                 makefile: [
                     'hello.exe: hello.c  # comment',
-                    '\tdir > log.txt',
-                    '\techo cc hello.c -o hello.exe',''
+                    '\t  dir > log.txt',
+                    '\t  echo cc hello.c -o hello.exe',''
                 ],
                 id: "21A",
                 title: "updates out-of-date targets"

@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as options from '../../../options';
-import { VariableManager } from './variable-manager';
+import * as log from '../../../makelog';
+import { IVariableManager, createVariablemanager } from './variable-manager';
 import { IParseResultBuilder, IParseLocation, IParseContext } from '../result-builder';
 import { ParseResultImpl } from './result-impl';
 import { Target, TargetName } from '../targets';
@@ -28,7 +29,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
     private _parseContext: IParseContext = { vpath: []}
     private readonly rules: IRuleSet;
     private readonly makefileNames: string[] = [];
-    protected readonly variableManager: VariableManager;
+    protected readonly variableManager: IVariableManager;
     private defaultTarget: TargetName;
 
     constructor(
@@ -37,7 +38,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
     )
     {
         this.rules = createRuleset(); // createManager();
-        this.variableManager = new VariableManager(importedVariables);
+        this.variableManager = createVariablemanager(importedVariables);
     };
 
     public startMakefile(fullMakefileName: string): void
@@ -78,11 +79,14 @@ class ParseResultBuilderImpl implements IParseResultBuilder
 
     public recipeLine(line: string): void
     {
+        // console.error("RECIPE4: " + line);
         if (!this.currentRule)
             return;
 
-        line = this.expandVariables(line);
+        // console.error("RECIPE5: " + line);
+        // line = this.expandVariables(line);
         
+        // console.error("RECIPE6: " + line);
         this.currentRule.recipe.steps.push(line);
     }
 
@@ -158,7 +162,9 @@ class ParseResultBuilderImpl implements IParseResultBuilder
 
     public expandVariables(value: string): string
     {
-        return this.variableManager.expandVariables(value);
+        var res = this.variableManager.resolveVariableReferences(value);
+        // log.info("Variable manager expanded '" + value + "' to '" + res + "'");
+        return res;
     }
 
     private _vpathDirective: string[] = []

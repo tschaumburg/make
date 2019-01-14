@@ -23,7 +23,7 @@ makefile
 statement
  : rulestatement        { resultb.startRule(yy, @1, $1); }
  | RECIPE_LINE          { resultb.recipeLine(yy, @1, $1); }
- | INCLUDE              { resultb.include(yy, @1, $1); }
+ | INCLUDE              {  resultb.include(yy, @1, $1); }
  | variable_definition  { resultb.defineVariable(yy, @1, $1); }
  | emptyline
  ;
@@ -149,7 +149,6 @@ targetlist
 inline_recipe_definition
   : SEMICOLON INLINE_RECIPE
     {
-	   console.error("INLINE_RECIPE = '" + $2 + "'");
       $$ = $2;
 	 }
    | /* empty */
@@ -241,6 +240,7 @@ optional_recipes
  *  variable := ....
  *  variable ::= ....
  *********************************************/
+%include "test.jison"
 
 test : dotest;
 
@@ -257,114 +257,114 @@ dotest
 evt
  :  INLINE_RECIPE
       {
-	     console.error("INLINE_RECIPE: '" + yytext + "'");
+	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  }
    |INCLUDE
       {
-	     console.error("INCLUDE: '" + yytext + "'");
+	     console.error("INCLUDE (" + JSON.stringify(yytext) + ")");
 	  }
    |TARGET
       {
-	     console.error("TARGET: '" + yytext + "'");
+	     console.error("TARGET (" + JSON.stringify(yytext) + ")");
 	  }
    |RULESTART
       {
-	     console.error("RULESTART: '" + yytext + "'");
+	     console.error("RULESTART (" + JSON.stringify(yytext) + ")");
 	  }
    |VARSTART
       {
-	     console.error("VARSTART: '" + yytext + "'");
+	     console.error("VARSTART (" + JSON.stringify(yytext) + ")");
 	  }
    |RECIPE_LINE
       {
-	     console.error("RECIPE_LINE: '" + yytext + "'");
+	     console.error("RECIPE_LINE (" + JSON.stringify(yytext) + ")");
 	  }
    |SEMICOLON
       {
-	     console.error("SEMICOLON: '" + yytext + "'");
+	     console.error("SEMICOLON (" + JSON.stringify(yytext) + ")");
 	  }
    |COLON
       {
-	     console.error("COLON: '" + yytext + "', state: " + yy.lexer.topState());
+	     console.error("COLON (" + JSON.stringify(yytext) + ")");
 	  }
    |PIPE
       {
-	     console.error("PIPE: '" + yytext + "'");
+	     console.error("PIPE (" + JSON.stringify(yytext) + ")");
 	  }
    |COLON_TARGETS
       {
-	     console.error("COLON_TARGETS: '" + yytext + "'");
+	     console.error("COLON_TARGETS (" + JSON.stringify(yytext) + ")");
 	  }
    |TARGETS
       {
-	     console.error("TARGETS: '" + yytext + "'");
+	     console.error("TARGETS (" + JSON.stringify(yytext) + ")");
 	  }
    |PIPE_TARGETS
       {
-	     console.error("PIPE_TARGETS: '" + yytext + "'");
+	     console.error("PIPE_TARGETS (" + JSON.stringify(yytext) + ")");
 	  }
    |EOL
       {
-	     console.error("EOL: '" + yytext + "', state: " + yy.lexer.topState());
+	     console.error("EOL (" + JSON.stringify(yytext) + ")");
 	  }
    |SPC
       {
-	     console.error("SPC: '" + yytext + "'");
+	     console.error("SPC (" + JSON.stringify(yytext) + ")");
 	  }
    |VARIABLE_SET_SIMPLE
       {
-	     console.error("VARIABLE_SET_SIMPLE: '" + yytext + "'");
+	     console.error("VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  }
    |VARIABLE_SET_RECURSIVE
       {
-	     console.error("VARIABLE_SET_RECURSIVE: '" + yytext + "'");
+	     console.error("VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  }
    |VARIABLE_SET_APPEND
       {
-	     console.error("VARIABLE_SET_APPEND: '" + yytext + "'");
+	     console.error("VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  }
    |VARIABLE_SET_CONDITIONAL
       {
-	     console.error("VARIABLE_SET_CONDITIONAL: '" + yytext + "'");
+	     console.error("VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  }
    |VARIABLE_SET_SHELL
       {
-	     console.error("VARIABLE_SET_SHELL: '" + yytext + "'");
+	     console.error("VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  }
    |VARIABLE_VALUE
       {
-	     console.error("VARIABLE_VALUE: '" + yytext + "'");
+	     console.error("VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_SET_SIMPLE
       {
-	     console.error("MULTILINE_VARIABLE_SET_SIMPLE: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_SET_RECURSIVE
       {
-	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_SET_APPEND
       {
-	     console.error("MULTILINE_VARIABLE_SET_APPEND: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_SET_CONDITIONAL
       {
-	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_SET_SHELL
       {
-	     console.error("MULTILINE_VARIABLE_SET_SHELL: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_VALUE
       {
-	     console.error("MULTILINE_VARIABLE_VALUE: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  }
    |MULTILINE_VARIABLE_END
       {
-	     console.error("MULTILINE_VARIABLE_END: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_END (" + JSON.stringify(yytext) + ")");
 	  }
-   |EOF2
+   |'EOF2'
       {
-	     console.error("EOF2: '" + yytext + "'");
+	     console.error("EOF2: '" + JSON.stringify(JSON.stringify(yytext)) + "', state: " + yy.lexer.topState());
 	  }
  ;

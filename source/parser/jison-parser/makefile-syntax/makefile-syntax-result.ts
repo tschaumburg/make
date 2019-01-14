@@ -34,6 +34,7 @@ export function recipeLine(
     let location: IParseLocation = getLocation(yy, jisonLocation);
     let builder: IParseResultBuilder = getResultBuilder(yy);
 
+    // console.error("RECIPE3: " + line);
     builder.recipeLine(line);
 }
 
@@ -45,12 +46,12 @@ export function include(
 {
     let location: IParseLocation = getLocation(yy, jisonLocation);
     let builder: IParseResultBuilder = getResultBuilder(yy);
-    let include: (makefilename: string) => void = yy.include;
+    let _include: (makefilename: string) => void = yy.makefileParserContext.include;
 
     try 
     {
-        let includedFile = builder.expandVariables(filename);
-        include(includedFile);
+        let includedFile = filename; // builder.expandVariables(filename);
+        _include(includedFile);
     }
     catch (reason)
     {
@@ -151,47 +152,56 @@ function getResultBuilder(yy): IParseResultBuilder
     if (yy==undefined)
         throw new Error("Application error: jison variable yy is undefined");
         
-    if (!yy.resultBuilder)
-        throw new Error("Application error: state variable yy.resultBuilder is not set");
+    if (!yy.makefileParserContext)
+        throw new Error("Application error: state variable yy.makefileParserContext is not set");
         
-    if (typeof(yy.resultBuilder)!=='object')
-        throw new Error("Application error: state variable yy.resultBuilder is not an object");
+    if (!yy.makefileParserContext.resultBuilder)
+        throw new Error("Application error: state variable yy.makefileParserContext.resultBuilder is not set");
         
-    return (yy.resultBuilder as IParseResultBuilder);
+    if (typeof(yy.makefileParserContext.resultBuilder)!=='object')
+        throw new Error("Application error: state variable yy.makefileParserContext.resultBuilder is not an object");
+        
+    return (yy.makefileParserContext.resultBuilder as IParseResultBuilder);
 }
 
 function getBasedir(yy): string
 {
-    if (yy==null)
+    if (yy == null)
         throw new Error("Application error: jison variable yy is null");
 
-    if (yy==undefined)
+    if (yy == undefined)
         throw new Error("Application error: jison variable yy is undefined");
-        
-    if (!yy.basedir)
-        throw new Error("Application error: state variable yy.basedir is not set");
-        
-    if (typeof(yy.basedir)!=='string')
-        throw new Error("Application error: state variable yy.basedir is not a string");
-        
-    return (yy.basedir as string);
+
+    if (!yy.makefileParserContext)
+        throw new Error("Application error: state variable yy.makefileParserContext is not set");
+
+    if (!yy.makefileParserContext.basedir)
+        throw new Error("Application error: state variable yy.makefileParserContext.basedir is not set");
+
+    if (typeof (yy.makefileParserContext.basedir) !== 'string')
+        throw new Error("Application error: state variable yy.makefileParserContext.basedir is not a string");
+
+    return yy.makefileParserContext.basedir;
 }
 
 function getMakefilename(yy): string
 {
-    if (yy==null)
+    if (yy == null)
         throw new Error("Application error: jison variable yy is null");
 
-    if (yy==undefined)
+    if (yy == undefined)
         throw new Error("Application error: jison variable yy is undefined");
-        
-    if (!yy.makefilename)
-        throw new Error("Application error: state variable yy.makefilename is not set (got " + JSON.stringify(yy) + ")");
-        
-    if (typeof(yy.makefilename)!=='string')
-        throw new Error("Application error: state variable yy.makefilename is not a string (got " + JSON.stringify(yy) + ")");
-        
-    return (yy.makefilename as string);
+
+    if (!yy.makefileParserContext)
+        throw new Error("Application error: state variable yy.makefileParserContext is not set");
+
+    if (!yy.makefileParserContext.makefilename)
+        throw new Error("Application error: state variable yy.makefileParserContext.makefilename is not set (got " + JSON.stringify(yy) + ")");
+
+    if (typeof (yy.makefileParserContext.makefilename) !== 'string')
+        throw new Error("Application error: state variable yy.makefileParserContext.makefilename is not a string (got " + JSON.stringify(yy) + ")");
+
+    return yy.makefileParserContext.makefilename;
 }
 
 /**

@@ -48,9 +48,9 @@ function expandSymbols(
     // In a pattern rule that has multiple targets (see Introduction to
     // Pattern Rules), '$@' is the name of whichever target caused the
     // rule's recipe to be run.
-    cmd = cmd.replace(/\$@/g, target.file.orgname);
     cmd = cmd.replace(/\$\(@D\)/g, path.dirname(target.file.fullname));
     cmd = cmd.replace(/\$\(@F\)/g, path.basename(target.file.fullname));
+    cmd = cmd.replace(/\$@/g, target.file.orgname);
 
     //// $%:
     //// ===

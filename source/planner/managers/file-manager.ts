@@ -37,6 +37,7 @@ export function wildcardMatch(basedir: string, vpath: string[], pattern: string,
 
 function glob2RegExp(glob: string): string
 {
+    //console.error("glob2RegExp " + glob);
     var res = minimatch.makeRe(glob).source;
 
     if (res.startsWith("^"))
@@ -92,9 +93,9 @@ export function wildcardTargetMap(pattern: TargetName, candidate: string): IFile
 
 export function resolveVpath(basedir: string, vpath: string[], relname: string): IFileRef
 {
-    log.locateFiles(
-        () => "Resolving target '" + relname + "' ref. from '" + basedir + "':"
-    );
+    // log.locateFiles(
+    //     () => "Resolving target '" + relname + "' ref. from '" + basedir + "':"
+    // );
 
     for (let globDir of vpath)
     {

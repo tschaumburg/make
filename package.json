@@ -4,8 +4,13 @@
     "description": "gmake-like task-runner for the Node/npm ecosystem",
     "main": "dist/index.js",
     "scripts": {
-        "jison": "( cd source/parser/jison-parser/makefile-syntax && jison makefile-syntax.jison makefile-syntax.jisonlex -m commonjs)",
-        "build": "tsc && tsc -p test/source && copy source\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js dist\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js",
+        "jison1": "( cd source/parser/jison-parser/makefile-syntax && jison makefile-syntax.jison makefile-syntax.jisonlex -m commonjs)",
+        "jison2": "( cd source/parser/jison-parser/preprocessor && jison preprocessor.jison preprocessor.jisonlex -m commonjs)",
+        "compile": "tsc && tsc -p test/source",
+        "copy1": "copy source\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js dist\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js",
+        "copy2": "copy source\\parser\\jison-parser\\preprocessor\\preprocessor.js dist\\parser\\jison-parser\\preprocessor\\preprocessor.js",
+        "build": "npm run jison1 && npm run compile && npm run copy1",
+        "installx": "npm install -g .",
         "test": "mocha test"
     },
     "devDependencies": {

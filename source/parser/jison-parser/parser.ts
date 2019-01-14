@@ -16,31 +16,39 @@ export function parsefile(
 ): void
 {
     makefilename = path.resolve(process.cwd(), makefilename);
-    let basedir = path.dirname(makefilename);
-
     log.info("Parsing " + makefilename);
-    resultBuilder.startMakefile(makefilename);
+ 
+    let context: IParserContext =
+        {
+            makefilename: makefilename,
+            basedir: path.dirname(makefilename),
+            resultBuilder: resultBuilder,
+            include : (f) => { parsefile(resultBuilder, f);},
+        };
 
-    let content = fs.readFileSync(makefilename, 'utf8');
+   resultBuilder.startMakefile(makefilename);
+
+    let content = fs.readFileSync(makefilename, 'utf8') + '\n';//.replace("\r", "");
     //console.log("PARSING file " + makefilename + ":\n" + content);
     var _parser = new mfparser.Parser();
-    _parser.yy.preprocessor = 
-        { 
-            expandVariables: function (s) { return _parser.yy.resultBuilder.expandVariables(s); } 
-        }
+    // _parser.yy.preprocessor = 
+    //     { 
+    //         expandVariables: function (s) { return _parser.yy.resultBuilder.expandVariables(s); } 
+    //     }
     _parser.lexer.options.flex = false;
-    _parser.yy.resultBuilder = resultBuilder;
-    _parser.yy.basedir = basedir;
-    _parser.yy.include = (f) => { parsefile(resultBuilder, f);};
-    _parser.yy.makefilename = path.basename(makefilename);
+    _parser.lexer.options.multiline = true;
+    _parser.yy.makefileParserContext = context;
+    // _parser.yy.resultBuilder = resultBuilder;
+    // _parser.yy.basedir = basedir;
+    // _parser.yy.include = (f) => { parsefile(resultBuilder, f);};
+    // _parser.yy.makefilename = path.basename(makefilename);
     _parser.parse(content);
     resultBuilder.endRule();
 }
 
 export interface IParserContext
 {
-    preprocessor;
-    resultBuilder;
+    resultBuilder: IParseResultBuilder;
     basedir: string;
     include: (makefilename: string) => void
     makefilename: string;

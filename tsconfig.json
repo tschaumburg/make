@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"sourceRoot": "source",
 		"outDir": "dist",
 		"declaration": true,
 		"declarationDir": "types",
@@ -10,7 +9,7 @@
 		"noImplicitAny": false,
 		"removeComments": false,
 		"sourceMap": true,
-		"inlineSources": true,
+		"inlineSources": false,
 		"noEmitOnError": true,
 		"noLib": false,
 		"emitDecoratorMetadata": true,

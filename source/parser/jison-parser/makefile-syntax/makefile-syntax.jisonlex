@@ -1,3 +1,4 @@
+%options multiline
 %{
 const tokens = require("./makefile-syntax-tokens");
 const variables = require("../variables");
@@ -27,9 +28,64 @@ function trimText(src, regex1, regex2)
 
     return src;
 }
+
+const debugStates = false;
+
+this.gotoState = 
+    function(state) 
+    {
+        var pre = this.topState(); 
+
+        this.popState(); 
+        this.pushState(state); 
+
+        var post = this.topState(); 
+        if (debugStates)
+            console.error("...gotoState(): " + pre + " => " + post); 
+    };
+
+initDebugDone: true;
+this.initDebug = function initDebug() {
+    if (!!this.initDebugDone)
+        return;
+
+    this.initDebugDone = true;
+    
+    this.popState = 
+        function() 
+        {
+            var pre = this.topState(); 
+
+            if (this.conditionStack.length > 1)
+            {
+                this.conditionStack.pop(); 
+            } 
+            else 
+            {
+                console.error("WARNING: you tried to popState() beyond the state stack. The operation is being ignored, so no harm done - but we though you should know");
+            }
+
+            var post = this.topState(); 
+            if (debugStates)
+                console.error("...popState():  " + pre + " => " + post); 
+        };
+    
+    this.pushState = 
+        function(s) 
+        {
+            var pre = this.topState(); 
+
+            this.conditionStack.push(s); 
+
+            var post = this.topState(); 
+            if (debugStates)
+                console.error("...pushState(): " + pre + " => " + post); 
+        };
+
+}
 %}
 
-%s INITIAL RULE INCLUDE COMMENT VAR_DEF VAR_VALUE MULTI_VAR_DEF IRECIPE
+%s INITIAL PREPROCESSED RULE RECIPE INCLUDE COMMENT VAR_DEF VAR_VALUE VAR_DEF_END MULTI_VAR_DEF MULTI_VAR_DEF_VALUE IRECIPE INCLUDE_NAME
 
 safechar     [^\r\n\s:#|:\\]
 escapedchar  (?:\\[\x20:\t|\\])
@@ -43,135 +99,143 @@ spc         [ \t]*
 ltargets    (?:(?:{target}{spc})*{spc})
 targets     (?:{spc}{ltargets})
 variable	(?:[^\s=:?+!])+
+varname	(?:[^\s=:?+!])+
 recipe		(?:[^\n\r]*)
 eol         (?:[\r]?[\n])
+noeol       [^\r\n]
 
 %%
 
-
-
-
-
-
-
-
-
-
 /***************************************************************
- * Replacing variable references:
+ * Preprocessor-like conversions:
  * ==============================
+ *
+ * NOTE: This should be the first rules in the lexer!
  **************************************************************/
 
-[$][(]\w+[)]        {
-                        if (!!yy.preprocessor) 
-                        {
-                            var varName = trimText(yytext, /^[$][(]/, /[)]$/);
-                            var varValue = yy.preprocessor.expandVariables(yytext);
-                            this.unput(varValue);
-                            //yytext = "";
-                        }
-                    }
-                                        
-[$][{]\w+[}]        {
-                        if (!!yy.preprocessor) 
-                        {
-                            var varName = trimText(yytext, /^[$][{]/, /[}]$/);
-                            var varValue = yy.preprocessor.expandVariables(yytext);
-                            this.unput(varValue);
-                            //yytext = "";
-                        }
-                    }
-                                        
-/***************************************************************
- * Line-continuation:
- * ==================
- **************************************************************/
+
+// Line-continuation:
+// ==================
 /*{spc}[\\]{eol}{spc}							{ return tokens.SPC; } */
 
 
+// Replacing variable references:
+// ==============================
+
+<INITIAL>^[^\r\n]*{eol}     { 
+                                this.initDebug();
+                                var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yytext);
+                                //console.error("...preprocessor: " + JSON.stringify(yytext) + " ==> " + JSON.stringify(varValue)); 
+                                this.unput(varValue);
+                                this.pushState("PREPROCESSED");
+                            }
+<INITIAL>^.*{eol}           { 
+                                //this.initDebug();
+                                console.error("...preprocessor: " + JSON.stringify(yytext) + " => unchanged"); 
+                                this.unput(yytext);
+                                this.pushState("PREPROCESSED"); 
+                            }
 
 /***************************************************************
  * Makefile lines:
  * ===============
  **************************************************************/
-<INITIAL>'#'				        { this.begin("COMMENT");                          }
-<INITIAL>'include'{spc}   	        { this.begin("INCLUDE"); }
-<INITIAL>(?=({ltargets}[:]))        { this.begin("RULE");    return tokens.RULESTART; }
-<INITIAL>[ \t]+{recipe}				{ return tokens.RECIPE_LINE; }
-<INITIAL>(?={variable}\s*.?.?'=')	{ this.begin("VAR_DEF"); }
-<INITIAL>{eol}				        { return tokens.EOL; }
+<PREPROCESSED>(?=^'#')			          { this.gotoState("COMMENT");                          }
+<PREPROCESSED>(?=^'include')   	          { this.gotoState("INCLUDE"); }
+<PREPROCESSED>(?=^{varname}{spc}?'::=')   { this.gotoState("VAR_DEF"); }
+<PREPROCESSED>(?=^{varname}{spc}?':=')    { this.gotoState("VAR_DEF"); }
+<PREPROCESSED>(?=^{varname}{spc}?'+=')    { this.gotoState("VAR_DEF"); }
+<PREPROCESSED>(?=^{varname}{spc}?'?=')    { this.gotoState("VAR_DEF"); }
+<PREPROCESSED>(?=^{varname}{spc}?'!=')    { this.gotoState("VAR_DEF"); }
+<PREPROCESSED>(?=^{varname}{spc}?'=')     { this.gotoState("VAR_DEF"); }
+<PREPROCESSED>(?=^'define'{spc})          { this.gotoState("MULTI_VAR_DEF"); }
+<PREPROCESSED>(?=^{ltargets}{spc}?':')    { this.gotoState("RULE");           return tokens.RULESTART; }
+<PREPROCESSED>(?=^[ \t]+{recipe}{eol})	  { this.gotoState("RECIPE"); }
+<PREPROCESSED>{eol}				          { this.popState(); return tokens.EOL; }
 
+/***************************************************************
+ * Recipes:
+ * ========
+ **************************************************************/
+<RECIPE>^[ \t]+{recipe}(?={eol})		  {                  return tokens.RECIPE_LINE; }
+<RECIPE>{eol}			 	              { this.popState(); return tokens.EOL; }
+                                
 /***************************************************************
  * Comments:
  * =========
  **************************************************************/
-<COMMENT>[^\n\r]*{eol}			{ this.begin("INITIAL"); return tokens.EOL; }
+<COMMENT>^'#'[^\n\r]*{eol}			{ this.popState(); return tokens.EOL; }
 
 /***************************************************************
  * Includes:
  * =========
  **************************************************************/
-<INCLUDE>{filename}         {                        return tokens.INCLUDE; }
-<INCLUDE>\"{filename}\"     {                        return tokens.INCLUDE; }
-<INCLUDE>\'{filename}\'     {                        return tokens.INCLUDE; }
-<INCLUDE>{spc}?{eol}        { this.begin("INITIAL"); return tokens.EOL; }
-
-/***************************************************************
- * Rule definitions:
- * =================
- **************************************************************/
-<RULE>[#].*{eol}		    { this.begin("INITIAL"); return tokens.EOL; }
-<RULE>[:]        			{                        return tokens.COLON; }
-<RULE>[|]        			{                        return tokens.PIPE; }
-<RULE>[;]        			{ this.begin("IRECIPE"); return tokens.SEMICOLON; }
-<RULE>(?:{target})		    {                        return tokens.TARGET; }
-<IRECIPE>{recipe}			    { this.begin("RULE"); return tokens.INLINE_RECIPE; }    
-<RULE>{eol}					{ this.begin("INITIAL"); return tokens.EOL; }
-<RULE>[ \t]+                  {}
-
-/***************************************************************
- * Recipe lines:
- * =============
- **************************************************************/
-
-/***************************************************************
- * Handling whitespace:
- * ====================
- **************************************************************/
-<<EOF>>						{ return tokens.EOF2; }
-<RULE><<EOF>>						{ return tokens.EOF2; }
-<IRECIPE><<EOF>>						{ return tokens.EOF2; }
-<MULTI_VAR_DEF><<EOF>>						{ return tokens.EOF2; }
-<VAR_DEF><<EOF>>						{ return tokens.EOF2; }
+<INCLUDE>^'include'{spc}      { this.gotoState("INCLUDE_NAME"); }
+<INCLUDE_NAME>{filename}       { return tokens.INCLUDE; }
+<INCLUDE_NAME>\'{filename}\'   { return tokens.INCLUDE; }
+<INCLUDE_NAME>\"{filename}\"   { return tokens.INCLUDE; }
+<INCLUDE_NAME>{spc}?{eol}      { this.popState(); return tokens.EOL; }
 
 
 /***************************************************************
  * Single-line variable definitions:
  * =================================
  **************************************************************/
-<VAR_DEF>{variable}\s*'='			{ this.begin("VAR_VALUE"); yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_RECURSIVE; }
-<VAR_DEF>{variable}\s*'?='			{ this.begin("VAR_VALUE"); yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_CONDITIONAL; }
-<VAR_DEF>{variable}\s*':='			{ this.begin("VAR_VALUE"); yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
-<VAR_DEF>{variable}\s*'::='			{ this.begin("VAR_VALUE"); yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
-<VAR_DEF>{variable}\s*'+='			{ this.begin("VAR_VALUE"); yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_APPEND; }
-<VAR_DEF>{variable}\s*'!='			{ this.begin("VAR_VALUE"); yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SHELL; }
-<VAR_VALUE>[^\r\n]*(?={eol})		{ this.begin("INITIAL");   yytext = trimVarvalue(yytext); return tokens.VARIABLE_VALUE; }
+<VAR_DEF>^{variable}\s*'='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_RECURSIVE; }
+<VAR_DEF>^{variable}\s*'?='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_CONDITIONAL; }
+<VAR_DEF>^{variable}\s*':='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
+<VAR_DEF>^{variable}\s*'::='		{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
+<VAR_DEF>^{variable}\s*'+='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_APPEND; }
+<VAR_DEF>^{variable}\s*'!='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SHELL; }
+<VAR_VALUE>[^\r\n]*(?={eol})		{ this.gotoState("VAR_DEF_END"); yytext = trimVarvalue(yytext); return tokens.VARIABLE_VALUE; }
+<VAR_DEF_END>{eol}            		{ this.popState();                                              return tokens.EOL; }
 
 
 /***************************************************************
  * Multi-line variable definitions:
  * =================================
  **************************************************************/
-<INITIAL>'define'[ \t]+{variable}[ \t]*[\n]				{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
-<INITIAL>'define'[ \t]+{variable}[ \t]*'='[ \t]*[\n]	{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
-<INITIAL>'define'[ \t]+{variable}[ \t]*'?='[ \t]*[\n]	{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; }
-<INITIAL>'define'[ \t]+{variable}[ \t]*':='[ \t]*[\n]	{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
-<INITIAL>'define'[ \t]+{variable}[ \t]*'::='[ \t]*[\n]	{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
-<INITIAL>'define'[ \t]+{variable}[ \t]*'+='[ \t]*[\n]	{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_APPEND; }
-<INITIAL>'define'[ \t]+{variable}[ \t]*'!='[ \t]*[\n]	{ this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_SHELL; }
-<MULTI_VAR_DEF>^(?!enddef)[^\n]*\n						{ return tokens.MULTILINE_VARIABLE_VALUE; }
-<MULTI_VAR_DEF>'enddef'\s*\n							{ this.begin("INITIAL"); console.error("MultiVar enddef => INITIAL"); return tokens.MULTILINE_VARIABLE_END; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?[\n]				{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'='[ \t]*[\n] 	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'?='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?':='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'::='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'+='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; }
+<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'!='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; }
+<MULTI_VAR_DEF_VALUE>^(?!enddef)[^\n]*\n						{ return tokens.MULTILINE_VARIABLE_VALUE; }
+<MULTI_VAR_DEF_VALUE>'enddef'\s*\n						    	{ this.popState(); return tokens.MULTILINE_VARIABLE_END; }
 
-.   { console.error("MISMATCH: '" + yytext + "', state: " + this.topState()); }
+
+/***************************************************************
+ * Rule definitions:
+ * =================
+ **************************************************************/
+<RULE>[:]        			{                            return tokens.COLON; }
+<RULE>[|]        			{                            return tokens.PIPE; }
+<RULE>[;]        			{ this.gotoState("IRECIPE"); return tokens.SEMICOLON; }
+<RULE>(?:{target})		    {                            return tokens.TARGET; }
+<RULE>[#].*{eol}		    { this.popState();           return tokens.EOL; }
+<RULE>{eol}					{ this.popState();           return tokens.EOL; }
+<RULE>[ \t]+                {}
+
+/***************************************************************
+ * Recipe lines:
+ * =============
+ **************************************************************/
+<IRECIPE>{recipe}			    { this.popState(); return tokens.INLINE_RECIPE; }    
+
+/***************************************************************
+ * Handling whitespace:
+ * ====================
+ **************************************************************/
+<INITIAL><<EOF>>						{ return tokens.EOF2; }
+<PREPROCESSED><<EOF>>						{ return tokens.EOF2; }
+<<EOF>>						{ return tokens.EOF2; }
+<RULE><<EOF>>						{ return tokens.EOF2; }
+<IRECIPE><<EOF>>						{ return tokens.EOF2; }
+<MULTI_VAR_DEF><<EOF>>						{ return tokens.EOF2; }
+<VAR_DEF><<EOF>>						{ return tokens.EOF2; }
+
+.   { /*console.error("MISMATCH: '" + yytext + "', state: " + this.topState());*/ }
 
 

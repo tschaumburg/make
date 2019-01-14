@@ -15,3 +15,8 @@ source/parser/jison/makefile-syntax.js
 .makelog
 source/parser/jison/makefile.test
 source/tsconfig.json.bak
+Makefile
+source/parser/jison-parser/makefile-syntax/tst/tst.jison
+source/parser/jison-parser/makefile-syntax/tst.jison
+source/parser/jison-parser/makefile-syntax/tst/tst.jisonlex
+source/parser/jison-parser/makefile-syntax/tst/tst.js

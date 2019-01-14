@@ -22,6 +22,7 @@ export class ExplicitRuleHandler
         fileFullname: string
         ): IFilePlan 
     {
+        //console.error("Finding explicit rules matching " + fileFullname);
         let res: IFilePlan = null;
 
         for (var rule of this._srcRules)

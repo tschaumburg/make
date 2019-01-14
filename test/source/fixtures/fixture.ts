@@ -183,6 +183,7 @@ function make(
     env?: { [name: string]: string }
 ): IActualResult
 {
+    console.log("Test execution dir: " + dirname)
     let prog = path.resolve(__dirname, "..", "..", "..", "bin", 'npm-make.cmd');
 
     if (args.length > 0)

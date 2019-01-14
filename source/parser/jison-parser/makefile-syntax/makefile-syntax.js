@@ -95,7 +95,7 @@ case 3:
  resultb.recipeLine(yy, _$[$0], $$[$0]); 
 break;
 case 4:
- resultb.include(yy, _$[$0], $$[$0]); 
+  resultb.include(yy, _$[$0], $$[$0]); 
 break;
 case 5:
  resultb.defineVariable(yy, _$[$0], $$[$0]); 
@@ -152,7 +152,6 @@ case 16:
 break;
 case 17:
 
-	   console.error("INLINE_RECIPE = '" + $$[$0] + "'");
       this.$ = $$[$0];
 	 
 break;
@@ -232,142 +231,142 @@ case 37:
 break;
 case 38:
 
-	     console.error("INLINE_RECIPE: '" + yytext + "'");
+	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 39:
 
-	     console.error("INCLUDE: '" + yytext + "'");
+	     console.error("INCLUDE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 40:
 
-	     console.error("TARGET: '" + yytext + "'");
+	     console.error("TARGET (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 41:
 
-	     console.error("RULESTART: '" + yytext + "'");
+	     console.error("RULESTART (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 42:
 
-	     console.error("VARSTART: '" + yytext + "'");
+	     console.error("VARSTART (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 43:
 
-	     console.error("RECIPE_LINE: '" + yytext + "'");
+	     console.error("RECIPE_LINE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 44:
 
-	     console.error("SEMICOLON: '" + yytext + "'");
+	     console.error("SEMICOLON (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 45:
 
-	     console.error("COLON: '" + yytext + "', state: " + yy.lexer.topState());
+	     console.error("COLON (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 46:
 
-	     console.error("PIPE: '" + yytext + "'");
+	     console.error("PIPE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 47:
 
-	     console.error("COLON_TARGETS: '" + yytext + "'");
+	     console.error("COLON_TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 48:
 
-	     console.error("TARGETS: '" + yytext + "'");
+	     console.error("TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 49:
 
-	     console.error("PIPE_TARGETS: '" + yytext + "'");
+	     console.error("PIPE_TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 50:
 
-	     console.error("EOL: '" + yytext + "', state: " + yy.lexer.topState());
+	     console.error("EOL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 51:
 
-	     console.error("SPC: '" + yytext + "'");
+	     console.error("SPC (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 52:
 
-	     console.error("VARIABLE_SET_SIMPLE: '" + yytext + "'");
+	     console.error("VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 53:
 
-	     console.error("VARIABLE_SET_RECURSIVE: '" + yytext + "'");
+	     console.error("VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 54:
 
-	     console.error("VARIABLE_SET_APPEND: '" + yytext + "'");
+	     console.error("VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 55:
 
-	     console.error("VARIABLE_SET_CONDITIONAL: '" + yytext + "'");
+	     console.error("VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 56:
 
-	     console.error("VARIABLE_SET_SHELL: '" + yytext + "'");
+	     console.error("VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 57:
 
-	     console.error("VARIABLE_VALUE: '" + yytext + "'");
+	     console.error("VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 58:
 
-	     console.error("MULTILINE_VARIABLE_SET_SIMPLE: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 59:
 
-	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 60:
 
-	     console.error("MULTILINE_VARIABLE_SET_APPEND: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 61:
 
-	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 62:
 
-	     console.error("MULTILINE_VARIABLE_SET_SHELL: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 63:
 
-	     console.error("MULTILINE_VARIABLE_VALUE: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 64:
 
-	     console.error("MULTILINE_VARIABLE_END: '" + yytext + "'");
+	     console.error("MULTILINE_VARIABLE_END (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 65:
 
-	     console.error("EOF2: '" + yytext + "'");
+	     console.error("EOF2: '" + JSON.stringify(JSON.stringify(yytext)) + "', state: " + yy.lexer.topState());
 	  
 break;
 }
@@ -847,7 +846,7 @@ pushState:function pushState(condition) {
 stateStackSize:function stateStackSize() {
         return this.conditionStack.length;
     },
-options: {},
+options: {"multiline":true},
 performAction: function anonymous(yy,yy_,$avoiding_name_collisions,YY_START) {
 const tokens = require("./makefile-syntax-tokens");
 const variables = require("../variables");
@@ -878,114 +877,188 @@ function trimText(src, regex1, regex2)
     return src;
 }
 
+const debugStates = false;
+
+this.gotoState = 
+    function(state) 
+    {
+        var pre = this.topState(); 
+
+        this.popState(); 
+        this.pushState(state); 
+
+        var post = this.topState(); 
+        if (debugStates)
+            console.error("...gotoState(): " + pre + " => " + post); 
+    };
+
+initDebugDone: true;
+this.initDebug = function initDebug() {
+    if (!!this.initDebugDone)
+        return;
+
+    this.initDebugDone = true;
+    
+    this.popState = 
+        function() 
+        {
+            var pre = this.topState(); 
+
+            if (this.conditionStack.length > 1)
+            {
+                this.conditionStack.pop(); 
+            } 
+            else 
+            {
+                console.error("WARNING: you tried to popState() beyond the state stack. The operation is being ignored, so no harm done - but we though you should know");
+            }
+
+            var post = this.topState(); 
+            if (debugStates)
+                console.error("...popState():  " + pre + " => " + post); 
+        };
+    
+    this.pushState = 
+        function(s) 
+        {
+            var pre = this.topState(); 
+
+            this.conditionStack.push(s); 
+
+            var post = this.topState(); 
+            if (debugStates)
+                console.error("...pushState(): " + pre + " => " + post); 
+        };
+
+}
+
 var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
-case 0:
-                        if (!!yy.preprocessor) 
-                        {
-                            var varName = trimText(yy_.yytext, /^[$][(]/, /[)]$/);
-                            var varValue = yy.preprocessor.expandVariables(yy_.yytext);
-                            this.unput(varValue);
-                            //yy_.yytext = "";
-                        }
-                    
+case 0: 
+                                this.initDebug();
+                                var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yy_.yytext);
+                                //console.error("...preprocessor: " + JSON.stringify(yy_.yytext) + " ==> " + JSON.stringify(varValue)); 
+                                this.unput(varValue);
+                                this.pushState("PREPROCESSED");
+                            
 break;
-case 1:
-                        if (!!yy.preprocessor) 
-                        {
-                            var varName = trimText(yy_.yytext, /^[$][{]/, /[}]$/);
-                            var varValue = yy.preprocessor.expandVariables(yy_.yytext);
-                            this.unput(varValue);
-                            //yy_.yytext = "";
-                        }
-                    
+case 1: 
+                                //this.initDebug();
+                                console.error("...preprocessor: " + JSON.stringify(yy_.yytext) + " => unchanged"); 
+                                this.unput(yy_.yytext);
+                                this.pushState("PREPROCESSED"); 
+                            
 break;
-case 2: this.begin("COMMENT");                          
+case 2: this.gotoState("COMMENT");                          
 break;
-case 3: this.begin("INCLUDE"); 
+case 3: this.gotoState("INCLUDE"); 
 break;
-case 4: this.begin("RULE");    return tokens.RULESTART; 
+case 4: this.gotoState("VAR_DEF"); 
 break;
-case 5: return tokens.RECIPE_LINE; 
+case 5: this.gotoState("VAR_DEF"); 
 break;
-case 6: this.begin("VAR_DEF"); 
+case 6: this.gotoState("VAR_DEF"); 
 break;
-case 7: return tokens.EOL; 
+case 7: this.gotoState("VAR_DEF"); 
 break;
-case 8: this.begin("INITIAL"); return tokens.EOL; 
+case 8: this.gotoState("VAR_DEF"); 
 break;
-case 9:                        return tokens.INCLUDE; 
+case 9: this.gotoState("VAR_DEF"); 
 break;
-case 10:                        return tokens.INCLUDE; 
+case 10: this.gotoState("MULTI_VAR_DEF"); 
 break;
-case 11:                        return tokens.INCLUDE; 
+case 11: this.gotoState("RULE");           return tokens.RULESTART; 
 break;
-case 12: this.begin("INITIAL"); return tokens.EOL; 
+case 12: this.gotoState("RECIPE"); 
 break;
-case 13: this.begin("INITIAL"); return tokens.EOL; 
+case 13: this.popState(); return tokens.EOL; 
 break;
-case 14:                        return tokens.COLON; 
+case 14:                  return tokens.RECIPE_LINE; 
 break;
-case 15:                        return tokens.PIPE; 
+case 15: this.popState(); return tokens.EOL; 
 break;
-case 16: this.begin("IRECIPE"); return tokens.SEMICOLON; 
+case 16: this.popState(); return tokens.EOL; 
 break;
-case 17:                        return tokens.TARGET; 
+case 17: this.gotoState("INCLUDE_NAME"); 
 break;
-case 18: this.begin("RULE"); return tokens.INLINE_RECIPE; 
+case 18: return tokens.INCLUDE; 
 break;
-case 19: this.begin("INITIAL"); return tokens.EOL; 
+case 19: return tokens.INCLUDE; 
 break;
-case 20:
+case 20: return tokens.INCLUDE; 
 break;
-case 21: return tokens.EOF2; 
+case 21: this.popState(); return tokens.EOL; 
 break;
-case 22: return tokens.EOF2; 
+case 22: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_RECURSIVE; 
 break;
-case 23: return tokens.EOF2; 
+case 23: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_CONDITIONAL; 
 break;
-case 24: return tokens.EOF2; 
+case 24: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
 break;
-case 25: return tokens.EOF2; 
+case 25: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
 break;
-case 26: this.begin("VAR_VALUE"); yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_RECURSIVE; 
+case 26: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_APPEND; 
 break;
-case 27: this.begin("VAR_VALUE"); yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_CONDITIONAL; 
+case 27: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SHELL; 
 break;
-case 28: this.begin("VAR_VALUE"); yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
+case 28: this.gotoState("VAR_DEF_END"); yy_.yytext = trimVarvalue(yy_.yytext); return tokens.VARIABLE_VALUE; 
 break;
-case 29: this.begin("VAR_VALUE"); yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
+case 29: this.popState();                                              return tokens.EOL; 
 break;
-case 30: this.begin("VAR_VALUE"); yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_APPEND; 
+case 30: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
 break;
-case 31: this.begin("VAR_VALUE"); yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SHELL; 
+case 31: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
 break;
-case 32: this.begin("INITIAL");   yy_.yytext = trimVarvalue(yy_.yytext); return tokens.VARIABLE_VALUE; 
+case 32: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; 
 break;
-case 33: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
+case 33: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
 break;
-case 34: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
+case 34: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
 break;
-case 35: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; 
+case 35: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; 
 break;
-case 36: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
+case 36: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; 
 break;
-case 37: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
+case 37: return tokens.MULTILINE_VARIABLE_VALUE; 
 break;
-case 38: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_APPEND; 
+case 38: this.popState(); return tokens.MULTILINE_VARIABLE_END; 
 break;
-case 39: this.begin("MULTI_VAR_DEF"); return tokens.MULTILINE_VARIABLE_SET_SHELL; 
+case 39:                            return tokens.COLON; 
 break;
-case 40: return tokens.MULTILINE_VARIABLE_VALUE; 
+case 40:                            return tokens.PIPE; 
 break;
-case 41: this.begin("INITIAL"); console.error("MultiVar enddef => INITIAL"); return tokens.MULTILINE_VARIABLE_END; 
+case 41: this.gotoState("IRECIPE"); return tokens.SEMICOLON; 
 break;
-case 42: console.error("MISMATCH: '" + yy_.yytext + "', state: " + this.topState()); 
+case 42:                            return tokens.TARGET; 
+break;
+case 43: this.popState();           return tokens.EOL; 
+break;
+case 44: this.popState();           return tokens.EOL; 
+break;
+case 45:
+break;
+case 46: this.popState(); return tokens.INLINE_RECIPE; 
+break;
+case 47: return tokens.EOF2; 
+break;
+case 48: return tokens.EOF2; 
+break;
+case 49: return tokens.EOF2; 
+break;
+case 50: return tokens.EOF2; 
+break;
+case 51: return tokens.EOF2; 
+break;
+case 52: return tokens.EOF2; 
+break;
+case 53: return tokens.EOF2; 
+break;
+case 54: /*console.error("MISMATCH: '" + yy_.yytext + "', state: " + this.topState());*/ 
 break;
 }
 },
-rules: [/^(?:[$][(]\w+[)])/,/^(?:[$][{]\w+[}])/,/^(?:#)/,/^(?:include([ \t]*))/,/^(?:(?=(((?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([ \t]*))*([ \t]*)))[:])))/,/^(?:[ \t]+((?:[^\n\r]*)))/,/^(?:(?=((?:[^\s=:?+!])+)\s*.?.?=))/,/^(?:((?:[\r]?[\n])))/,/^(?:[^\n\r]*((?:[\r]?[\n])))/,/^(?:((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+)))))/,/^(?:"((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))")/,/^(?:'((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))')/,/^(?:([ \t]*)?((?:[\r]?[\n])))/,/^(?:[#].*((?:[\r]?[\n])))/,/^(?:[:])/,/^(?:[|])/,/^(?:[;])/,/^(?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))/,/^(?:((?:[^\n\r]*)))/,/^(?:((?:[\r]?[\n])))/,/^(?:[ \t]+)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:((?:[^\s=:?+!])+)\s*=)/,/^(?:((?:[^\s=:?+!])+)\s*\?=)/,/^(?:((?:[^\s=:?+!])+)\s*:=)/,/^(?:((?:[^\s=:?+!])+)\s*::=)/,/^(?:((?:[^\s=:?+!])+)\s*\+=)/,/^(?:((?:[^\s=:?+!])+)\s*!=)/,/^(?:[^\r\n]*(?=((?:[\r]?[\n]))))/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*[\n])/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*=[ \t]*[\n])/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*\?=[ \t]*[\n])/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*:=[ \t]*[\n])/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*::=[ \t]*[\n])/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*\+=[ \t]*[\n])/,/^(?:define[ \t]+((?:[^\s=:?+!])+)[ \t]*!=[ \t]*[\n])/,/^(?:^(?!enddef)[^\n]*\n)/,/^(?:enddef\s*\n)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,21,33,34,35,36,37,38,39,42],"inclusive":true},"RULE":{"rules":[0,1,13,14,15,16,17,19,20,21,22,42],"inclusive":true},"INCLUDE":{"rules":[0,1,9,10,11,12,21,42],"inclusive":true},"COMMENT":{"rules":[0,1,8,21,42],"inclusive":true},"VAR_DEF":{"rules":[0,1,21,25,26,27,28,29,30,31,42],"inclusive":true},"VAR_VALUE":{"rules":[0,1,21,32,42],"inclusive":true},"MULTI_VAR_DEF":{"rules":[0,1,21,24,40,41,42],"inclusive":true},"IRECIPE":{"rules":[0,1,18,21,23,42],"inclusive":true}}
+rules: [/^(?:^[^\r\n]*((?:[\r]?[\n])))/,/^(?:^.*((?:[\r]?[\n])))/,/^(?:(?=^#))/,/^(?:(?=^include))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?::=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?:=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\+=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\?=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?!=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?=))/,/^(?:(?=^define([ \t]*)))/,/^(?:(?=^((?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([ \t]*))*([ \t]*)))([ \t]*)?:))/,/^(?:(?=^[ \t]+((?:[^\n\r]*))((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^[ \t]+((?:[^\n\r]*))(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^#[^\n\r]*((?:[\r]?[\n])))/,/^(?:^include([ \t]*))/,/^(?:((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+)))))/,/^(?:'((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))')/,/^(?:"((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))")/,/^(?:([ \t]*)?((?:[\r]?[\n])))/,/^(?:^((?:[^\s=:?+!])+)\s*=)/,/^(?:^((?:[^\s=:?+!])+)\s*\?=)/,/^(?:^((?:[^\s=:?+!])+)\s*:=)/,/^(?:^((?:[^\s=:?+!])+)\s*::=)/,/^(?:^((?:[^\s=:?+!])+)\s*\+=)/,/^(?:^((?:[^\s=:?+!])+)\s*!=)/,/^(?:[^\r\n]*(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?:=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?::=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\+=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?!=[ \t]*[\n])/,/^(?:^(?!enddef)[^\n]*\n)/,/^(?:enddef\s*\n)/,/^(?:[:])/,/^(?:[|])/,/^(?:[;])/,/^(?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))/,/^(?:[#].*((?:[\r]?[\n])))/,/^(?:((?:[\r]?[\n])))/,/^(?:[ \t]+)/,/^(?:((?:[^\n\r]*)))/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,47,49,54],"inclusive":true},"PREPROCESSED":{"rules":[2,3,4,5,6,7,8,9,10,11,12,13,48,49,54],"inclusive":true},"RULE":{"rules":[39,40,41,42,43,44,45,49,50,54],"inclusive":true},"RECIPE":{"rules":[14,15,49,54],"inclusive":true},"INCLUDE":{"rules":[17,49,54],"inclusive":true},"COMMENT":{"rules":[16,49,54],"inclusive":true},"VAR_DEF":{"rules":[22,23,24,25,26,27,49,53,54],"inclusive":true},"VAR_VALUE":{"rules":[28,49,54],"inclusive":true},"VAR_DEF_END":{"rules":[29,49,54],"inclusive":true},"MULTI_VAR_DEF":{"rules":[30,31,32,33,34,35,36,49,52,54],"inclusive":true},"MULTI_VAR_DEF_VALUE":{"rules":[37,38,49,54],"inclusive":true},"IRECIPE":{"rules":[46,49,51,54],"inclusive":true},"INCLUDE_NAME":{"rules":[18,19,20,21,49,54],"inclusive":true}}
 });
 return lexer;
 })();

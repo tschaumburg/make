@@ -4,6 +4,21 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Preprocessor",
+            "program": "${workspaceFolder}/dist/parser/jison-parser/preprocessor/cli.js",
+            "cwd": "c:/tmp/make/mpp"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch npm-make",
+            "program": "${workspaceFolder}/dist/cli.js",
+            "cwd": "C:/Users/Thomas/npm-make-test/testing/35/4"
+        },
         {
             "type": "node",
             "request": "launch",
