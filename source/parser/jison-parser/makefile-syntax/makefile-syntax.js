@@ -853,8 +853,14 @@ const variables = require("../variables");
 
 function trimVarname(src)
 {
-    //console.error("VAR " + src);
-    return src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
+    let res = src;                        // ' myvar ::= '
+    //res = res.replace(/^[\s]*/, "");      // => 'myvar ::= '
+
+    res = res.replace(/[:][:][=]$/, ""); // => 'myvar'
+    res = res.replace(/[:?!+]?[=]$/, "");
+    res = res.trim()
+
+    return res;
 }
 
 function trimVarvalue(src)
@@ -989,17 +995,17 @@ case 20: return tokens.INCLUDE;
 break;
 case 21: this.popState(); return tokens.EOL; 
 break;
-case 22: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_RECURSIVE; 
+case 22: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_CONDITIONAL; 
 break;
-case 23: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_CONDITIONAL; 
+case 23: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
 break;
 case 24: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
 break;
-case 25: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
+case 25: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_APPEND; 
 break;
-case 26: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_APPEND; 
+case 26: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SHELL; 
 break;
-case 27: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SHELL; 
+case 27: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_RECURSIVE; 
 break;
 case 28: this.gotoState("VAR_DEF_END"); yy_.yytext = trimVarvalue(yy_.yytext); return tokens.VARIABLE_VALUE; 
 break;
@@ -1057,7 +1063,7 @@ case 54: /*console.error("MISMATCH: '" + yy_.yytext + "', state: " + this.topSta
 break;
 }
 },
-rules: [/^(?:^[^\r\n]*((?:[\r]?[\n])))/,/^(?:^.*((?:[\r]?[\n])))/,/^(?:(?=^#))/,/^(?:(?=^include))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?::=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?:=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\+=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\?=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?!=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?=))/,/^(?:(?=^define([ \t]*)))/,/^(?:(?=^((?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([ \t]*))*([ \t]*)))([ \t]*)?:))/,/^(?:(?=^[ \t]+((?:[^\n\r]*))((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^[ \t]+((?:[^\n\r]*))(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^#[^\n\r]*((?:[\r]?[\n])))/,/^(?:^include([ \t]*))/,/^(?:((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+)))))/,/^(?:'((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))')/,/^(?:"((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))")/,/^(?:([ \t]*)?((?:[\r]?[\n])))/,/^(?:^((?:[^\s=:?+!])+)\s*=)/,/^(?:^((?:[^\s=:?+!])+)\s*\?=)/,/^(?:^((?:[^\s=:?+!])+)\s*:=)/,/^(?:^((?:[^\s=:?+!])+)\s*::=)/,/^(?:^((?:[^\s=:?+!])+)\s*\+=)/,/^(?:^((?:[^\s=:?+!])+)\s*!=)/,/^(?:[^\r\n]*(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?:=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?::=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\+=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?!=[ \t]*[\n])/,/^(?:^(?!enddef)[^\n]*\n)/,/^(?:enddef\s*\n)/,/^(?:[:])/,/^(?:[|])/,/^(?:[;])/,/^(?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))/,/^(?:[#].*((?:[\r]?[\n])))/,/^(?:((?:[\r]?[\n])))/,/^(?:[ \t]+)/,/^(?:((?:[^\n\r]*)))/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:^[^\r\n]*((?:[\r]?[\n])))/,/^(?:^.*((?:[\r]?[\n])))/,/^(?:(?=^#))/,/^(?:(?=^include))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?::=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?:=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\+=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\?=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?!=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?=))/,/^(?:(?=^define([ \t]*)))/,/^(?:(?=^((?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([ \t]*))*([ \t]*)))([ \t]*)?:))/,/^(?:(?=^[ \t]+((?:[^\n\r]*))((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^[ \t]+((?:[^\n\r]*))(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^#[^\n\r]*((?:[\r]?[\n])))/,/^(?:^include([ \t]*))/,/^(?:((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+)))))/,/^(?:'((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))')/,/^(?:"((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))")/,/^(?:([ \t]*)?((?:[\r]?[\n])))/,/^(?:^((?:[^\s=:?+!])+)\s*\?=)/,/^(?:^((?:[^\s=:?+!])+)\s*::=)/,/^(?:^((?:[^\s=:?+!])+)\s*:=)/,/^(?:^((?:[^\s=:?+!])+)\s*\+=)/,/^(?:^((?:[^\s=:?+!])+)\s*!=)/,/^(?:^((?:[^\s=:?+!])+)\s*=)/,/^(?:[^\r\n]*(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?:=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?::=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\+=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?!=[ \t]*[\n])/,/^(?:^(?!enddef)[^\n]*\n)/,/^(?:enddef\s*\n)/,/^(?:[:])/,/^(?:[|])/,/^(?:[;])/,/^(?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))/,/^(?:[#].*((?:[\r]?[\n])))/,/^(?:((?:[\r]?[\n])))/,/^(?:[ \t]+)/,/^(?:((?:[^\n\r]*)))/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,47,49,54],"inclusive":true},"PREPROCESSED":{"rules":[2,3,4,5,6,7,8,9,10,11,12,13,48,49,54],"inclusive":true},"RULE":{"rules":[39,40,41,42,43,44,45,49,50,54],"inclusive":true},"RECIPE":{"rules":[14,15,49,54],"inclusive":true},"INCLUDE":{"rules":[17,49,54],"inclusive":true},"COMMENT":{"rules":[16,49,54],"inclusive":true},"VAR_DEF":{"rules":[22,23,24,25,26,27,49,53,54],"inclusive":true},"VAR_VALUE":{"rules":[28,49,54],"inclusive":true},"VAR_DEF_END":{"rules":[29,49,54],"inclusive":true},"MULTI_VAR_DEF":{"rules":[30,31,32,33,34,35,36,49,52,54],"inclusive":true},"MULTI_VAR_DEF_VALUE":{"rules":[37,38,49,54],"inclusive":true},"IRECIPE":{"rules":[46,49,51,54],"inclusive":true},"INCLUDE_NAME":{"rules":[18,19,20,21,49,54],"inclusive":true}}
 });
 return lexer;

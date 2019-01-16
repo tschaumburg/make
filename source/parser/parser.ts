@@ -10,8 +10,6 @@ import { IParseResultBuilder, TargetName } from './result';
 import * as result from './result';
 // import { IRuleManager } from '../rules';
 import { IParseResult } from './result';
-//import { ParseFailure } from './failure';
-import * as regexParser from "./regex-parser";
 import * as jisonParser from "./jison-parser";
 
 export interface IParser

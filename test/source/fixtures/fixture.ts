@@ -8,60 +8,18 @@ import * as path from "path";
 
 import { IExpectedResult, ExpectedSuccess, ExpectedError } from "./expected";
 import { run } from "./run";
-import { isArray } from "util";
+import { isArray, isString } from "util";
 import { resolve } from "dns";
 import { makefiles } from "../manual/chapter3/section33/setup";
 import { IActualResult } from "./actual";
 
-// export function testcase(spec: TestSpec): () => void
-// {
-//     return function ()
-//     {
-//         var dirName = createTestdir();
-//         createMakefiles(dirName, spec.makefile);
-
-//         // Prepare:
-//         if (!!spec.prepare)
-//         {
-//             var cwd = process.cwd();
-//             try
-//             {
-//                 process.chdir(dirName);
-//                 spec.prepare();
-//             }
-//             catch (reason)
-//             {
-//                 process.chdir(cwd);
-//                 console.error(reason);
-//             }
-//         }
-
-//         // Run npm-make:
-//         var result = make(dirName, spec.targets);
-
-//         // Assert
-//         var expectedResult = convert(spec.expect);
-//         expectedResult.assertActual(result);
-//     };
-// }
-
-// interface TestSpec
-// {
-//     makefile: string[];
-//     prepare?: () => void;
-//     targets: string[];
-//     expect: ExpectedError | string | string[];
-// }
-
 interface MultiTestcase
 {
-    makefile: string[] | { [name: string]: string[] },
+    makefile: string[] | string | { [name: string]: string[] | string },
     id: string;
     title?: string;
 }
 export function multiTestcase(
-    // makefile: string[] | { [name: string]: string[] },
-    // dirName: string,
     spec: MultiTestcase,
     ...steps: TestStep[]
 ): void
@@ -100,7 +58,7 @@ export interface TestStep
     prepare?: () => void;
     env?: { [name: string]: string };
     targets: string[];
-    expect: ExpectedError | string | string[];
+    expect: ExpectedError | ExpectedSuccess | string | string[] | { [name: string]: string[] | string };
 }
 
 function createTestdir(testId: string, testTitle: string): string
@@ -124,25 +82,65 @@ function createTestdir(testId: string, testTitle: string): string
     return dirName;
 }
 
-function createMakefiles(dirName: string, makefile: string[] | { [name: string]: string[] }): void
+function createMakefiles(dirName: string, makefile: string[] | string | { [name: string]: string[] | string } ): void
 {
     if (isArray(makefile))
     {
-        let makefilename = path.resolve(dirName, "Makefile");
-        fs.writeFileSync(makefilename, makefile.join("\n"));
-        //console.log(spec.makefile.join("\n"));
+        writeMakefile(dirName, makefile);
+    }
+    else if (isString(makefile))
+    {
+        copyMakefile(dirName, makefile);
     }
     else
     {
         for (let filename in makefile)
         {
-            let makefilename = path.resolve(dirName, filename);
-            let makefileDirname = path.dirname(makefilename);
+            let makefileDirname = path.dirname(filename);
             fse.ensureDirSync(makefileDirname);
-            let lines = makefile[filename];
-            fs.writeFileSync(makefilename, lines.join("\n"));
+
+            let filecontents = makefile[filename];
+            if (isArray(filecontents))
+            {
+                writeMakefile(path.resolve(dirName, filename), filecontents);
+            }
+            else if (isString(filecontents))
+            {
+                copyMakefile(dirName, filecontents);
+            }
+        
+            //let makefilename = path.resolve(dirName, filename);
+            // let makefileDirname = path.dirname(makefilename);
+            // fse.ensureDirSync(makefileDirname);
+            // let lines = makefile[filename];
+            // fs.writeFileSync(makefilename, lines.join("\n"));
         }
     }
+}
+
+function copyMakefile(destination: string, srcFileName: string): void
+{
+    let dstFilename = destination;
+    if (fs.lstatSync(dstFilename).isDirectory())
+    {
+        dstFilename = path.resolve(dstFilename, "Makefile");
+    }
+
+    let makefileContents = fs.readFileSync(srcFileName);
+    fs.writeFileSync(dstFilename, makefileContents);
+    //console.log(spec.makefile.join("\n"));
+}
+
+function writeMakefile(pathName: string, makefileLines: string[]): void
+{
+    let makefilename = pathName;
+    if (fs.lstatSync(makefilename).isDirectory())
+    {
+        makefilename = path.resolve(makefilename, "Makefile");
+    }
+
+    fs.writeFileSync(makefilename, makefileLines.join("\n"));
+    //console.log(spec.makefile.join("\n"));
 }
 
 function runPrepare(dirName: string, prepare: () => void): void
@@ -162,19 +160,19 @@ function runPrepare(dirName: string, prepare: () => void): void
     }
 }
 
-function convert(expected: ExpectedError | string | string[]): IExpectedResult
+function convert(expected: ExpectedError | ExpectedSuccess | string | string[] | { [name: string]: string[] | string }): IExpectedResult
 {
-    if (typeof (expected) === 'string')
+    if (isString (expected))
     {
         return new ExpectedSuccess([expected]);
     }
 
     if (isArray(expected))
     {
-        return new ExpectedSuccess(expected as string[]);
+        return new ExpectedSuccess(expected);
     }
 
-    return expected as ExpectedError;
+    return expected as IExpectedResult;
 }
 
 function make(

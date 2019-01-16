@@ -8,6 +8,7 @@ import * as mocha from "mocha";
 import * as section33 from "./section33";
 import * as section34 from "./section34";
 import * as section35 from "./section35";
+import * as section37 from "./section37";
 
 export function loadTests()
 {
@@ -17,5 +18,6 @@ export function loadTests()
         section33.loadTests();
         section34.loadTests();
         section35.loadTests();
+        section37.loadTests();
     });
 }

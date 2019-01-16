@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import { equal } from "assert";
 
 import { fail } from "assert";
@@ -128,6 +129,12 @@ export class ExpectedSuccess implements IExpectedResult
 export function success(expectation?: string | string[]): ExpectedSuccess
 {
     return new ExpectedSuccess(expectation);
+}
+
+export function successFile(filename): ExpectedSuccess
+{
+    let expectedOutput = fs.readFileSync(filename, 'utf8');
+    return success(expectedOutput.split('\n'))
 }
 //export function success(expectation?: string | string[]): IExpectedResult
 //{

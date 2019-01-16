@@ -25,7 +25,7 @@ export function loadTests(): void
                                 title: "mf" + makefileNo + "-" + target.join(""),
                                 prepare: clean,
                                 targets: target,
-                                expect: setup31.expected
+                                expect: setup31.expected.split('\n')
                             },
                         );
             }

@@ -5,8 +5,14 @@ const variables = require("../variables");
 
 function trimVarname(src)
 {
-    //console.error("VAR " + src);
-    return src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
+    let res = src;                        // ' myvar ::= '
+    //res = res.replace(/^[\s]*/, "");      // => 'myvar ::= '
+
+    res = res.replace(/[:][:][=]$/, ""); // => 'myvar'
+    res = res.replace(/[:?!+]?[=]$/, "");
+    res = res.trim()
+
+    return res;
 }
 
 function trimVarvalue(src)
@@ -181,12 +187,12 @@ noeol       [^\r\n]
  * Single-line variable definitions:
  * =================================
  **************************************************************/
-<VAR_DEF>^{variable}\s*'='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_RECURSIVE; }
 <VAR_DEF>^{variable}\s*'?='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_CONDITIONAL; }
-<VAR_DEF>^{variable}\s*':='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
 <VAR_DEF>^{variable}\s*'::='		{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
+<VAR_DEF>^{variable}\s*':='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
 <VAR_DEF>^{variable}\s*'+='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_APPEND; }
 <VAR_DEF>^{variable}\s*'!='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SHELL; }
+<VAR_DEF>^{variable}\s*'='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_RECURSIVE; }
 <VAR_VALUE>[^\r\n]*(?={eol})		{ this.gotoState("VAR_DEF_END"); yytext = trimVarvalue(yytext); return tokens.VARIABLE_VALUE; }
 <VAR_DEF_END>{eol}            		{ this.popState();                                              return tokens.EOL; }
 
