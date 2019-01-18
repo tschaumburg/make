@@ -18,7 +18,9 @@ function trimVarname(src)
 function trimVarvalue(src)
 {
     //console.error("VAL " + src);
-    return src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
+    var res = src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
+    //console.error("RES " + res);
+    return res;
 }
 
 function trimText(src, regex1, regex2)
@@ -110,6 +112,9 @@ recipe		(?:[^\n\r]*)
 eol         (?:[\r]?[\n])
 noeol       [^\r\n]
 
+rulesep [|;#\r\n]
+ruleitem [^|;#\r\n]*
+
 %%
 
 /***************************************************************
@@ -130,18 +135,19 @@ noeol       [^\r\n]
 
 <INITIAL>^[^\r\n]*{eol}     { 
                                 this.initDebug();
-                                var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yytext);
+                                //var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yytext);
                                 //console.error("...preprocessor: " + JSON.stringify(yytext) + " ==> " + JSON.stringify(varValue)); 
-                                this.unput(varValue);
+                                this.unput(yytext); //varValue);
                                 this.pushState("PREPROCESSED");
                             }
+/*
 <INITIAL>^.*{eol}           { 
                                 //this.initDebug();
-                                console.error("...preprocessor: " + JSON.stringify(yytext) + " => unchanged"); 
+                                //console.error("...preprocessor: " + JSON.stringify(yytext) + " => unchanged"); 
                                 this.unput(yytext);
                                 this.pushState("PREPROCESSED"); 
                             }
-
+*/
 /***************************************************************
  * Makefile lines:
  * ===============
@@ -158,6 +164,30 @@ noeol       [^\r\n]
 <PREPROCESSED>(?=^{ltargets}{spc}?':')    { this.gotoState("RULE");           return tokens.RULESTART; }
 <PREPROCESSED>(?=^[ \t]+{recipe}{eol})	  { this.gotoState("RECIPE"); }
 <PREPROCESSED>{eol}				          { this.popState(); return tokens.EOL; }
+
+/***************************************************************
+ * Rule definitions:
+ * =================
+ * The syntax for a rule line is:
+ *
+ *    targets? : prereqs? (| orderonlies)? (; recipe)? (# comment ) <eol>?
+ *
+ * As can be seen, the terms are separated by the rule separator
+ * characters [:|;#\r\n]
+ **************************************************************/
+<RULE>^{ruleitem}[:]{ruleitem}[:]{ruleitem}  {                  return tokens.TARGET_PATTERN_PATTERN; }//.COLON; }
+<RULE>^{ruleitem}[:]{ruleitem}               {                  return tokens.TARGET_PREREQ; }//.COLON; }
+<RULE>[|]{ruleitem}        		             {                  return tokens.ORDERONLIES; }  //.PIPE; }
+<RULE>[;]{ruleitem}                          {                  return tokens.INLINE_RECIPE; } //SEMICOLON; }
+<RULE>[#].*{eol}		                     { this.popState(); return tokens.EOL; }
+<RULE>{eol}					                 { this.popState(); return tokens.EOL; }
+<RULE>[ \t]+                                 {}
+
+/***************************************************************
+ * Inline recipe:
+ * =============
+ **************************************************************/
+<IRECIPE>{recipe}			    { this.popState(); return tokens.INLINE_RECIPE; }    
 
 /***************************************************************
  * Recipes:
@@ -211,24 +241,6 @@ noeol       [^\r\n]
 <MULTI_VAR_DEF_VALUE>^(?!enddef)[^\n]*\n						{ return tokens.MULTILINE_VARIABLE_VALUE; }
 <MULTI_VAR_DEF_VALUE>'enddef'\s*\n						    	{ this.popState(); return tokens.MULTILINE_VARIABLE_END; }
 
-
-/***************************************************************
- * Rule definitions:
- * =================
- **************************************************************/
-<RULE>[:]        			{                            return tokens.COLON; }
-<RULE>[|]        			{                            return tokens.PIPE; }
-<RULE>[;]        			{ this.gotoState("IRECIPE"); return tokens.SEMICOLON; }
-<RULE>(?:{target})		    {                            return tokens.TARGET; }
-<RULE>[#].*{eol}		    { this.popState();           return tokens.EOL; }
-<RULE>{eol}					{ this.popState();           return tokens.EOL; }
-<RULE>[ \t]+                {}
-
-/***************************************************************
- * Recipe lines:
- * =============
- **************************************************************/
-<IRECIPE>{recipe}			    { this.popState(); return tokens.INLINE_RECIPE; }    
 
 /***************************************************************
  * Handling whitespace:

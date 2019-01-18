@@ -5,12 +5,18 @@ import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
 import * as fs from 'fs';
 import { IAction, IFilePlan } from "../planner";
 import { FileRef, FilePlan } from "../planner/plan/plan-impl";
+import { IVariableManager } from "../variables";
+import { runShell } from "../run-shell";
 const os = require('os')
 
-export function runPlan(target: IFilePlan): void
+export function runPlan(target: IFilePlan, variablemanager: IVariableManager): void
 {
     for (let step of target.producedBy.recipe)
     {
+        //console.error("RUN " + step);
+        step = variablemanager.evaluateExpression(step);
+        //console.error("RUN " + step);
+
         let cmd = 
             expandSymbols(
                 step, 
@@ -18,17 +24,14 @@ export function runPlan(target: IFilePlan): void
                 target.producedBy.prerequisites,
                 target.producedBy.orderOnly
             );
-        var ret = run(cmd, [], '.');
+
+        //console.error("RUN " + cmd);
+
+        var ret = runShell(cmd, [], '.', "inherit").retCode;
 
         if (ret != 0)
             exits.recipeExecutionError(ret, cmd);
     }
-
-    //var cmd = recipe.steps.join(" && ");
-    //cmd = expandSymbols(cmd, target, prerequisites);
-    //var ret = run(cmd, [], '.');
-    //if (ret != 0)
-    //    exits.recipeExecutionError(ret, cmd);
 }
 
 function expandSymbols(
@@ -167,49 +170,41 @@ function newerThan(target: FileRef, prerequisites: FileRef[]): FileRef[]
     return prerequisites.filter(p => p.timestamp() > targetTime);
 }
 
-function addToPath(env: { [key: string]: string | undefined; }, dirname: string): { [key: string]: string | undefined;}
-{
-    let res = Object.assign({}, env);
-    res["Path"] += path.delimiter + dirname;
-    //console.error("Path = " + JSON.stringify(res["Path"]));
-    return res;
-}
+// function run(prog: string, args: string[], wd: string): number
+// {
+//     if (!args)
+//         args = [];
 
-function run(prog: string, args: string[], wd: string): number
-{
-    if (!args)
-        args = [];
+//     let binpath = path.resolve(__dirname, "..", "..", "node_modules", ".bin");
+//     var opts: SpawnSyncOptionsWithStringEncoding =
+//     {
+//         stdio: 'inherit',
+//         cwd: wd,
+//         env: addToPath(process.env, binpath),
+//         encoding: 'utf8'
+//     };
 
-    let binpath = path.resolve(__dirname, "..", "..", "node_modules", ".bin");
-    var opts: SpawnSyncOptionsWithStringEncoding =
-    {
-        stdio: 'inherit',
-        cwd: wd,
-        env: addToPath(process.env, binpath),
-        encoding: 'utf8'
-    };
+//     var cmd = 'sh';
+//     var argsx = ['-c', prog].concat(args);
 
-    var cmd = 'sh';
-    var argsx = ['-c', prog].concat(args);
+//     if (process.platform === 'win32')
+//     {
+//         cmd = process.env.comspec || 'cmd';
+//         argsx = ['/d', '/s', '/c', prog].concat(args);
+//         opts.windowsVerbatimArguments = true;
+//     }
 
-    if (process.platform === 'win32')
-    {
-        cmd = process.env.comspec || 'cmd';
-        argsx = ['/d', '/s', '/c', prog].concat(args);
-        opts.windowsVerbatimArguments = true;
-    }
+//     log.info(cmd + " " + argsx.join(" "));
+//     var child =
+//         spawnSync(
+//             cmd,
+//             argsx,
+//             opts
+//         );
+//     log.info("STDOUT:\n    " + child.output.join("\n    "));
 
-    log.info(cmd + " " + argsx.join(" "));
-    var child =
-        spawnSync(
-            cmd,
-            argsx,
-            opts
-        );
-    log.info("STDOUT:\n    " + child.output.join("\n    "));
-
-    return child.status;
-}
+//     return child.status;
+// }
 //import { IRecipe } from "../imakefile";
 //import { spawn } from "child_process";
 

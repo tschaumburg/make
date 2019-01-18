@@ -92,48 +92,49 @@ emptyline
 *     }
 */
 rulestatement
- : RULESTART targetlist COLON targetlist targets2 
+ : RULESTART target_prereq orderonlies inline_recipe_definition//targetlist COLON targetlist targets2 
    {
       $$ = {};
-      $$.targets0 = $2;
-      $$.targets1 = $4;
-      $$.targets2 = $5.targets2;
-      $$.targets3 = $5.targets3;
-      $$.irecipe = $5.irecipe;
+
+      $$.targets = $2.targets;
+      $$.prerequisites = $2.prerequisites;
+      $$.targetPattern = $2.targetPattern;
+      $$.prereqPattern = $2.prereqPattern;
+      $$.orderOnlies = $3.orderOnlies;
+      $$.irecipe = $4.irecipe;
 	}
  ;
 
-targets2
-  : COLON targetlist targets3
-     {
-      $$ = {};
-      $$.targets2 = $2;
-      $$.targets3 = $3.targets3;
-      $$.irecipe = $3.irecipe;
-	 }
-   | targets3
-     {
-      $$ = {};
-      $$.targets2 = [];
-      $$.targets3 = $1.targets3;
-      $$.irecipe = $1.irecipe;
- 	 }
- ;
+ target_prereq
+  : TARGET_PREREQ
+    {
+      var target_prereq = $1.split(':');
+       $$ = {};
+      $$.targets = target_prereq[0];
+      $$.prerequisites = target_prereq[1];
+    }
+    |TARGET_PATTERN_PATTERN
+    {
+       $$ = {};
+      var target_pattern_pattern = $1.split(':');
+      $$.targets = target_pattern_pattern[0];
+      $$.targetPattern = target_pattern_pattern[1];
+      $$.prereqPattern = target_pattern_pattern[2];
+    }
+  ;
 
-targets3
-  : PIPE targetlist inline_recipe_definition
-     {
-      $$ = {};
-      $$.irecipe = $3;
-      $$.targets3 = $2;
-	 }
-   | inline_recipe_definition
-     {
-      $$ = {};
-      $$.irecipe = $1;
-      $$.targets3 = [];
-	 }
- ;
+ orderonlies
+  : ORDERONLIES
+    {
+       $$ = {};
+       $$.orderOnlies = $1;
+    }
+  | /* empty */
+    {
+       $$ = {};
+       $$.orderOnlies = null;
+    }
+  ;
 
 targetlist
   : targetlist TARGET
@@ -147,13 +148,15 @@ targetlist
  ;
 
 inline_recipe_definition
-  : SEMICOLON INLINE_RECIPE
+  : INLINE_RECIPE
     {
-      $$ = $2;
+       $$ = {};
+      $$.irecipe = $2;
 	 }
    | /* empty */
     {
-      $$ = "";
+       $$ = {};
+      $$.irecipe = "";
 	 }
  ;
 
@@ -174,6 +177,7 @@ inline_variable_definition
    }
  | VARIABLE_SET_RECURSIVE VARIABLE_VALUE
    {
+      //console.error("parser recursive assign " + $2);
       $$ = { kind: 'recursive', name: $1, value: $2 }
    }
  | VARIABLE_SET_APPEND VARIABLE_VALUE
@@ -279,14 +283,18 @@ evt
       {
 	     console.error("RECIPE_LINE (" + JSON.stringify(yytext) + ")");
 	  }
-   |SEMICOLON
+   |INLINE_RECIPE
       {
-	     console.error("SEMICOLON (" + JSON.stringify(yytext) + ")");
+	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  }
-   |COLON
+   |TARGET_PREREQ
       {
-	     console.error("COLON (" + JSON.stringify(yytext) + ")");
+	     console.error("TARGET_PREREQ (" + JSON.stringify(yytext) + ")");
 	  }
+     |TARGET_PATTERN_PATTERN
+     {
+	     console.error("TARGET_PATTERN_PATTERN (" + JSON.stringify(yytext) + ")");
+     }
    |PIPE
       {
 	     console.error("PIPE (" + JSON.stringify(yytext) + ")");

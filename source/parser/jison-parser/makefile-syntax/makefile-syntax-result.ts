@@ -16,13 +16,14 @@ export function startRule(
     let basedir: string = getBasedir(yy);
 
     log.error("ruleDetails: " + JSON.stringify(ruleDetails, null, 3));
-    let targetNames0: string[] = getTargetNames(ruleDetails, "targets0");
-    let targetNames1: string[] = getTargetNames(ruleDetails, "targets1");
-    let targetNames2: string[] = getTargetNames(ruleDetails, "targets2");
-    let targetNames3: string[] = getTargetNames(ruleDetails, "targets3");
-    let inlinerecipe: string = getString(ruleDetails, "irecipe");
+    let targetsExpression: string = getStringOpt(ruleDetails, "targets");
+    let prerequisitesExpression: string = getStringOpt(ruleDetails, "prerequisites");
+    let targetPatternExpression: string = getStringOpt(ruleDetails, "targetPattern");
+    let prereqPatternExpression: string = getStringOpt(ruleDetails, "prereqPattern");
+    let orderOnliesExpression: string = getStringOpt(ruleDetails, "orderOnlies");
+    let inlinerecipeExpression: string = getStringOpt(ruleDetails, "irecipe");
 
-    builder.startRule(location, basedir, targetNames0, targetNames1, targetNames2, targetNames3, inlinerecipe);
+    builder.startRule(location, basedir, targetsExpression, prerequisitesExpression, targetPatternExpression, prereqPatternExpression, orderOnliesExpression, inlinerecipeExpression);
 }
 
 export function recipeLine(
@@ -74,6 +75,7 @@ export function defineVariable(yy, jisonLocation, vardef)
     
     if (kind==='recursive')
     {
+        //console.error("Recursive " + name + " = " + value);
         return builder.defineRecursiveVariable(name, value);
     }
     
@@ -92,7 +94,7 @@ export function defineVariable(yy, jisonLocation, vardef)
         return builder.defineShellVariable(name, value);
     }
 
-    console.error   ("Unknown variable definition kind '" + kind + "' (supported kinds: 'simple', 'recursive', 'append', 'conditional' and 'shell')");
+    //console.error   ("Unknown variable definition kind '" + kind + "' (supported kinds: 'simple', 'recursive', 'append', 'conditional' and 'shell')");
     
     // console.error("VARIABLE " + name + " = '" + value + "'");
     // this.variableManager.defineSimpleVariable(name, value);
@@ -137,6 +139,20 @@ function getString(obj, propname): string
     
     if (obj[propname] == undefined)
         throw new Error("Makefile syntax error: property " + propname + " not defined on " + JSON.stringify(obj, null, 3));    
+
+    if (typeof(obj[propname]) !== 'string')
+        throw new Error("Makefile syntax error: property " + propname + " is not a string");    
+
+    return (obj[propname] as string);
+}
+
+function getStringOpt(obj, propname): string
+{
+    if (!obj)
+        throw new Error("");
+    
+    if (!obj[propname])
+        return null;
 
     if (typeof(obj[propname]) !== 'string')
         throw new Error("Makefile syntax error: property " + propname + " is not a string");    

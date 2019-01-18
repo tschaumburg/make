@@ -6,6 +6,7 @@ import { IPlan, IFileRef, IFilePlan} from "./plan";
 import { FileRef, Action, createPlan, FilePlan } from "./plan-impl";
 import { IParseResult } from "../../parser/result";
 import { resolve } from "dns";
+import { IVariableManager } from "../../variables";
 
 export interface IPlanBuilder
 {
@@ -21,7 +22,11 @@ export class PlanBuilder implements IPlanBuilder
     readonly goals: IFilePlan[] = [];
     private readonly fileplans: { [fullname: string]: FilePlan } = {};
 
-    constructor(private readonly basedir: string, private readonly makefileNames: string[])
+    constructor(
+        private readonly basedir: string, 
+        private readonly makefileNames: string[],
+        private readonly variablemanager: IVariableManager
+    )
     {
     }
     
@@ -66,7 +71,7 @@ export class PlanBuilder implements IPlanBuilder
 
     build(): IPlan 
     {
-        return createPlan(this.basedir, this.makefileNames, this.goals, this.fileplans);
+        return createPlan(this.basedir, this.variablemanager, this.makefileNames, this.goals, this.fileplans);
     }
 
     public existingPlan(filename: string): IFilePlan

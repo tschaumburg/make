@@ -1,13 +1,15 @@
 import * as path from "path";
 import * as options from '../../../options';
 import * as log from '../../../makelog';
-import { IVariableManager, createVariablemanager } from './variable-manager';
+import { IVariableManager, createVariablemanager } from '../../../variables';
 import { IParseResultBuilder, IParseLocation, IParseContext } from '../result-builder';
 import { ParseResultImpl } from './result-impl';
 import { Target, TargetName } from '../targets';
 import { IParseResult } from '../result';
 import { BaseRule, IRuleSet, createRuleset } from '../rules';
 import { exists } from "fs";
+import { stringify } from "querystring";
+import { resolve } from "dns";
 
 export interface IBuilderOptions
 {
@@ -21,7 +23,7 @@ export function createResultBuilder(builderOptions?: IBuilderOptions): IParseRes
     builderOptions.importedVariables = builderOptions.importedVariables || process.env;
     // let basedir = path.dirname(path.resolve(this.makefilename));
     // importedVariables = process.env;
-    return new ParseResultBuilderImpl(builderOptions.basedir, builderOptions.importedVariables);
+    return new ParseResultBuilderImpl(builderOptions.basedir, createVariablemanager(builderOptions.importedVariables));
 }
 
 class ParseResultBuilderImpl implements IParseResultBuilder
@@ -29,16 +31,14 @@ class ParseResultBuilderImpl implements IParseResultBuilder
     private _parseContext: IParseContext = { vpath: []}
     private readonly rules: IRuleSet;
     private readonly makefileNames: string[] = [];
-    protected readonly variableManager: IVariableManager;
     private defaultTarget: TargetName;
 
     constructor(
         private readonly basedir: string,
-        private readonly importedVariables: { [name: string]: string }
+        protected readonly variableManager: IVariableManager
     )
     {
         this.rules = createRuleset(); // createManager();
-        this.variableManager = createVariablemanager(importedVariables);
     };
 
     public startMakefile(fullMakefileName: string): void
@@ -55,11 +55,12 @@ class ParseResultBuilderImpl implements IParseResultBuilder
     public startRule(
         location: IParseLocation,
         dirname: string,
-        targets0: string[],
-        targets1: string[], 
-        targets2: string[], 
-        targets3: string[], 
-        inlineRecipe: string
+        targetsExpression: string,
+        prerequisitesExpression: string,
+        targetPatternExpression: string,
+        prereqPatternExpression: string,
+        orderOnliesExpression: string,
+        inlineRecipeExpression: string
     ): void
     {
         this.currentRule = 
@@ -67,14 +68,28 @@ class ParseResultBuilderImpl implements IParseResultBuilder
                 location, 
                 this._parseContext,
                 path.resolve(process.cwd(), dirname), 
-                targets0, 
-                targets1, 
-                targets2, 
-                targets3, 
-                inlineRecipe
+                this.expandtargets(targetsExpression),
+                this.expandtargets(prerequisitesExpression),
+                this.expandtargets(targetPatternExpression),
+                this.expandtargets(prereqPatternExpression),
+                this.expandtargets(orderOnliesExpression),
+                inlineRecipeExpression
             );
 
         this.setDefaultTarget(this.rules.defaultTarget);
+    }
+
+    private expandtargets(targetExpression: string): string[]
+    {
+        if (!targetExpression)
+        {
+            return [];
+        }
+
+        let targetString = this.variableManager.evaluateExpression(targetExpression);
+        let res = targetString.split(/\s+/).filter(t => t!==null && t!==undefined && t.length>0);
+        //console.error(JSON.stringify(targetExpression) + ' => ' + JSON.stringify(res));
+        return res;
     }
 
     public recipeLine(line: string): void
@@ -162,7 +177,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
 
     public expandVariables(value: string): string
     {
-        var res = this.variableManager.resolveVariableReferences(value);
+        var res = this.variableManager.evaluateExpression(value);
         // log.info("Variable manager expanded '" + value + "' to '" + res + "'");
         return res;
     }
@@ -223,7 +238,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
 
         return new ParseResultImpl(
             this.basedir, 
-            this.importedVariables,
+            this.variableManager,
             this.rules.explicitRules,
             this.rules.implicitRules,
             this.rules.staticPatternRules,

@@ -25,10 +25,11 @@ class RuleSet implements IRuleSet
         location: IParseLocation,
         context: IParseContext,
         basedir: string,
-        targets0: string[],
-        targets1: string[], 
-        targets2: string[], 
-        targets3: string[],
+        targets: string[],
+        prerequisites: string[],
+        targetPattern: string[],
+        prereqPattern: string[],
+        orderOnlies: string[],
         inlineRecipe: string
     ): BaseRule
     {
@@ -39,7 +40,7 @@ class RuleSet implements IRuleSet
         //     "targets3 = " + targets3 + "\n" 
         // );
 
-        if (!!targets2 && targets2.length > 0)
+        if (!!targetPattern && targetPattern.length > 0)
         {
             // Static pattern rule:
             let staticPatternRule =
@@ -47,10 +48,10 @@ class RuleSet implements IRuleSet
                     location,
                     context,
                     basedir,
-                    targets0,
-                    targets1,
-                    targets2, 
-                    targets3, 
+                    targets,
+                    targetPattern,
+                    prereqPattern, 
+                    orderOnlies, 
                     inlineRecipe
                 );
             
@@ -62,7 +63,7 @@ class RuleSet implements IRuleSet
             this.staticPatternRules.push(staticPatternRule);
             return staticPatternRule;
         }
-        else if (targets0.some(t => TargetPatternFactory.isPattern(t)))
+        else if (targets.some(t => TargetPatternFactory.isPattern(t)))
         {
             // Implicit pattern rule:
             let implicitRule =
@@ -70,9 +71,9 @@ class RuleSet implements IRuleSet
                     location,
                     context,
                     basedir,
-                    targets0, 
-                    targets1, 
-                    targets3,
+                    targets, 
+                    prerequisites, 
+                    orderOnlies,
                     inlineRecipe
                 );
             this.implicitRules.push(implicitRule);
@@ -97,9 +98,9 @@ class RuleSet implements IRuleSet
                     location,
                     context,
                     basedir,
-                    targets0, 
-                    targets1, 
-                    targets3, 
+                    targets, 
+                    prerequisites, 
+                    orderOnlies, 
                     inlineRecipe 
                 );
             

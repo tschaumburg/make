@@ -5,7 +5,6 @@ import { IPlan, IFileRef, IFilePlan } from "./plan";
 import { PlanBuilder, IPlanBuilder } from "./plan/plan-builder";
 import { MakeOptions } from "../options";
 import { PlanManager } from "./managers";
-import { exists } from "fs";
 
 export interface IPlanner
 {
@@ -35,8 +34,8 @@ export class Planner implements IPlanner
         let parseResult = this.parser.parse();
         let basedir = parseResult.basedir;
         //console.log("PARSING - starting a new context");
-        let builder = new PlanBuilder(basedir, parseResult.makefileNames);
-        let planManager = new PlanManager(builder, parseResult.explicitRules);
+        let builder = new PlanBuilder(basedir, parseResult.makefileNames, parseResult.variablemanager);
+        let planManager = new PlanManager(builder, parseResult.explicitRules, parseResult.variablemanager);
 
         for (var target of parseResult.goals)
         {

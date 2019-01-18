@@ -1,0 +1,1 @@
+export { IVariableManager, createVariablemanager} from "./variable-manager";

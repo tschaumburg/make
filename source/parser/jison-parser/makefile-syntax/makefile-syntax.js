@@ -72,12 +72,12 @@
   }
 */
 var makefileSyntax = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,12],$V1=[2,9],$V2=[1,5],$V3=[1,6],$V4=[1,9],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,20],$Ve=[1,21],$Vf=[2,16],$Vg=[1,37],$Vh=[5,12,15,18,20,21],$Vi=[2,18],$Vj=[1,47],$Vk=[1,49];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,12],$V1=[2,9],$V2=[1,5],$V3=[1,6],$V4=[1,9],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,20],$Ve=[1,21],$Vf=[5,12,22],$Vg=[5,12,19,22];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"makefile":3,"statements":4,"EOF2":5,"statement":6,"rulestatement":7,"RECIPE_LINE":8,"INCLUDE":9,"variable_definition":10,"emptyline":11,"EOL":12,"RULESTART":13,"targetlist":14,"COLON":15,"targets2":16,"targets3":17,"PIPE":18,"inline_recipe_definition":19,"TARGET":20,"SEMICOLON":21,"INLINE_RECIPE":22,"inline_variable_definition":23,"multiline_variable_definition":24,"VARIABLE_SET_SIMPLE":25,"VARIABLE_VALUE":26,"VARIABLE_SET_RECURSIVE":27,"VARIABLE_SET_APPEND":28,"VARIABLE_SET_CONDITIONAL":29,"VARIABLE_SET_SHELL":30,"MULTILINE_VARIABLE_SET_SIMPLE":31,"MULTILINE_VARIABLE_VALUE":32,"MULTILINE_VARIABLE_END":33,"MULTILINE_VARIABLE_SET_RECURSIVE":34,"MULTILINE_VARIABLE_SET_APPEND":35,"MULTILINE_VARIABLE_SET_CONDITIONAL":36,"MULTILINE_VARIABLE_SET_SHELL":37,"optional_recipes":38,"recipes":39,"test":40,"dotest":41,"evt":42,"VARSTART":43,"COLON_TARGETS":44,"TARGETS":45,"PIPE_TARGETS":46,"SPC":47,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF2",8:"RECIPE_LINE",9:"INCLUDE",12:"EOL",13:"RULESTART",15:"COLON",18:"PIPE",20:"TARGET",21:"SEMICOLON",22:"INLINE_RECIPE",25:"VARIABLE_SET_SIMPLE",26:"VARIABLE_VALUE",27:"VARIABLE_SET_RECURSIVE",28:"VARIABLE_SET_APPEND",29:"VARIABLE_SET_CONDITIONAL",30:"VARIABLE_SET_SHELL",31:"MULTILINE_VARIABLE_SET_SIMPLE",32:"MULTILINE_VARIABLE_VALUE",33:"MULTILINE_VARIABLE_END",34:"MULTILINE_VARIABLE_SET_RECURSIVE",35:"MULTILINE_VARIABLE_SET_APPEND",36:"MULTILINE_VARIABLE_SET_CONDITIONAL",37:"MULTILINE_VARIABLE_SET_SHELL",43:"VARSTART",44:"COLON_TARGETS",45:"TARGETS",46:"PIPE_TARGETS",47:"SPC"},
-productions_: [0,[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[4,3],[4,1],[11,0],[7,5],[16,3],[16,1],[17,3],[17,1],[14,2],[14,0],[19,2],[19,0],[10,1],[10,1],[23,2],[23,2],[23,2],[23,2],[23,2],[24,3],[24,3],[24,3],[24,3],[24,3],[38,1],[38,0],[39,2],[39,1],[40,1],[41,2],[41,0],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1]],
+symbols_: {"error":2,"makefile":3,"statements":4,"EOF2":5,"statement":6,"rulestatement":7,"RECIPE_LINE":8,"INCLUDE":9,"variable_definition":10,"emptyline":11,"EOL":12,"RULESTART":13,"target_prereq":14,"orderonlies":15,"inline_recipe_definition":16,"TARGET_PREREQ":17,"TARGET_PATTERN_PATTERN":18,"ORDERONLIES":19,"targetlist":20,"TARGET":21,"INLINE_RECIPE":22,"inline_variable_definition":23,"multiline_variable_definition":24,"VARIABLE_SET_SIMPLE":25,"VARIABLE_VALUE":26,"VARIABLE_SET_RECURSIVE":27,"VARIABLE_SET_APPEND":28,"VARIABLE_SET_CONDITIONAL":29,"VARIABLE_SET_SHELL":30,"MULTILINE_VARIABLE_SET_SIMPLE":31,"MULTILINE_VARIABLE_VALUE":32,"MULTILINE_VARIABLE_END":33,"MULTILINE_VARIABLE_SET_RECURSIVE":34,"MULTILINE_VARIABLE_SET_APPEND":35,"MULTILINE_VARIABLE_SET_CONDITIONAL":36,"MULTILINE_VARIABLE_SET_SHELL":37,"optional_recipes":38,"recipes":39,"test":40,"dotest":41,"evt":42,"VARSTART":43,"PIPE":44,"COLON_TARGETS":45,"TARGETS":46,"PIPE_TARGETS":47,"SPC":48,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF2",8:"RECIPE_LINE",9:"INCLUDE",12:"EOL",13:"RULESTART",17:"TARGET_PREREQ",18:"TARGET_PATTERN_PATTERN",19:"ORDERONLIES",21:"TARGET",22:"INLINE_RECIPE",25:"VARIABLE_SET_SIMPLE",26:"VARIABLE_VALUE",27:"VARIABLE_SET_RECURSIVE",28:"VARIABLE_SET_APPEND",29:"VARIABLE_SET_CONDITIONAL",30:"VARIABLE_SET_SHELL",31:"MULTILINE_VARIABLE_SET_SIMPLE",32:"MULTILINE_VARIABLE_VALUE",33:"MULTILINE_VARIABLE_END",34:"MULTILINE_VARIABLE_SET_RECURSIVE",35:"MULTILINE_VARIABLE_SET_APPEND",36:"MULTILINE_VARIABLE_SET_CONDITIONAL",37:"MULTILINE_VARIABLE_SET_SHELL",43:"VARSTART",44:"PIPE",45:"COLON_TARGETS",46:"TARGETS",47:"PIPE_TARGETS",48:"SPC"},
+productions_: [0,[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[4,3],[4,1],[11,0],[7,4],[14,1],[14,1],[15,1],[15,0],[20,2],[20,0],[16,1],[16,0],[10,1],[10,1],[23,2],[23,2],[23,2],[23,2],[23,2],[24,3],[24,3],[24,3],[24,3],[24,3],[38,1],[38,0],[39,2],[39,1],[40,1],[41,2],[41,0],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1],[42,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -103,42 +103,43 @@ break;
 case 10:
 
       this.$ = {};
-      this.$.targets0 = $$[$0-3];
-      this.$.targets1 = $$[$0-1];
-      this.$.targets2 = $$[$0].targets2;
-      this.$.targets3 = $$[$0].targets3;
+
+      this.$.targets = $$[$0-2].targets;
+      this.$.prerequisites = $$[$0-2].prerequisites;
+      this.$.targetPattern = $$[$0-2].targetPattern;
+      this.$.prereqPattern = $$[$0-2].prereqPattern;
+      this.$.orderOnlies = $$[$0-1].orderOnlies;
       this.$.irecipe = $$[$0].irecipe;
 	
 break;
 case 11:
 
-      this.$ = {};
-      this.$.targets2 = $$[$0-1];
-      this.$.targets3 = $$[$0].targets3;
-      this.$.irecipe = $$[$0].irecipe;
-	 
+      var target_prereq = $$[$0].split(':');
+       this.$ = {};
+      this.$.targets = target_prereq[0];
+      this.$.prerequisites = target_prereq[1];
+    
 break;
 case 12:
 
-      this.$ = {};
-      this.$.targets2 = [];
-      this.$.targets3 = $$[$0].targets3;
-      this.$.irecipe = $$[$0].irecipe;
- 	 
+       this.$ = {};
+      var target_pattern_pattern = $$[$0].split(':');
+      this.$.targets = target_pattern_pattern[0];
+      this.$.targetPattern = target_pattern_pattern[1];
+      this.$.prereqPattern = target_pattern_pattern[2];
+    
 break;
 case 13:
 
-      this.$ = {};
-      this.$.irecipe = $$[$0];
-      this.$.targets3 = $$[$0-1];
-	 
+       this.$ = {};
+       this.$.orderOnlies = $$[$0];
+    
 break;
 case 14:
 
-      this.$ = {};
-      this.$.irecipe = $$[$0];
-      this.$.targets3 = [];
-	 
+       this.$ = {};
+       this.$.orderOnlies = null;
+    
 break;
 case 15:
 
@@ -152,12 +153,14 @@ case 16:
 break;
 case 17:
 
-      this.$ = $$[$0];
+       this.$ = {};
+      this.$.irecipe = $$[$01];
 	 
 break;
 case 18:
 
-      this.$ = "";
+       this.$ = {};
+      this.$.irecipe = "";
 	 
 break;
 case 19: case 20:
@@ -170,6 +173,7 @@ case 21:
 break;
 case 22:
 
+      //console.error("parser recursive assign " + $$[$0]);
       this.$ = { kind: 'recursive', name: $$[$0-1], value: $$[$0] }
    
 break;
@@ -229,7 +233,7 @@ case 37:
       yy.preprocessor = { expandVariables: function (s) { console.error("REPLACING"); return "value_of_" + s; }}
    
 break;
-case 38:
+case 38: case 44:
 
 	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  
@@ -259,119 +263,119 @@ case 43:
 	     console.error("RECIPE_LINE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 44:
-
-	     console.error("SEMICOLON (" + JSON.stringify(yytext) + ")");
-	  
-break;
 case 45:
 
-	     console.error("COLON (" + JSON.stringify(yytext) + ")");
+	     console.error("TARGET_PREREQ (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 46:
 
-	     console.error("PIPE (" + JSON.stringify(yytext) + ")");
-	  
+	     console.error("TARGET_PATTERN_PATTERN (" + JSON.stringify(yytext) + ")");
+     
 break;
 case 47:
 
-	     console.error("COLON_TARGETS (" + JSON.stringify(yytext) + ")");
+	     console.error("PIPE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 48:
 
-	     console.error("TARGETS (" + JSON.stringify(yytext) + ")");
+	     console.error("COLON_TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 49:
 
-	     console.error("PIPE_TARGETS (" + JSON.stringify(yytext) + ")");
+	     console.error("TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 50:
 
-	     console.error("EOL (" + JSON.stringify(yytext) + ")");
+	     console.error("PIPE_TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 51:
 
-	     console.error("SPC (" + JSON.stringify(yytext) + ")");
+	     console.error("EOL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 52:
 
-	     console.error("VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
+	     console.error("SPC (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 53:
 
-	     console.error("VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
+	     console.error("VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 54:
 
-	     console.error("VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
+	     console.error("VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 55:
 
-	     console.error("VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
+	     console.error("VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 56:
 
-	     console.error("VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
+	     console.error("VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 57:
 
-	     console.error("VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
+	     console.error("VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 58:
 
-	     console.error("MULTILINE_VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
+	     console.error("VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 59:
 
-	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
+	     console.error("MULTILINE_VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 60:
 
-	     console.error("MULTILINE_VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
+	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 61:
 
-	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
+	     console.error("MULTILINE_VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 62:
 
-	     console.error("MULTILINE_VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
+	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 63:
 
-	     console.error("MULTILINE_VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
+	     console.error("MULTILINE_VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 64:
 
-	     console.error("MULTILINE_VARIABLE_END (" + JSON.stringify(yytext) + ")");
+	     console.error("MULTILINE_VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  
 break;
 case 65:
+
+	     console.error("MULTILINE_VARIABLE_END (" + JSON.stringify(yytext) + ")");
+	  
+break;
+case 66:
 
 	     console.error("EOF2: '" + JSON.stringify(JSON.stringify(yytext)) + "', state: " + yy.lexer.topState());
 	  
 break;
 }
 },
-table: [o($V0,$V1,{3:1,4:2,6:3,7:4,10:7,11:8,23:10,24:11,8:$V2,9:$V3,13:$V4,25:$V5,27:$V6,28:$V7,29:$V8,30:$V9,31:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve}),{1:[3]},{5:[1,22],12:[1,23]},o($V0,[2,8]),o($V0,[2,2]),o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),o([15,20],$Vf,{14:24}),o($V0,[2,19]),o($V0,[2,20]),{26:[1,25]},{26:[1,26]},{26:[1,27]},{26:[1,28]},{26:[1,29]},{32:[1,30]},{32:[1,31]},{32:[1,32]},{32:[1,33]},{32:[1,34]},{1:[2,1]},o($V0,$V1,{7:4,10:7,11:8,23:10,24:11,6:35,8:$V2,9:$V3,13:$V4,25:$V5,27:$V6,28:$V7,29:$V8,30:$V9,31:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve}),{15:[1,36],20:$Vg},o($V0,[2,21]),o($V0,[2,22]),o($V0,[2,23]),o($V0,[2,24]),o($V0,[2,25]),{33:[1,38]},{33:[1,39]},{33:[1,40]},{33:[1,41]},{33:[1,42]},o($V0,[2,7]),o($Vh,$Vf,{14:43}),o($Vh,[2,15]),o($V0,[2,26]),o($V0,[2,27]),o($V0,[2,28]),o($V0,[2,29]),o($V0,[2,30]),o($V0,$Vi,{16:44,17:46,19:48,15:[1,45],18:$Vj,20:$Vg,21:$Vk}),o($V0,[2,10]),o([5,12,18,20,21],$Vf,{14:50}),o($V0,[2,12]),o([5,12,20,21],$Vf,{14:51}),o($V0,[2,14]),{22:[1,52]},o($V0,$Vi,{19:48,17:53,18:$Vj,20:$Vg,21:$Vk}),o($V0,$Vi,{19:54,20:$Vg,21:$Vk}),o($V0,[2,17]),o($V0,[2,11]),o($V0,[2,13])],
+table: [o($V0,$V1,{3:1,4:2,6:3,7:4,10:7,11:8,23:10,24:11,8:$V2,9:$V3,13:$V4,25:$V5,27:$V6,28:$V7,29:$V8,30:$V9,31:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve}),{1:[3]},{5:[1,22],12:[1,23]},o($V0,[2,8]),o($V0,[2,2]),o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{14:24,17:[1,25],18:[1,26]},o($V0,[2,19]),o($V0,[2,20]),{26:[1,27]},{26:[1,28]},{26:[1,29]},{26:[1,30]},{26:[1,31]},{32:[1,32]},{32:[1,33]},{32:[1,34]},{32:[1,35]},{32:[1,36]},{1:[2,1]},o($V0,$V1,{7:4,10:7,11:8,23:10,24:11,6:37,8:$V2,9:$V3,13:$V4,25:$V5,27:$V6,28:$V7,29:$V8,30:$V9,31:$Va,34:$Vb,35:$Vc,36:$Vd,37:$Ve}),o($Vf,[2,14],{15:38,19:[1,39]}),o($Vg,[2,11]),o($Vg,[2,12]),o($V0,[2,21]),o($V0,[2,22]),o($V0,[2,23]),o($V0,[2,24]),o($V0,[2,25]),{33:[1,40]},{33:[1,41]},{33:[1,42]},{33:[1,43]},{33:[1,44]},o($V0,[2,7]),o($V0,[2,18],{16:45,22:[1,46]}),o($Vf,[2,13]),o($V0,[2,26]),o($V0,[2,27]),o($V0,[2,28]),o($V0,[2,29]),o($V0,[2,30]),o($V0,[2,10]),o($V0,[2,17])],
 defaultActions: {22:[2,1]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
@@ -866,7 +870,9 @@ function trimVarname(src)
 function trimVarvalue(src)
 {
     //console.error("VAL " + src);
-    return src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
+    var res = src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
+    //console.error("RES " + res);
+    return res;
 }
 
 function trimText(src, regex1, regex2)
@@ -942,22 +948,17 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0: 
                                 this.initDebug();
-                                var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yy_.yytext);
+                                //var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yy_.yytext);
                                 //console.error("...preprocessor: " + JSON.stringify(yy_.yytext) + " ==> " + JSON.stringify(varValue)); 
-                                this.unput(varValue);
+                                this.unput(yy_.yytext); //varValue);
                                 this.pushState("PREPROCESSED");
                             
 break;
-case 1: 
-                                //this.initDebug();
-                                console.error("...preprocessor: " + JSON.stringify(yy_.yytext) + " => unchanged"); 
-                                this.unput(yy_.yytext);
-                                this.pushState("PREPROCESSED"); 
-                            
+case 1: this.gotoState("COMMENT");                          
 break;
-case 2: this.gotoState("COMMENT");                          
+case 2: this.gotoState("INCLUDE"); 
 break;
-case 3: this.gotoState("INCLUDE"); 
+case 3: this.gotoState("VAR_DEF"); 
 break;
 case 4: this.gotoState("VAR_DEF"); 
 break;
@@ -969,81 +970,81 @@ case 7: this.gotoState("VAR_DEF");
 break;
 case 8: this.gotoState("VAR_DEF"); 
 break;
-case 9: this.gotoState("VAR_DEF"); 
+case 9: this.gotoState("MULTI_VAR_DEF"); 
 break;
-case 10: this.gotoState("MULTI_VAR_DEF"); 
+case 10: this.gotoState("RULE");           return tokens.RULESTART; 
 break;
-case 11: this.gotoState("RULE");           return tokens.RULESTART; 
+case 11: this.gotoState("RECIPE"); 
 break;
-case 12: this.gotoState("RECIPE"); 
+case 12: this.popState(); return tokens.EOL; 
 break;
-case 13: this.popState(); return tokens.EOL; 
+case 13:                  return tokens.TARGET_PATTERN_PATTERN; 
 break;
-case 14:                  return tokens.RECIPE_LINE; 
+case 14:                  return tokens.TARGET_PREREQ; 
 break;
-case 15: this.popState(); return tokens.EOL; 
+case 15:                  return tokens.ORDERONLIES; 
 break;
-case 16: this.popState(); return tokens.EOL; 
+case 16:                  return tokens.INLINE_RECIPE; 
 break;
-case 17: this.gotoState("INCLUDE_NAME"); 
+case 17: this.popState(); return tokens.EOL; 
 break;
-case 18: return tokens.INCLUDE; 
+case 18: this.popState(); return tokens.EOL; 
 break;
-case 19: return tokens.INCLUDE; 
+case 19:
 break;
-case 20: return tokens.INCLUDE; 
+case 20: this.popState(); return tokens.INLINE_RECIPE; 
 break;
-case 21: this.popState(); return tokens.EOL; 
+case 21:                  return tokens.RECIPE_LINE; 
 break;
-case 22: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_CONDITIONAL; 
+case 22: this.popState(); return tokens.EOL; 
 break;
-case 23: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
+case 23: this.popState(); return tokens.EOL; 
 break;
-case 24: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
+case 24: this.gotoState("INCLUDE_NAME"); 
 break;
-case 25: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_APPEND; 
+case 25: return tokens.INCLUDE; 
 break;
-case 26: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SHELL; 
+case 26: return tokens.INCLUDE; 
 break;
-case 27: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_RECURSIVE; 
+case 27: return tokens.INCLUDE; 
 break;
-case 28: this.gotoState("VAR_DEF_END"); yy_.yytext = trimVarvalue(yy_.yytext); return tokens.VARIABLE_VALUE; 
+case 28: this.popState(); return tokens.EOL; 
 break;
-case 29: this.popState();                                              return tokens.EOL; 
+case 29: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_CONDITIONAL; 
 break;
-case 30: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
+case 30: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
 break;
-case 31: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
+case 31: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SIMPLE; 
 break;
-case 32: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; 
+case 32: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_APPEND; 
 break;
-case 33: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
+case 33: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_SHELL; 
 break;
-case 34: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
+case 34: this.gotoState("VAR_VALUE");   yy_.yytext = trimVarname(yy_.yytext);  return tokens.VARIABLE_SET_RECURSIVE; 
 break;
-case 35: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; 
+case 35: this.gotoState("VAR_DEF_END"); yy_.yytext = trimVarvalue(yy_.yytext); return tokens.VARIABLE_VALUE; 
 break;
-case 36: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; 
+case 36: this.popState();                                              return tokens.EOL; 
 break;
-case 37: return tokens.MULTILINE_VARIABLE_VALUE; 
+case 37: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
 break;
-case 38: this.popState(); return tokens.MULTILINE_VARIABLE_END; 
+case 38: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; 
 break;
-case 39:                            return tokens.COLON; 
+case 39: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; 
 break;
-case 40:                            return tokens.PIPE; 
+case 40: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
 break;
-case 41: this.gotoState("IRECIPE"); return tokens.SEMICOLON; 
+case 41: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; 
 break;
-case 42:                            return tokens.TARGET; 
+case 42: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; 
 break;
-case 43: this.popState();           return tokens.EOL; 
+case 43: this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; 
 break;
-case 44: this.popState();           return tokens.EOL; 
+case 44: return tokens.MULTILINE_VARIABLE_VALUE; 
 break;
-case 45:
+case 45: this.popState(); return tokens.MULTILINE_VARIABLE_END; 
 break;
-case 46: this.popState(); return tokens.INLINE_RECIPE; 
+case 46: return tokens.EOF2; 
 break;
 case 47: return tokens.EOF2; 
 break;
@@ -1057,14 +1058,12 @@ case 51: return tokens.EOF2;
 break;
 case 52: return tokens.EOF2; 
 break;
-case 53: return tokens.EOF2; 
-break;
-case 54: /*console.error("MISMATCH: '" + yy_.yytext + "', state: " + this.topState());*/ 
+case 53: /*console.error("MISMATCH: '" + yy_.yytext + "', state: " + this.topState());*/ 
 break;
 }
 },
-rules: [/^(?:^[^\r\n]*((?:[\r]?[\n])))/,/^(?:^.*((?:[\r]?[\n])))/,/^(?:(?=^#))/,/^(?:(?=^include))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?::=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?:=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\+=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\?=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?!=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?=))/,/^(?:(?=^define([ \t]*)))/,/^(?:(?=^((?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([ \t]*))*([ \t]*)))([ \t]*)?:))/,/^(?:(?=^[ \t]+((?:[^\n\r]*))((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^[ \t]+((?:[^\n\r]*))(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^#[^\n\r]*((?:[\r]?[\n])))/,/^(?:^include([ \t]*))/,/^(?:((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+)))))/,/^(?:'((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))')/,/^(?:"((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))")/,/^(?:([ \t]*)?((?:[\r]?[\n])))/,/^(?:^((?:[^\s=:?+!])+)\s*\?=)/,/^(?:^((?:[^\s=:?+!])+)\s*::=)/,/^(?:^((?:[^\s=:?+!])+)\s*:=)/,/^(?:^((?:[^\s=:?+!])+)\s*\+=)/,/^(?:^((?:[^\s=:?+!])+)\s*!=)/,/^(?:^((?:[^\s=:?+!])+)\s*=)/,/^(?:[^\r\n]*(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?:=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?::=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\+=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?!=[ \t]*[\n])/,/^(?:^(?!enddef)[^\n]*\n)/,/^(?:enddef\s*\n)/,/^(?:[:])/,/^(?:[|])/,/^(?:[;])/,/^(?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))/,/^(?:[#].*((?:[\r]?[\n])))/,/^(?:((?:[\r]?[\n])))/,/^(?:[ \t]+)/,/^(?:((?:[^\n\r]*)))/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,47,49,54],"inclusive":true},"PREPROCESSED":{"rules":[2,3,4,5,6,7,8,9,10,11,12,13,48,49,54],"inclusive":true},"RULE":{"rules":[39,40,41,42,43,44,45,49,50,54],"inclusive":true},"RECIPE":{"rules":[14,15,49,54],"inclusive":true},"INCLUDE":{"rules":[17,49,54],"inclusive":true},"COMMENT":{"rules":[16,49,54],"inclusive":true},"VAR_DEF":{"rules":[22,23,24,25,26,27,49,53,54],"inclusive":true},"VAR_VALUE":{"rules":[28,49,54],"inclusive":true},"VAR_DEF_END":{"rules":[29,49,54],"inclusive":true},"MULTI_VAR_DEF":{"rules":[30,31,32,33,34,35,36,49,52,54],"inclusive":true},"MULTI_VAR_DEF_VALUE":{"rules":[37,38,49,54],"inclusive":true},"IRECIPE":{"rules":[46,49,51,54],"inclusive":true},"INCLUDE_NAME":{"rules":[18,19,20,21,49,54],"inclusive":true}}
+rules: [/^(?:^[^\r\n]*((?:[\r]?[\n])))/,/^(?:(?=^#))/,/^(?:(?=^include))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?::=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?:=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\+=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?\?=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?!=))/,/^(?:(?=^((?:[^\s=:?+!])+)([ \t]*)?=))/,/^(?:(?=^define([ \t]*)))/,/^(?:(?=^((?:(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([ \t]*))*([ \t]*)))([ \t]*)?:))/,/^(?:(?=^[ \t]+((?:[^\n\r]*))((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^([^|;#\r\n]*)[:]([^|;#\r\n]*)[:]([^|;#\r\n]*))/,/^(?:^([^|;#\r\n]*)[:]([^|;#\r\n]*))/,/^(?:[|]([^|;#\r\n]*))/,/^(?:[;]([^|;#\r\n]*))/,/^(?:[#].*((?:[\r]?[\n])))/,/^(?:((?:[\r]?[\n])))/,/^(?:[ \t]+)/,/^(?:((?:[^\n\r]*)))/,/^(?:^[ \t]+((?:[^\n\r]*))(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^#[^\n\r]*((?:[\r]?[\n])))/,/^(?:^include([ \t]*))/,/^(?:((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+)))))/,/^(?:'((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))')/,/^(?:"((?:((?:([\/\\])*(?:((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))([\/\\])+)*))?((?:(?:([^\r\n\s:#|:\\])|((?:\\[\x20:\t|\\])))+))))")/,/^(?:([ \t]*)?((?:[\r]?[\n])))/,/^(?:^((?:[^\s=:?+!])+)\s*\?=)/,/^(?:^((?:[^\s=:?+!])+)\s*::=)/,/^(?:^((?:[^\s=:?+!])+)\s*:=)/,/^(?:^((?:[^\s=:?+!])+)\s*\+=)/,/^(?:^((?:[^\s=:?+!])+)\s*!=)/,/^(?:^((?:[^\s=:?+!])+)\s*=)/,/^(?:[^\r\n]*(?=((?:[\r]?[\n]))))/,/^(?:((?:[\r]?[\n])))/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\?=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?:=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?::=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?\+=[ \t]*[\n])/,/^(?:^define[ \t]+((?:[^\s=:?+!])+)([ \t]*)?!=[ \t]*[\n])/,/^(?:^(?!enddef)[^\n]*\n)/,/^(?:enddef\s*\n)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,46,48,53],"inclusive":true},"PREPROCESSED":{"rules":[1,2,3,4,5,6,7,8,9,10,11,12,47,48,53],"inclusive":true},"RULE":{"rules":[13,14,15,16,17,18,19,48,49,53],"inclusive":true},"RECIPE":{"rules":[21,22,48,53],"inclusive":true},"INCLUDE":{"rules":[24,48,53],"inclusive":true},"COMMENT":{"rules":[23,48,53],"inclusive":true},"VAR_DEF":{"rules":[29,30,31,32,33,34,48,52,53],"inclusive":true},"VAR_VALUE":{"rules":[35,48,53],"inclusive":true},"VAR_DEF_END":{"rules":[36,48,53],"inclusive":true},"MULTI_VAR_DEF":{"rules":[37,38,39,40,41,42,43,48,51,53],"inclusive":true},"MULTI_VAR_DEF_VALUE":{"rules":[44,45,48,53],"inclusive":true},"IRECIPE":{"rules":[20,48,50,53],"inclusive":true},"INCLUDE_NAME":{"rules":[25,26,27,28,48,53],"inclusive":true}}
 });
 return lexer;
 })();

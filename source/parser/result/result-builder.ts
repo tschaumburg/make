@@ -7,11 +7,12 @@ export interface IParseResultBuilder
     startRule(
         location: IParseLocation,
         dirname: string,
-        targets0: string[],
-        targets1: string[],
-        targets2: string[],
-        targets3: string[],
-        inlineRecipe: string
+        targetsExpression: string,
+        prerequisitesExpression: string,
+        targetPatternExpression: string,
+        prereqPatternExpression: string,
+        orderOnliesExpression: string,
+        inlineRecipeExpression: string
     ): void;
     recipeLine(line: string): void;
     endRule(): void;

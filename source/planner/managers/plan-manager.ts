@@ -4,12 +4,17 @@ import { IFilePlan, PlanBuilder } from "../plan";
 import { ExplicitRuleHandler } from "./explicit-rule-manger";
 import { ExplicitRule } from "../../parser/result";
 import { FileRef } from "../plan/plan-impl";
+import { IVariableManager } from '../../variables';
 
 export class PlanManager
 {
     private readonly explicitRuleHandler: ExplicitRuleHandler;
     ;
-    constructor(private readonly builder: PlanBuilder, explicitRules: ExplicitRule[])
+    constructor(
+        private readonly builder: PlanBuilder, 
+        explicitRules: ExplicitRule[],
+        private readonly variablemanager: IVariableManager
+    )
     {
         let self = this;
         this.explicitRuleHandler = 

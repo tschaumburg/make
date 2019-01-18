@@ -54,7 +54,7 @@ export class Engine
         //    ALWAYS:
         //
         // 4.7: ...If a target has no prerequisites or recipe
-        // [henceforth a "naked leaf nodes"], and the target
+        // [henceforth a "naked leaf node", tsc], and the target
         // of the rule is a nonexistent file, then make imagines 
         // this target to have been updated whenever its rule
         // is run.This implies that all targets depending on 
@@ -68,7 +68,7 @@ export class Engine
                 //    prefix + "SCHEDULING(" + target.name + "): " +
                 //    target.fullName + " is a naked leaf node"
                 //);
-                return true; //this.plan.addStep(rule.recipe);
+                return true;
             }
         }
 
@@ -90,7 +90,6 @@ export class Engine
             );
             this._execute(fileplan);
             return true;
-            //return this.lan.addStep(rule.recipe, target, []);
         }
 
         // Depth-first recursion:
@@ -160,85 +159,12 @@ export class Engine
             }
         }
 
-        //// Leaf nodes:
-        //// ===========
-        //if (!rule)
-        //{
-        //    if (fs.existsSync(target.fullName))
-        //    {
-        //        return false
-        //    }
-        //    else
-        //    {
-        //        return true;
-        //    }
-        //}
-        //
-        //// If there's no rule for this target (i.e. it's a leaf node),
-        //// there's no way to update it:
-        //if (!rule)
-        //{
-        //    log.info("Planning", prefix + "TESTING(" + target.name + "): returns false");
-        //    return false;
-        //}
-
-        //// First check for updates to any prerequisites:
-
-
-        //// If this is a .phony rule
-        ////    target:
-        ////       recipe
-        //// always run recipe
-        //if (!rule.prerequities || rule.prerequities.length == 0)
-        //{
-        //    if (!!rule.recipe && rule.recipe.steps.length > 0)
-        //    {
-        //        let result = this.plan.addStep(rule.recipe);
-
-        //        if (result)
-        //            log.info("Planning", prefix + "UPDATING " + target.name + " because it doesn't exist");
-
-        //        log.info("Planning", prefix + "TESTING(" + target.name + "): returns " + result);
-        //        return result;
-        //    }
-        //}
-
-        //// Check if the target was already out-of-date BEFORE any
-        //// update action is planned, we might as well put it in 
-        //// the plan already:
-        //let newerPrerequisiteTimes =
-        //    rule.prerequities
-        //        .filter((p) => this.timestamp(p.fullName) >= targetTime);
-
-        //if (newerPrerequisiteTimes.length > 0)
-        //{
-        //    let result = this.plan.addStep(rule.recipe);
-
-        //    if (result)
-        //    {
-        //        log.info("Planning", 
-        //            prefix + "TESTING(" + target.name + "): returns " + result +
-        //            " because prerequisites (" +
-        //            newerPrerequisiteTimes.map(p => p.fullName).join(", ") +
-        //            ") were newer"
-        //        );
-        //    }
-        //    else
-        //    {
-        //        log.info("Planning", 
-        //            prefix + "TESTING(" + target.name + "): returns " + result
-        //        );
-        //    }
-
-        //    return result;
-        //}
-
         return false;
     }
 
     private _execute(target: IFilePlan): void
     {
-        runPlan(target);
+        runPlan(target, this.plan.variablemanager);
     }
 
     private isNakedLeaf(target: IFilePlan): boolean

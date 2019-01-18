@@ -4,6 +4,7 @@ import { MakeOptions } from "../options";
 import { IPlan, IFilePlan } from "../planner/plan";
 import { Engine } from './engine';
 import { TargetName } from '../parser/result';
+import { IVariableManager } from '../variables';
 
 export interface IRunner
 {
@@ -26,7 +27,7 @@ export class Runner implements IRunner
            plan = this.planner.plan(); 
         } while (this.updateMakefiles(plan));
 
-        this._run(plan, plan.goals); // this.options.goals);// plan.goalNames);
+        this._run(plan, plan.goals); 
     }
     
     private _run(plan: IPlan, goals: IFilePlan[]): boolean //Names: string[]): void 

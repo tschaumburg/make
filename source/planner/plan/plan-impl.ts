@@ -2,23 +2,26 @@ import * as fs from 'fs';
 // import { ExplicitRule, TargetPattern, Target, TargetName, Recipe } from "../parser/result";
 import * as exits from "../../return-codes";
 import { IPlan, IFileRef, IAction, IFilePlan } from "./plan";
+import { IVariableManager } from '../../variables';
 // import { ExplicitRuleHandler } from "./explicit-rule-handler";
 // import { FileRefHandler } from "./file-ref-handler";
 
 export function createPlan(
     basedir: string, 
+    variablemanager: IVariableManager,
     makefileNames: string[], // fullnames!
     goals: IFilePlan[],
     filerefs: { [fullname: string]: FilePlan }
 ): IPlan
 {
-    return new Plan(basedir, makefileNames, goals, filerefs);
+    return new Plan(basedir, variablemanager, makefileNames, goals, filerefs);
 }
 
 class Plan implements IPlan
 {
     constructor(
         public readonly basedir: string, 
+        public readonly variablemanager: IVariableManager,
         public readonly makefileNames: string[], // fullnames!
         public readonly goals: IFilePlan[],
         private readonly filerefs: { [fullname: string]: FilePlan }

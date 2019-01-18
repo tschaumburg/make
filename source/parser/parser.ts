@@ -11,6 +11,7 @@ import * as result from './result';
 // import { IRuleManager } from '../rules';
 import { IParseResult } from './result';
 import * as jisonParser from "./jison-parser";
+import { IVariableManager } from '../variables';
 
 export interface IParser
 {

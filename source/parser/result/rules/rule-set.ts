@@ -16,10 +16,11 @@ export interface IRuleSet
         location: IParseLocation,
         context: IParseContext,
         dirname: string,
-        targets0: string[],
-        targets1: string[], 
-        targets2: string[], 
-        targets3: string[],
+        targets: string[],
+        prerequisites: string[],
+        targetPattern: string[],
+        prereqPattern: string[],
+        orderOnlies: string[],
         inlineRecipe: string
     ): BaseRule;
 }
