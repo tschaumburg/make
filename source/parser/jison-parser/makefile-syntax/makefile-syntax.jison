@@ -1,4 +1,5 @@
 %{
+const os = require("os");
 const result = require("../../result");
 const resultb = require("./makefile-syntax-result");
 %}
@@ -177,7 +178,6 @@ inline_variable_definition
    }
  | VARIABLE_SET_RECURSIVE VARIABLE_VALUE
    {
-      //console.error("parser recursive assign " + $2);
       $$ = { kind: 'recursive', name: $1, value: $2 }
    }
  | VARIABLE_SET_APPEND VARIABLE_VALUE
@@ -195,28 +195,44 @@ inline_variable_definition
  ;
 
 multiline_variable_definition
- : MULTILINE_VARIABLE_SET_SIMPLE MULTILINE_VARIABLE_VALUE MULTILINE_VARIABLE_END
+ : MULTILINE_VARIABLE_SET_SIMPLE multiline_values MULTILINE_VARIABLE_END
    {
-      $$ = { kind: 'simple', name: $1, value: $2 }
+      $$ = { kind: 'simple', name: $1, value: $2.join(os.EOL) }
+      //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_RECURSIVE MULTILINE_VARIABLE_VALUE MULTILINE_VARIABLE_END
+ | MULTILINE_VARIABLE_SET_RECURSIVE multiline_values MULTILINE_VARIABLE_END
    {
-      $$ = { kind: 'recursive', name: $1, value: $2 }
+      $$ = { kind: 'recursive', name: $1, value: $2.join(os.EOL) }
+      //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_APPEND MULTILINE_VARIABLE_VALUE MULTILINE_VARIABLE_END
+ | MULTILINE_VARIABLE_SET_APPEND multiline_values MULTILINE_VARIABLE_END
    {
-      $$ = { kind: 'append', name: $1, value: $2 }
+      $$ = { kind: 'append', name: $1, value: $2.join(os.EOL) }
+      //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_CONDITIONAL MULTILINE_VARIABLE_VALUE MULTILINE_VARIABLE_END
+ | MULTILINE_VARIABLE_SET_CONDITIONAL multiline_values MULTILINE_VARIABLE_END
    {
-      $$ = { kind: 'conditional', name: $1, value: $2 }
+      $$ = { kind: 'conditional', name: $1, value: $2.join(os.EOL) }
+      //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_SHELL MULTILINE_VARIABLE_VALUE MULTILINE_VARIABLE_END
+ | MULTILINE_VARIABLE_SET_SHELL multiline_values MULTILINE_VARIABLE_END
    {
-      $$ = { kind: 'shell', name: $1, value: $2 }
+      $$ = { kind: 'shell', name: $1, value: $2.join(os.EOL) }
+      //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
  ;
 
+multiline_values
+ : multiline_values MULTILINE_VARIABLE_VALUE
+   {
+      $1.push($2.replace(/\r?\n$/, ""));
+      $$ = $1;
+   }
+ | /* empty*/
+   { 
+      $$ = []; 
+   }
+ ;
  
 /*********************************************
  * RECIPES:

@@ -22,6 +22,12 @@ function trimVarvalue(src)
     //console.error("RES " + res);
     return res;
 }
+function trim(regex1, regex2)
+{
+    //console.error("yytext = '" + yytext + "'");
+    yytext = trimText(yytext, regex1, regex2);
+    //console.error("yytext = '" + yytext + "'");
+}
 
 function trimText(src, regex1, regex2)
 {
@@ -230,16 +236,32 @@ ruleitem [^|;#\r\n]*
 /***************************************************************
  * Multi-line variable definitions:
  * =================================
+ * "The define directive is followed on the same line by the name
+ *  of the variable being defined and an (optional) assignment
+ *  operator, and nothing more.
+ *
+ *  The value to give the variable appears on the following lines.
+ *
+ *  The end of the value is marked by a line containing just
+ *  the word endef.
+ *
+ *  Aside from this difference in syntax, define works just like
+ *  any other variable definition.
+ *
+ *  The variable name may contain function and variable references,
+ *  which are expanded when the directive is read to find the actual
+ *  variable name to use."
+ *
  **************************************************************/
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?[\n]				{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'='[ \t]*[\n] 	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'?='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; }
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?':='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'::='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'+='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; }
-<MULTI_VAR_DEF>^'define'[ \t]+{variable}{spc}?'!='[ \t]*[\n]	{ this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; }
-<MULTI_VAR_DEF_VALUE>^(?!enddef)[^\n]*\n						{ return tokens.MULTILINE_VARIABLE_VALUE; }
-<MULTI_VAR_DEF_VALUE>'enddef'\s*\n						    	{ this.popState(); return tokens.MULTILINE_VARIABLE_END; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'='[ \t]*{eol}	    { yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'?='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?':='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'::='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'+='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'!='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; }
+<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?{eol}	    		{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
+<MULTI_VAR_DEF_VALUE>^'endef'\s*(?={eol})				    	{ this.popState(); return tokens.MULTILINE_VARIABLE_END; }
+<MULTI_VAR_DEF_VALUE>[^\r\n]*{eol}				{ return tokens.MULTILINE_VARIABLE_VALUE; }
 
 
 /***************************************************************

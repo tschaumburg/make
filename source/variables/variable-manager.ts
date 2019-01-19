@@ -106,6 +106,12 @@ class VariableManager implements IVariableManager
 
     public evaluateExpression(expression: string): string
     {
+        // GNU make manual, section 6.2:
+        // Leading whitespace characters are discarded from your
+        // input before substitution of variable references and
+        // function calls
+        expression = expression.replace(/^\s+/, "");
+
         var self = this;
         var res = 
             resolveString(
@@ -113,6 +119,7 @@ class VariableManager implements IVariableManager
                 (variableName: string) => self.getValue(variableName),
                 (functionName: string, params: string[]) => self.invokeBuiltinFunction(functionName, params)
             );
+        //console.error("Evaluated: '" + expression + "' => '" + res + "'");
         return res;
     }
 
@@ -194,7 +201,7 @@ class VariableManager implements IVariableManager
         if (!!immediate)
         {
             let value = this.evaluateExpression(valueExpression);
-            this.setValueImmediate(name, immediate + " " +value); // gmake manual, sect. 6.6: "...preceded by a single space"
+            this.setValueImmediate(name, immediate + " " + value); // gmake manual, sect. 6.6: "...preceded by a single space"
             return;
         }
 

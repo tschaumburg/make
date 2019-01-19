@@ -70,7 +70,7 @@ export function resolveString(
     invokeFunction: (functionName: string, params: string[]) => string
 ): string
 {
-    if (!value)
+    if (value===null || value===undefined)
     {
         return null;
     }
