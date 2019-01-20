@@ -19,6 +19,7 @@ export function loadTests(): void
                 title: "Simple build",
                 prepare: function ()
                 {
+                    console.error("PREPARE wd=" + process.cwd());
                     touchFiles("hello.c");
                     deleteFiles("hello.exe");
                 },

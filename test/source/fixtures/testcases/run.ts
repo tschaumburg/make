@@ -1,6 +1,6 @@
 import * as path from "path";
 import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
-import { IActualResult } from "./actual";
+import { IActualResult } from "../results";
 const os = require('os')
 
 function addToPath(

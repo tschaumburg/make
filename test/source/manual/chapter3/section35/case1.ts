@@ -1,5 +1,5 @@
 import { deleteFiles, touchFiles, touchFilesRelative } from "../../../test-utils"
-import { TestStep } from "../../../fixtures";
+import { TestStepConfig } from "../../../fixtures";
 
 export var makefile =
 {
@@ -16,7 +16,7 @@ export var makefile =
     ],
 };
 
-export const steps: TestStep[] =
+export const steps: TestStepConfig[] =
     [
         {
             title: 'No changes',

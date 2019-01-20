@@ -20,6 +20,7 @@ export function loadTests(): void
     //*  3.7 How make Reads a Makefile
     //*  =====================================
     //*******************************************
+    var thisDir = "C:/Users/Thomas/npm-make-test/testing/37";
     describe('3.7 How make Reads a Makefile', function ()
     {
         case1.loadTests(1);
@@ -34,6 +35,6 @@ export function loadTests(): void
         case9.loadTests(9);
         case10.loadTests(10);
         case11.loadTests(11);
-        case12.loadTests(12);
+        case12.loadTests(thisDir, 12);
     });
 }

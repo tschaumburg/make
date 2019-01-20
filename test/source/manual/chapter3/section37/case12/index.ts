@@ -1,7 +1,18 @@
 import * as mocha from "mocha";
 import { multiTestcase, successFile } from "../../../../fixtures"
+import { simpleTest } from "../../../../fixtures/testcases/simple-testcase";
 
-export function loadTests(caseNo: number): void
+export const loadTests = 
+    simpleTest(
+        {
+            title: '"define !=" assignment is immediate',
+            makefileName: require.resolve('./makefile'),
+            targets: ['run'],
+            expectedName: require.resolve('./expected')
+        }
+    );
+
+export function loadTestsOld(caseNo: number): void
 {
     //*******************************************
     //*  3.7 How make Reads a Makefile

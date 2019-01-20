@@ -1,4 +1,2 @@
-export * from "./actual";
-export * from "./expected";
-export * from "./fixture";
-export * from "./run";
+export * from "./testcases";
+export * from "./results";

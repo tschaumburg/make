@@ -1,5 +1,5 @@
 import * as mocha from "mocha";
-import { deleteFiles, touchFiles, error, multiTestcase } from "../../.."
+import { deleteFiles, touchFiles, multiTestcase } from "../../.."
 
 export function loadTests(): void
 {

@@ -195,27 +195,27 @@ inline_variable_definition
  ;
 
 multiline_variable_definition
- : MULTILINE_VARIABLE_SET_SIMPLE multiline_values MULTILINE_VARIABLE_END
+ : MACRO_SIMPLE multiline_values MACRO_END
    {
       $$ = { kind: 'simple', name: $1, value: $2.join(os.EOL) }
       //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_RECURSIVE multiline_values MULTILINE_VARIABLE_END
+ | MACRO_RECURSIVE multiline_values MACRO_END
    {
       $$ = { kind: 'recursive', name: $1, value: $2.join(os.EOL) }
       //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_APPEND multiline_values MULTILINE_VARIABLE_END
+ | MACRO_APPEND multiline_values MACRO_END
    {
       $$ = { kind: 'append', name: $1, value: $2.join(os.EOL) }
       //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_CONDITIONAL multiline_values MULTILINE_VARIABLE_END
+ | MACRO_CONDITIONAL multiline_values MACRO_END
    {
       $$ = { kind: 'conditional', name: $1, value: $2.join(os.EOL) }
       //console.log("parser assign " + JSON.stringify($$, null, 3));
    }
- | MULTILINE_VARIABLE_SET_SHELL multiline_values MULTILINE_VARIABLE_END
+ | MACRO_SHELL multiline_values MACRO_END
    {
       $$ = { kind: 'shell', name: $1, value: $2.join(os.EOL) }
       //console.log("parser assign " + JSON.stringify($$, null, 3));
@@ -223,7 +223,7 @@ multiline_variable_definition
  ;
 
 multiline_values
- : multiline_values MULTILINE_VARIABLE_VALUE
+ : multiline_values MACRO_VALUE
    {
       $1.push($2.replace(/\r?\n$/, ""));
       $$ = $1;
@@ -359,33 +359,33 @@ evt
       {
 	     console.error("VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_SET_SIMPLE
+   |MACRO_SIMPLE
       {
-	     console.error("MULTILINE_VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_SET_RECURSIVE
+   |MACRO_RECURSIVE
       {
-	     console.error("MULTILINE_VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_SET_APPEND
+   |MACRO_APPEND
       {
-	     console.error("MULTILINE_VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_APPEND (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_SET_CONDITIONAL
+   |MACRO_CONDITIONAL
       {
-	     console.error("MULTILINE_VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_SET_SHELL
+   |MACRO_SHELL
       {
-	     console.error("MULTILINE_VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_SHELL (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_VALUE
+   |MACRO_VALUE
       {
-	     console.error("MULTILINE_VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_VALUE (" + JSON.stringify(yytext) + ")");
 	  }
-   |MULTILINE_VARIABLE_END
+   |MACRO_END
       {
-	     console.error("MULTILINE_VARIABLE_END (" + JSON.stringify(yytext) + ")");
+	     console.error("MACRO_END (" + JSON.stringify(yytext) + ")");
 	  }
    |'EOF2'
       {

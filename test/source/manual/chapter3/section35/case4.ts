@@ -1,6 +1,6 @@
 import * as fse from "fs-extra";
 import { deleteFiles, touchFiles } from "../../../test-utils"
-import { TestStep } from "../../../fixtures";
+import { TestStepConfig } from "../../../fixtures";
 
 var checkoutImplicitRules =
     [
@@ -79,7 +79,7 @@ export var makefile =
     ],
 };
 
-export const steps: TestStep[] =
+export const steps: TestStepConfig[] =
     [
         {
             title: 'Version 0: update single Makefile',

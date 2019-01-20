@@ -12,11 +12,11 @@ export function parsefile(
 ): void
 {
     makefilename = path.resolve(process.cwd(), makefilename);
+    resultBuilder.startMakefile(makefilename);
     let content = fs.readFileSync(makefilename, 'utf8') + '\n';
 
     log.info("Parsing " + makefilename);
  
-    resultBuilder.startMakefile(makefilename);
 
     var _parser = createParser(makefilename, resultBuilder, parsefile);
     _parser.parse(content);

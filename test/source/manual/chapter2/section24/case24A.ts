@@ -1,4 +1,4 @@
-import { success, error, IExpectedResult } from "../../../fixtures"
+import { success, error, IExpectedResult, TestStepConfig } from "../../../fixtures"
 import * as mocha from "mocha";
 import { multiTestcase } from "../../../fixtures"
 //import { makefile, expected } from "./setup";
@@ -20,20 +20,27 @@ export function loadTests(): void
                     if (T==1 && P == 1&& R==1)
                     console.error("");
 
+                    let steps: TestStepConfig[] = [];
                     for (let goal of [undefined, 1, 2, 3])
-                        multiTestcase(
-                            {
-                                id: "24A",
-                                title: "t" + T + "-p" + P + "-r" + R + "-g" + goal,
-                                makefile: makefile(R, T, P),
-                            },
+                    {
+                        steps.push(
                             {
                                 title: "$(target" + T + "): $(prerequisite" + P + ") => $(recipe" + R + ") - goal " + goal,
                                 prepare: clean,
                                 targets: (goal==undefined) ? [] : ["t" + goal + ".exe"],
                                 expect: expected(T, P, R, goal)
-                            },
+                            }
                         );
+                    }
+
+                    multiTestcase(
+                        {
+                            id: "24A " + "t" + T + "-p" + P + "-r" + R,
+                            title: "t" + T + "-p" + P + "-r" + R ,
+                            makefile: makefile(R, T, P),
+                        },
+                        ...steps
+                    );
                 }
             }
         }
@@ -179,7 +186,7 @@ export function expected(
                 " -o t" + goal + ".exe " +
                 prerequisites.map(p => "p" + p + ".c").join(" ")
             )
-        ).join("\n")
+        )//.join("\n")
     );
 }
 

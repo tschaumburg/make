@@ -17,9 +17,19 @@ export function touchFilesRelative(relativeMillis: number , ...files: string[]):
 
     for (let _pattern of files)
     {
-        for (let f of glob.sync(_pattern)||[])
+        console.error("TOUCH start " + _pattern);;
+        if (glob.hasMagic(_pattern))
         {
-            touch.sync(f, { time: timestamp, mtime: true });
+            for (let f of glob.sync(_pattern)||[])
+            {
+                console.error("TOUCH " + f);
+                touch.sync(f, { time: timestamp, mtime: true });
+            }
+        }
+        else
+        {
+            console.error("TOUCH " + _pattern);
+            touch.sync(_pattern, { time: timestamp, mtime: true });
         }
     }
 }

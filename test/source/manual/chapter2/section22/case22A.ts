@@ -38,8 +38,8 @@ export function loadTests(): void
             },
             {
                 title: "none",
-                //prepare: () => { setup22.dir(); process.exit(-123);},
-                prepare: () => { },
+                prepare: () => 
+                { touchFiles('edit'); },
                 targets: ["edit"],
                 expect: []
             },

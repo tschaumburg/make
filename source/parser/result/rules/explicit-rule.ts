@@ -20,6 +20,7 @@ export class ExplicitRule extends BaseRule
     {
         super(inlineRecipe);
 
+        // console.error("EXPLICIT: " + JSON.stringify(targetNames, null, 3));
         if (!targetNames || targetNames.length ==0)
             exits.ruleMissingTarget();
 

@@ -3,6 +3,7 @@
 const tokens = require("./makefile-syntax-tokens");
 const variables = require("../variables");
 
+
 function trimVarname(src)
 {
     let res = src;                        // ' myvar ::= '
@@ -97,9 +98,19 @@ this.initDebug = function initDebug() {
         };
 
 }
+
+const goto = function (state)
+{
+     yy_.gotoState(state);
+}
+
+const match = function (index)
+{
+    yytext = yy_.matches[index];
+}
 %}
 
-%s INITIAL PREPROCESSED RULE RECIPE INCLUDE COMMENT VAR_DEF VAR_VALUE VAR_DEF_END MULTI_VAR_DEF MULTI_VAR_DEF_VALUE IRECIPE INCLUDE_NAME
+%s INITIAL PREPROCESSED RULE RECIPE INCLUDE COMMENT VAR_DEF VAR_VALUE VAR_DEF_END MACRO MACRO_VALUE IRECIPE INCLUDE_NAME
 
 safechar     [^\r\n\s:#|:\\]
 escapedchar  (?:\\[\x20:\t|\\])
@@ -120,6 +131,9 @@ noeol       [^\r\n]
 
 rulesep [|;#\r\n]
 ruleitem [^|;#\r\n]*
+
+defineStart  ^('define'{spc}{variable}{spc}?)
+defineEnd    ([ \t]*{eol})
 
 %%
 
@@ -166,7 +180,7 @@ ruleitem [^|;#\r\n]*
 <PREPROCESSED>(?=^{varname}{spc}?'?=')    { this.gotoState("VAR_DEF"); }
 <PREPROCESSED>(?=^{varname}{spc}?'!=')    { this.gotoState("VAR_DEF"); }
 <PREPROCESSED>(?=^{varname}{spc}?'=')     { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^'define'{spc})          { this.gotoState("MULTI_VAR_DEF"); }
+<PREPROCESSED>(?=^'define'{spc})          { this.gotoState("MACRO"); }
 <PREPROCESSED>(?=^{ltargets}{spc}?':')    { this.gotoState("RULE");           return tokens.RULESTART; }
 <PREPROCESSED>(?=^[ \t]+{recipe}{eol})	  { this.gotoState("RECIPE"); }
 <PREPROCESSED>{eol}				          { this.popState(); return tokens.EOL; }
@@ -251,17 +265,17 @@ ruleitem [^|;#\r\n]*
  *  The variable name may contain function and variable references,
  *  which are expanded when the directive is read to find the actual
  *  variable name to use."
- *
+ * console.error(JSON.stringify(this.matches, null, 3)); 
  **************************************************************/
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'='[ \t]*{eol}	    { yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'?='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_CONDITIONAL; }
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?':='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'::='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SIMPLE; }
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'+='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_APPEND; }
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?'!='[ \t]*{eol}	{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_SHELL; }
-<MULTI_VAR_DEF>^'define'{spc}{variable}{spc}?{eol}	    		{ yytext = this.matches[2]; this.gotoState("MULTI_VAR_DEF_VALUE"); return tokens.MULTILINE_VARIABLE_SET_RECURSIVE; }
-<MULTI_VAR_DEF_VALUE>^'endef'\s*(?={eol})				    	{ this.popState(); return tokens.MULTILINE_VARIABLE_END; }
-<MULTI_VAR_DEF_VALUE>[^\r\n]*{eol}				{ return tokens.MULTILINE_VARIABLE_VALUE; }
+<MACRO>{defineStart}'='{defineEnd}   { match(4); goto("MACRO_VALUE"); return tokens.MACRO_RECURSIVE; }
+<MACRO>{defineStart}'?='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_CONDITIONAL; }
+<MACRO>{defineStart}':='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_SIMPLE; }
+<MACRO>{defineStart}'::='{defineEnd} { match(4); goto("MACRO_VALUE"); return tokens.MACRO_SIMPLE; }
+<MACRO>{defineStart}'+='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_APPEND; }
+<MACRO>{defineStart}'!='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_SHELL; }
+<MACRO>^{defineStart}{defineEnd}     { match(4); goto("MACRO_VALUE"); return tokens.MACRO_RECURSIVE; }
+<MACRO_VALUE>^'endef'\s*(?={eol})    {           this.popState();     return tokens.MACRO_END; }
+<MACRO_VALUE>[^\r\n]*{eol}           {                                return tokens.MACRO_VALUE; }
 
 
 /***************************************************************
@@ -273,7 +287,7 @@ ruleitem [^|;#\r\n]*
 <<EOF>>						{ return tokens.EOF2; }
 <RULE><<EOF>>						{ return tokens.EOF2; }
 <IRECIPE><<EOF>>						{ return tokens.EOF2; }
-<MULTI_VAR_DEF><<EOF>>						{ return tokens.EOF2; }
+<MACRO><<EOF>>						{ return tokens.EOF2; }
 <VAR_DEF><<EOF>>						{ return tokens.EOF2; }
 
 .   { /*console.error("MISMATCH: '" + yytext + "', state: " + this.topState());*/ }
