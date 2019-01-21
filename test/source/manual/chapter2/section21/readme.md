@@ -37,6 +37,13 @@ be the name of an action to carry out, such as ‘clean’ (see Phony Targets).
 A prerequisite is a file that is used as input to create the target. 
 A target often depends on several files.
 
+<div>
+```makefile
+a: b
+    c
+```
+</div>
+
 A recipe is an action that make carries out. A recipe may have more than 
 one command, either on the same line or each on its own line. 
 
