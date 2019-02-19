@@ -7,6 +7,7 @@ import { Action, FileRef } from "../plan/plan-impl";
 import { IFileRef } from "../plan";
 import globToRegexp = require("glob-to-regexp");
 import * as minimatch from "minimatch";
+import { makefileMissingTarget } from "../../return-codes";
 
 function simpleWildcardMatch(pattern: string, candidate: string): boolean
 {
@@ -53,29 +54,39 @@ function glob2RegExp(glob: string): string
     return res;
 }
 
-function wildcardMap(dirs: string[], pattern: string, candidate: string): IFileRef
+/**
+ * Tests if a filename matches a pattern, specified as a glob 
+ * string and a list of base directories to search relative to.
+ * @param basedirs A list of directories to start the search from.
+ * @param glob 
+ * @param filename 
+ * 
+ * @example globMatch(['c:\\foo'], 'src\\**\\*.x', 'c:\\foo\\src\\moduleA\bar.x') => true
+ * @example globMatch(['/home/wiz'], "src\/**\/*.x", '/home/wiz/moduleA/bar.x') => true
+ */
+function globMatch(basedirs: string[], glob: string, absoluteFilename: string): boolean
 {
-    candidate = slash(candidate);
-    var patternRe = glob2RegExp(pattern);
-    for (var dir of dirs)
+    absoluteFilename = path.normalize(absoluteFilename);
+    glob = path.normalize(glob);
+    for (var basedir of basedirs)
     {
-        if (!dir.endsWith(path.sep))
-        {
-            dir = dir + path.sep;
-        }
-    
-        var dirRe = glob2RegExp(dir);
-        var matchRe = new RegExp("^(" + dirRe + ")(" + patternRe + ")$");
-        var parts = candidate.match(matchRe);
-        //console.error("match " + matchRe.source + " => " + JSON.stringify(parts));
+        // clean up the basedir:
+        basedir = path.normalize(basedir);
+        if (!basedir.endsWith(path.sep))
+            basedir = basedir + path.sep;
 
-        if (!!parts && parts.length == 3)
+        if (!absoluteFilename.startsWith(basedir))
+            continue;
+
+        let relativeFilename = absoluteFilename.substr(basedir.length);
+
+        if (minimatch(relativeFilename, glob))
         {
-            return new FileRef(path.normalize(parts[2]), path.normalize(candidate));
+            return true;
         }
     }
 
-    return null;
+    return false;
 }
 
 // export function wildcardTargetMatch(pattern: TargetName, candidate: string): boolean
@@ -83,12 +94,12 @@ function wildcardMap(dirs: string[], pattern: string, candidate: string): IFileR
 //     return wildcardMatch(pattern.basedir, pattern.parseContext.vpath, pattern.relname, candidate);
 // }
 
-export function wildcardTargetMap(pattern: TargetName, candidate: string): IFileRef 
+export function doesFilenameMatchTarget(target: TargetName, filename: string): IFileRef 
 {
-    return wildcardMap(
-        [pattern.basedir]/*searchdirs(pattern.basedir, pattern.parseContext.vpath)*/,
-        pattern.relname, 
-        candidate);
+    if (globMatch([target.basedir], target.relname, filename))
+        return new FileRef(target.relname, filename);
+
+    return null;
 }
 
 export function resolveVpath(basedir: string, vpath: string[], relname: string): IFileRef

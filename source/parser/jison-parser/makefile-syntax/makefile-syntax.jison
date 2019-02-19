@@ -2,6 +2,7 @@
 const os = require("os");
 const result = require("../../result");
 const resultb = require("./makefile-syntax-result");
+const utils = require("./makefile-syntax-utils");
 %}
 
 %start makefile
@@ -24,7 +25,7 @@ makefile
 statement
  : rulestatement        { resultb.startRule(yy, @1, $1); }
  | RECIPE_LINE          { resultb.recipeLine(yy, @1, $1); }
- | INCLUDE              {  resultb.include(yy, @1, $1); }
+ | INCLUDE              { resultb.include(yy, @1, $1); }
  | variable_definition  { resultb.defineVariable(yy, @1, $1); }
  | emptyline
  ;
@@ -61,7 +62,7 @@ emptyline
  *   prereqs:         a whitespace-separated list of target names
  *   recipe:          a string that is handed to the shell when the rule
  *                    is triggered
- *   target-pattern:  a target name containing exactly one '%'
+ *   target-pattern:  a target name containing exactly one ' '
  *   target-patterns: a whitespace-separated list of target-patterns
  *   prereq-patterns: a whitespace-separated list of target-patterns
  *
@@ -93,42 +94,61 @@ emptyline
 *     }
 */
 rulestatement
- : RULESTART target_prereq orderonlies inline_recipe_definition//targetlist COLON targetlist targets2 
+ : TARGETS PREREQUISITES ORDERONLIES INLINE_RECIPE
    {
-      $$ = {};
+      //$$ = {};
 
-      $$.targets = $2.targets;
-      $$.prerequisites = $2.prerequisites;
-      $$.targetPattern = $2.targetPattern;
-      $$.prereqPattern = $2.prereqPattern;
-      $$.orderOnlies = $3.orderOnlies;
-      $$.irecipe = $4.irecipe;
+      //$$.targets = $1;
+      //$$.targetPattern = null;
+      //$$.prerequisites = $2;
+      //$$.prereqPattern = null;
+      //$$.orderOnlies = $3;
+      //$$.irecipe = $4;
+
+      $$ = new resultb.RuleParseInfo($1, null, $2, null, $3, $4);
+      //console.error("parser: " + JSON.stringify($1, null, 3));
+	}
+ | TARGETS TARGETPATTERNS PREREQPATTERNS ORDERONLIES INLINE_RECIPE
+   {
+      //$$ = {};
+
+      //$$.targets = $1;
+      //$$.targetPattern = $2;
+      //$$.prerequisites = null;
+      //$$.prereqPattern = $3;
+      //$$.orderOnlies = $4;
+      //$$.irecipe = $5;
+
+      $$ = new resultb.RuleParseInfo($1, $2, null, $3, $4, $5);
+      //console.error("parser: " + JSON.stringify($1, null, 3));
 	}
  ;
 
  target_prereq
-  : TARGET_PREREQ
+  : targetlist COLON targetlist //TARGET_PREREQ
     {
-      var target_prereq = $1.split(':');
-       $$ = {};
-      $$.targets = target_prereq[0];
-      $$.prerequisites = target_prereq[1];
+      //var target_prereq = $1.split(':');
+      $$ = {};
+      $$.targets = $1;
+      $$.targetPattern = null;
+      $$.prereqPattern = null;
+      $$.prerequisites = $3;
     }
-    |TARGET_PATTERN_PATTERN
+    |targetlist COLON targetlist COLON targetlist
     {
        $$ = {};
-      var target_pattern_pattern = $1.split(':');
-      $$.targets = target_pattern_pattern[0];
-      $$.targetPattern = target_pattern_pattern[1];
-      $$.prereqPattern = target_pattern_pattern[2];
+      $$.targets = $1;
+      $$.targetPattern = $3;
+      $$.prereqPattern = $5;
+      $$.prerequisites = null;
     }
   ;
 
  orderonlies
-  : ORDERONLIES
+  : PIPE targetlist
     {
        $$ = {};
-       $$.orderOnlies = $1;
+       $$.orderOnlies = $2;
     }
   | /* empty */
     {
@@ -140,7 +160,7 @@ rulestatement
 targetlist
   : targetlist TARGET
      {
-      $$.push({ location: @2, targetName: $2.trim() });
+      $$.push( { location: @2, targetName: $2.trim() });
 	 }
    | /* empty */
      {
@@ -152,7 +172,7 @@ inline_recipe_definition
   : INLINE_RECIPE
     {
        $$ = {};
-      $$.irecipe = $2;
+      $$.irecipe = $1;
 	 }
    | /* empty */
     {
@@ -260,7 +280,7 @@ optional_recipes
  *  variable := ....
  *  variable ::= ....
  *********************************************/
-%include "test.jison"
+//include "test.jison"
 
 test : dotest;
 
@@ -275,21 +295,45 @@ dotest
  ;
 
 evt
- :  INLINE_RECIPE
+ :  RULELINE
+      {
+	     console.error("RULELINE (" + JSON.stringify(yytext) + ")");
+	  }
+   |RULESTART
+      {
+	     console.error("RULESTART (" + JSON.stringify(yytext) + ")");
+	  }
+   |TARGETS
+      {
+	     console.error("TARGETS (" + JSON.stringify(yytext) + ")");
+	  }
+   |TARGETPATTERNS
+     {
+	     console.error("TARGETPATTERNS (" + JSON.stringify(yytext) + ")");
+     }
+   |PREREQUISITES
+      {
+	     console.error("PREREQUISITES (" + JSON.stringify(yytext) + ")");
+	  }
+   |PREREQPATTERNS
+      {
+	     console.error("PREREQPATTERNS (" + JSON.stringify(yytext) + ")");
+	  }
+   |ORDERONLIES
+      {
+	     console.error("ORDERONLIES (" + JSON.stringify(yytext) + ")");
+	  }
+   |RECIPE_LINE
+      {
+	     console.error("RECIPE_LINE (" + JSON.stringify(yytext) + ")");
+	  }
+   |INLINE_RECIPE
       {
 	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  }
    |INCLUDE
       {
 	     console.error("INCLUDE (" + JSON.stringify(yytext) + ")");
-	  }
-   |TARGET
-      {
-	     console.error("TARGET (" + JSON.stringify(yytext) + ")");
-	  }
-   |RULESTART
-      {
-	     console.error("RULESTART (" + JSON.stringify(yytext) + ")");
 	  }
    |VARSTART
       {
@@ -303,21 +347,13 @@ evt
       {
 	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  }
-   |TARGET_PREREQ
-      {
-	     console.error("TARGET_PREREQ (" + JSON.stringify(yytext) + ")");
-	  }
-     |TARGET_PATTERN_PATTERN
-     {
-	     console.error("TARGET_PATTERN_PATTERN (" + JSON.stringify(yytext) + ")");
-     }
    |PIPE
       {
 	     console.error("PIPE (" + JSON.stringify(yytext) + ")");
 	  }
-   |COLON_TARGETS
+   |COLON
       {
-	     console.error("COLON_TARGETS (" + JSON.stringify(yytext) + ")");
+	     console.error("COLON (" + JSON.stringify(yytext) + ")");
 	  }
    |TARGETS
       {
@@ -389,6 +425,6 @@ evt
 	  }
    |'EOF2'
       {
-	     console.error("EOF2: '" + JSON.stringify(JSON.stringify(yytext)) + "', state: " + yy.lexer.topState());
+	     console.error("EOF2: " + JSON.stringify(JSON.stringify(yytext)) + ", state: " + yy.lexer.topState());
 	  }
  ;

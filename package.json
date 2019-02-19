@@ -7,7 +7,7 @@
         "jison1": "( cd source/parser/jison-parser/makefile-syntax && jison makefile-syntax.jison makefile-syntax.jisonlex -m commonjs)",
         "compile": "tsc && tsc -p test/source",
         "copyparser": "copyfiles --up 1 source/parser/jison-parser/makefile-syntax/makefile-syntax.js dist/",
-        "copytest": "copyfiles --up 2  -V test/source/manual/**/makefile* test/source/manual/**/expect* test/build/",
+        "copytest": "copyfiles --up 2 test/source/manual/**/makefile* test/source/manual/**/expect* test/build/",
         "copy1": "copy source\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js dist\\parser\\jison-parser\\makefile-syntax\\makefile-syntax.js",
         "build": "npm run jison1 && npm run compile && npm run copy1 && npm run copytest",
         "installx": "npm install -g .",
@@ -47,6 +47,7 @@
         "standard-version": "^2.2.1",
         "tmp": "0.0.33",
         "touch": "^3.1.0",
+        "touch-cli": "0.0.1",
         "watchd": "github:mklabs/watchd"
     },
     "bin": {
@@ -63,6 +64,7 @@
         "del": "^3.0.0",
         "detective": "^5.1.0",
         "dev-null": "^0.1.1",
+        "echo-cli": "^1.0.8",
         "fstream": "^1.0.11",
         "glob-to-regexp": "^0.4.0",
         "http-signature": "^1.2.0",

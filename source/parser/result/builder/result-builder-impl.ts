@@ -1,10 +1,11 @@
 import * as path from "path";
 import * as options from '../../../options';
 import * as log from '../../../makelog';
+import * as exits from "../../../return-codes";
 import { IVariableManager, createVariablemanager } from '../../../variables';
 import { IParseResultBuilder, IParseLocation, IParseContext } from '../result-builder';
 import { ParseResultImpl } from './result-impl';
-import { Target, TargetName } from '../targets';
+import { Target, TargetName, createTargetNameList, createTargetPattern, createTargetList } from '../targets';
 import { IParseResult } from '../result';
 import { BaseRule, IRuleSet, createRuleset } from '../rules';
 import { exists } from "fs";
@@ -55,48 +56,65 @@ class ParseResultBuilderImpl implements IParseResultBuilder
     public startRule(
         location: IParseLocation,
         dirname: string,
-        targetsExpression: string,
-        prerequisitesExpression: string,
-        targetPatternExpression: string,
-        prereqPatternExpression: string,
-        orderOnliesExpression: string,
-        inlineRecipeExpression: string
+        targets: string,
+        prerequisites: string,
+        targetPattern: string,
+        prereqPattern: string,
+        orderOnlies: string,
+        inlineRecipe: string
     ): void
     {
+        var basedir = path.resolve(process.cwd(), dirname);
+
+        //console.error("orderOnlies = " + JSON.stringify(orderOnlies));
         this.currentRule = 
             this.rules.addRule(
-                location, 
-                this._parseContext,
-                path.resolve(process.cwd(), dirname), 
-                this.expandtargets(targetsExpression),
-                this.expandtargets(prerequisitesExpression),
-                this.expandtargets(targetPatternExpression),
-                this.expandtargets(prereqPatternExpression),
-                this.expandtargets(orderOnliesExpression),
-                inlineRecipeExpression
+                createTargetNameList(targets, location, this._parseContext, basedir),
+                createTargetNameList(prerequisites, location, this._parseContext, basedir),
+                createTargetPattern(targetPattern, location, this._parseContext, basedir),
+                createTargetList(prereqPattern, location, this._parseContext, basedir),
+                createTargetList(orderOnlies, location, this._parseContext, basedir),
+                inlineRecipe
             );
 
         this.setDefaultTarget(this.rules.defaultTarget);
     }
 
-    private expandtargets(targetExpression: string): string[]
-    {
-        if (!targetExpression)
-        {
-            return [];
-        }
+    // private expandTargets(targetExpression: string): TargetInfo[]
+    // {
+    //     if (!targetExpression)
+    //     {
+    //         return [];
+    //     }
 
-        let targetString = this.variableManager.evaluateExpression(targetExpression);
-        let res = targetString.split(/\s+/).filter(t => t!==null && t!==undefined && t.length>0);
-        //console.error(JSON.stringify(targetExpression) + ' => ' + JSON.stringify(res));
-        return res;
-    }
+    //     let targetString = this.variableManager.evaluateExpression(targetExpression);
+    //     let res = targetString.split(/\s+/).filter(t => t!==null && t!==undefined && t.length>0);
+    //     //console.error(JSON.stringify(targetExpression) + ' => ' + JSON.stringify(res));
+    //     return res;
+    // }
+
+
+    // public resolveVariables(targetExpression: string): string
+    // {
+    //     if (!targetExpression)
+    //     {
+    //         return "";
+    //     }
+
+    //     return this.variableManager.evaluateExpression(targetExpression);
+    // }
 
     public recipeLine(line: string): void
     {
-        // console.error("RECIPE4: " + line);
-        if (!this.currentRule)
+        if (line.match(/^\s*$/))
             return;
+
+        //console.error("RECIPE4: " + JSON.stringify( line, null, 3));
+        if (!this.currentRule)
+        {
+            exits.ruleErrorPrematureRecipe();
+            return;
+        }
 
         // console.error("RECIPE5: " + line);
         // line = this.expandVariables(line);
@@ -177,7 +195,7 @@ class ParseResultBuilderImpl implements IParseResultBuilder
 
     public expandVariables(value: string): string
     {
-        var res = this.variableManager.evaluateExpression(value);
+        var res = this.variableManager.evaluateExpressionNoTrim(value);
         // log.info("Variable manager expanded '" + value + "' to '" + res + "'");
         return res;
     }
@@ -249,3 +267,19 @@ class ParseResultBuilderImpl implements IParseResultBuilder
     }
 }
 
+// function splitTargets(src: string): string[]
+// {
+//     let list = splitPattern(src, " ");
+//     //console.error(JSON.stringify(src) + " => " + JSON.stringify(list));
+
+//     if (!list)
+//         return [];
+
+//     var res =
+//         list
+//         .filter(t => (!!t))
+//         .map(t => t.trim())
+//         .filter(t => t.length>0);
+
+//     return res;
+// }

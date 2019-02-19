@@ -12,28 +12,6 @@ export const loadTests =
         }
     );
 
-export function loadTestsOld(caseNo: number): void
-{
-    //*******************************************
-    //*  3.7 How make Reads a Makefile
-    //*  =====================================
-    //*******************************************
-    describe('3.7.' + caseNo + ' "define !=" assignment is immediate', function ()
-    {
-        multiTestcase(
-            {
-                makefile: require.resolve('./makefile'),
-                id: "testing/37/" + caseNo,
-            },
-            {
-                title: "case " + caseNo,
-                targets: ['run'],
-                expect: successFile(require.resolve('./expected'))
-            },
-        );
-    });
-}
-
 function clean(): void
 {
 //    rm(['./*.o', '!./Makefile', '!./.makelog']);

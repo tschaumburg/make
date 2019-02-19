@@ -157,6 +157,16 @@ export class Engine
                 self._execute(fileplan);
                 return true;
             }
+            else
+            {
+                log.info(
+                    prefix + "SKIPPING " + fileref.fullname + "(" + targetTime + ") " +
+                    "because file " + fileref.fullname + " is up-to-date" +
+                    "compared to (" + action.prerequisites.map(p => p.file.fullname + "(" + 
+                    self.timestamp(p.file.fullname) + 
+                    ")").join(" ") + ")"
+                );
+            }
         }
 
         return false;

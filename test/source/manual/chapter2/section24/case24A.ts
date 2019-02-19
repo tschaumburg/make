@@ -177,7 +177,7 @@ export function expected(
         goal = targets[0];
 
     if (targets.indexOf(goal) < 0)
-        return error(106, "Target t" + goal + ".exe not defined in makefile");
+        return error(106, "No rule to make target 't" + goal + ".exe'");//"Target t" + goal + ".exe not defined in makefile");
 
     return success(
         recipes.map(

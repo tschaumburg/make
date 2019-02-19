@@ -1,8 +1,14 @@
 import { Target } from "./target";
 import { IParseLocation, IParseContext } from "../result-builder";
+import { splitPattern } from "./split-target-list";
 
 export class TargetPattern extends Target
 {
+    public isPattern(): boolean
+    {
+        return true;
+    }
+
     match(name: string): string
     {
         let stemLength = name.length - (this.prefix.length + this.postfix.length);
@@ -26,8 +32,9 @@ export class TargetPattern extends Target
     constructor(
         location: IParseLocation, 
         parseContext: IParseContext, 
-        public basedir: string,
+        basedir: string,
         public readonly prefix: string,
         public readonly postfix: string
     ) { super(location, parseContext, basedir, prefix + "%" + postfix); }
 }
+

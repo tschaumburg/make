@@ -7,11 +7,11 @@ export interface IParseResultBuilder
     startRule(
         location: IParseLocation,
         dirname: string,
-        targetsExpression: string,
-        prerequisitesExpression: string,
-        targetPatternExpression: string,
-        prereqPatternExpression: string,
-        orderOnliesExpression: string,
+        targets: string,
+        prerequisites: string,
+        targetPattern: string,
+        prereqPattern: string,
+        orderOnlies: string,
         inlineRecipeExpression: string
     ): void;
     recipeLine(line: string): void;

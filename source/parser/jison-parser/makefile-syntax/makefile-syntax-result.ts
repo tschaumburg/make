@@ -5,25 +5,59 @@ import { isArray } from "util";
 import { stringify } from "querystring";
 import * as log from '../../../makelog';
 
+export class RuleParseInfo
+{
+    private readonly _discriminator: string = "59BABAFD-27C1-4691-BABA-718E5832FEB3";
+    public isValid(): boolean
+    {
+        return "59BABAFD-27C1-4691-BABA-718E5832FEB3" === this._discriminator;
+    }
+
+    public constructor(
+        public readonly targets: string,
+        public readonly targetPattern: string,
+        public readonly prerequisites: string,
+        public readonly prereqPattern: string,
+        public readonly orderOnlies: string,
+        public readonly irecipe: string
+    ) {}
+}
+
 export function startRule(
     yy,
     jisonLocation,
-    ruleDetails
+    ruleParseInfo: RuleParseInfo
 ): void
 {
+    // This is called from typeless javascript, so check the types:
+    if (!ruleParseInfo)
+        throw new Error("ruleDetails");
+
+    if (!ruleParseInfo.isValid())
+        throw new Error("ruleDetails");
+
     let location: IParseLocation = getLocation(yy, jisonLocation);
     let builder: IParseResultBuilder = getResultBuilder(yy);
     let basedir: string = getBasedir(yy);
 
-    log.error("ruleDetails: " + JSON.stringify(ruleDetails, null, 3));
-    let targetsExpression: string = getStringOpt(ruleDetails, "targets");
-    let prerequisitesExpression: string = getStringOpt(ruleDetails, "prerequisites");
-    let targetPatternExpression: string = getStringOpt(ruleDetails, "targetPattern");
-    let prereqPatternExpression: string = getStringOpt(ruleDetails, "prereqPattern");
-    let orderOnliesExpression: string = getStringOpt(ruleDetails, "orderOnlies");
-    let inlinerecipeExpression: string = getStringOpt(ruleDetails, "irecipe");
+    log.error("ruleParseInfo: " + JSON.stringify(ruleParseInfo, null, 3));
+    // let targets = getTargetNames(ruleDetails, "targets");
+    // let prerequisites = getTargetNames(ruleDetails, "prerequisites");
+    // let targetPattern = getTargetNames(ruleDetails, "targetPattern");
+    // let prereqPattern = getTargetNames(ruleDetails, "prereqPattern");
+    // let orderOnlies = getTargetNames(ruleDetails, "orderOnlies");
+    // let inlinerecipe = getStringOpt(ruleDetails, "irecipe");
 
-    builder.startRule(location, basedir, targetsExpression, prerequisitesExpression, targetPatternExpression, prereqPatternExpression, orderOnliesExpression, inlinerecipeExpression);
+    builder.startRule(
+        location, 
+        basedir, 
+        ruleParseInfo.targets, 
+        ruleParseInfo.prerequisites, 
+        ruleParseInfo.targetPattern, 
+        ruleParseInfo.prereqPattern, 
+        ruleParseInfo.orderOnlies, 
+        ruleParseInfo.irecipe
+    );
 }
 
 export function recipeLine(
@@ -246,9 +280,9 @@ function getTargetNames(obj, propname): string[]
         return [];
 
     if (!isArray(obj[propname]))
-        throw new Error("Makefile syntax error: expected array of targets")
+        throw new Error("Makefile syntax error: expected list of target names")
 
-    return (obj[propname] as any[]).map(t => getTargetName(t))
+    return (obj[propname] as string[]);//.map(t => getTargetName(t))
 }
 
 function getTargetName(target: any): string

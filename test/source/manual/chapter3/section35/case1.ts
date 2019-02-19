@@ -5,14 +5,14 @@ export var makefile =
 {
     'Makefile.template': [
         'run:',
-        '   echo Makefile updated',
+        '\techo Makefile updated',
     ],
     'Makefile': [
         'run:',
-        '   echo Makefile unchanged',
+        '\techo Makefile unchanged',
         '',
         'Makefile: Makefile.template',
-        '   copy /Y Makefile.template Makefile > NUL',
+        '\tcopy /Y Makefile.template Makefile > NUL',
     ],
 };
 

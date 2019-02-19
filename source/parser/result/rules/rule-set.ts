@@ -3,7 +3,7 @@ import { ImplicitRule } from "./implicit-rule";
 import { StaticPatternRule } from "./static-pattern-rule";
 import { BaseRule } from "./base-rule";
 import { IParseContext, IParseLocation } from "../result-builder";
-import { TargetName } from "../targets";
+import { TargetName, TargetPattern, Target } from "../targets";
 
 export interface IRuleSet
 {
@@ -13,14 +13,11 @@ export interface IRuleSet
     readonly implicitRules: ImplicitRule[];
     readonly staticPatternRules: StaticPatternRule[];
     addRule(
-        location: IParseLocation,
-        context: IParseContext,
-        dirname: string,
-        targets: string[],
-        prerequisites: string[],
-        targetPattern: string[],
-        prereqPattern: string[],
-        orderOnlies: string[],
+        targets: TargetName[],
+        prerequisites: TargetName[],
+        targetPattern: TargetPattern,
+        prereqPattern: Target[],
+        orderOnlies: Target[],
         inlineRecipe: string
     ): BaseRule;
 }

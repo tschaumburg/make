@@ -2,13 +2,13 @@ export var makefile =
 {
     'Makefile': [
         'second:',
-        '   echo second',
+        '\techo second',
         '',
         'run: second',
     ],
     'Makefile2x': [
         'first:',
-        '   echo first',
+        '\techo first',
         '',
         'run:first'
     ]

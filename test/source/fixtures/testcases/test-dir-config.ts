@@ -5,10 +5,12 @@ import * as path from "path";
 import { isArray, isString } from "util";
 import { loadExpected, ExpectedError, ExpectedSuccess, IActualResult } from "../results";
 import { run } from "./run";
+import { resolve } from "url";
 
 export interface TestDirConfig
 {
-    makefile: string[] | string | { [name: string]: string[] | string },
+    // makefile: string[] | string | { [name: string]: string[] | string },
+    files: { [name: string]: string[] | string },
     dirname: string;
     //title?: string;
 }
@@ -19,90 +21,62 @@ export function createWorkingDir(
 ): string
 {
     console.error("createWorkingDir " + JSON.stringify(spec));
+    console.error("createTestdir dirName=" + spec.dirname);
 
+    if (!fs.existsSync(spec.dirname))
+    {
+        fse.ensureDirSync(spec.dirname);
+    }
 
-    createTestdir(spec.dirname);
-    createMakefiles(spec.dirname, spec.makefile);
+    createFiles(spec.dirname, spec.files);
+
     return spec.dirname;
 }
 
-function createTestdir(dirName: string): void
+function createFiles(basedir: string, files: { [name: string]: string[] | string } ): void
 {
-    console.error("createTestdir dirName=" + dirName);
-
-    // console.error("TESTDIR=" + dirName);
-
-    if (!fs.existsSync(dirName))
+    for (let relativeFileName in files)
     {
-        fse.ensureDirSync(dirName);
+        let absoluteDestination = path.resolve(basedir, relativeFileName);
+        let source = files[relativeFileName];
+
+        createTestFile(absoluteDestination, source);
     }
 }
 
-function createMakefiles(basedir: string, makefile: string[] | string | { [name: string]: string[] | string } ): void
+function createTestFile(destination: string, source: string[] | string): void
 {
-    if (isArray(makefile))
+    if (isArray(source))
     {
-        writeMakefile(basedir, 'Makefile', makefile);
-    }
-    else if (isString(makefile))
-    {
-        copyMakefile(basedir, 'Makefile', makefile);
+        writeMakefile(destination, source);
     }
     else
     {
-        for (let name in makefile)
-        {
-            let filecontents = makefile[name];
-            let makefileName = path.basename(name) || 'Makefile';
-            let relativeDirname = path.dirname(name) || '.';
-            let absoluteDirname = path.resolve(basedir, relativeDirname);
-
-            if (isArray(filecontents))
-            {
-                writeMakefile(absoluteDirname, makefileName, filecontents);
-            }
-            else if (isString(filecontents))
-            {
-                copyMakefile(absoluteDirname, makefileName, filecontents);
-            }
-        
-            //let makefilename = path.resolve(dirName, filename);
-            // let makefileDirname = path.dirname(makefilename);
-            // fse.ensureDirSync(makefileDirname);
-            // let lines = makefile[filename];
-            // fs.writeFileSync(makefilename, lines.join("\n"));
-        }
+        copyMakefile(destination, source);
     }
 }
 
-function copyMakefile(targetAbsDir: string, targetFileName: string, srcFileName: string): void
+function copyMakefile(destination: string, srcFileName: string): void
 {
-    fse.ensureDirSync(targetAbsDir);
+    destination = path.resolve(".", destination);
+    let destinationDir = path.dirname(destination);
+    if (!fs.existsSync(destinationDir))
+        fse.ensureDirSync(destinationDir);
 
-    // let dstFilename = destination;
-    // if (fs.lstatSync(dstFilename).isDirectory())
-    // {
-    //     dstFilename = path.resolve(dstFilename, "Makefile");
-    // }
-
-    let targetFullname = path.resolve(targetAbsDir, targetFileName);
     let makefileContents = fs.readFileSync(srcFileName);
-    fs.writeFileSync(targetFullname, makefileContents);
+    fs.writeFileSync(destination, makefileContents);
     //console.log(spec.makefile.join("\n"));
 }
 
-function writeMakefile(targetAbsDir: string, targetFileName: string, makefileLines: string[]): void
+function writeMakefile(destination: string, makefileLines: string[]): void
 {
-    fse.ensureDirSync(targetAbsDir);
+    destination = path.resolve(".", destination);
+    let destinationDir = path.dirname(destination);
 
-    // let makefilename = pathName;
-    // if (fs.existsSync(makefilename) && fs.lstatSync(makefilename).isDirectory())
-    // {
-    //     makefilename = path.resolve(makefilename, "Makefile");
-    // }
+    if (!fs.existsSync(destinationDir))
+        fse.ensureDirSync(destinationDir);
 
-    let targetFullname = path.resolve(targetAbsDir, targetFileName);
-    fs.writeFileSync(targetFullname, makefileLines.join("\n"));
+    fs.writeFileSync(destination, makefileLines.join("\n"));
     //console.log(spec.makefile.join("\n"));
 }
 

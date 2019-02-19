@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as jison from "./makefile-syntax";
 import { IParseResultBuilder } from "../../result";
-import { IParserContext } from "./parser-context";
+import { IParserContext, setContext } from "./parser-context";
 
 export function createParser(
     makefilename: string, 
@@ -20,7 +20,7 @@ export function createParser(
     var _parser = new jison.Parser();
     _parser.lexer.options.flex = false;
     _parser.lexer.options.multiline = true;
-    _parser.yy.makefileParserContext = context;
+    setContext(_parser.yy, context);
 
     return _parser;
 }

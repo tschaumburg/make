@@ -1,6 +1,8 @@
 import * as path from "path";
+import * as fs from "fs";
 import { ExpectedError, ExpectedSuccess, loadExpected, IActualResult } from "../results";
 import { run } from "./run";
+import { fstat } from "fs-extra";
 
 export interface TestStepConfig
 {
@@ -12,12 +14,12 @@ export interface TestStepConfig
     expect: ExpectedError | ExpectedSuccess | string | string[] ; //| { [name: string]: string[] | string };
 }
 
-export function registerTestStep(
+export function registerTest(
     dirName: string,
     step: TestStepConfig
 ): void
 {
-    //console.error("EXPECTS " + JSON.stringify(step.expect));
+    console.error("EXPECTS " + JSON.stringify(step.expect));
     let expectedResult = loadExpected(step.expect);
     let prepare = step.prepare;
     //console.error("   => " + JSON.stringify(expectedResult));
@@ -30,8 +32,16 @@ export function registerTestStep(
 
             // Run npm-make:
             let result = make(dirName, step.targets, step.env);
+            fs.writeFileSync(path.join(dirName, "expected.txt"), expectedResult.lines().join("\n"));
+            fs.writeFileSync(path.join(dirName, "actual.txt"), result.stdout.concat(result.stderr).join("\n"));
+
+            let msg = "Working dir: " + dirName;
+            console.error(msg);
+            console.log(msg);
 
             // Assert
+            console.error("EXPECTED: " + JSON.stringify(expectedResult, null, 3));
+            console.error("ACTUAL: " + JSON.stringify(result, null, 3));
             expectedResult.assertActual(result);
 
             done();
@@ -41,7 +51,7 @@ export function registerTestStep(
 
 function runPrepare(dirName: string, prepare: () => void): void
 {
-    console.error("runprepare: dirName=" + dirName + " prepare=" + prepare);
+    //console.error("runprepare: dirName=" + dirName + " prepare=" + prepare);
     if (!!prepare)
     {
         var cwd = process.cwd();

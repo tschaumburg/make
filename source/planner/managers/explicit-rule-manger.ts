@@ -29,7 +29,7 @@ export class ExplicitRuleHandler
         {
             for (var target of rule.targets)
             {
-                var fileref = filemanager.wildcardTargetMap(target, fileFullname);
+                var fileref = filemanager.doesFilenameMatchTarget(target, fileFullname);
                 if (!!fileref)
                 {
                     var vpath = filemanager.resolveVpath(target.basedir, target.parseContext.vpath, target.relname);

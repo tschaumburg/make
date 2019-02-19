@@ -1,5 +1,5 @@
 import * as fse from "fs-extra";
-import { deleteFiles, touchFiles } from "../../../test-utils"
+import { deleteFiles, touchFiles, touchFilesRelative } from "../../../test-utils"
 import { TestStepConfig } from "../../../fixtures";
 
 var checkoutImplicitRules =
@@ -8,19 +8,19 @@ var checkoutImplicitRules =
         '',
         '# Update Makefile to the latest version:',
         'Makefile: latest-version/Makefile',
-        '   echo checkout $@',
-        '   cpy "$<" "$(@D)"',
-        '   nodetouch $@',
+        '\techo checkout $@',
+        '\tcpy "$<" "$(@D)"',
+        '\techo. >> $@',
         '',
         'MakefileA: latest-version/MakefileA',
-        '   echo checkout $@',
-        '   cpy "$<" "$(@D)"',
-        '   nodetouch $@',
+        '\techo checkout $@',
+        '\tcpy "$<" "$(@D)"',
+        '\techo. >> $@',
         '',
         'MakefileB: latest-version/MakefileB',
-        '   echo checkout $@',
-        '   cpy "$<" "$(@D)"',
-        '   nodetouch $@',
+        '\techo checkout $@',
+        '\tcpy "$<" "$(@D)"',
+        '\techo. >> $@',
         '',
     ];
 
@@ -34,7 +34,7 @@ export var makefile =
         'include Makefile.checkout',
         '',
         'run:',
-        '   echo run0',
+        '\techo run0',
     ],
     // Version 1:
     // ==========
@@ -44,7 +44,7 @@ export var makefile =
         'include Makefile.checkout',
         '',
         'run:',
-        '   echo run1',
+        '\techo run1',
         '',
         'include MakefileA',
     ],
@@ -60,7 +60,7 @@ export var makefile =
         'include Makefile.checkout',
         '',
         'run:',
-        '   echo run2',
+        '\techo run2',
         '',
         'include MakefileA',
         'include MakefileB',
@@ -118,12 +118,13 @@ function setLatestVersion(version: number): void
 {
     console.log("checkin v." + version);
     deleteFiles("latest-version/*");
-    fse.copySync("tmp/" + version + "/", "latest-version/");
-    touchFiles("latest-version/*");
+    fse.copySync("tmp/" + version + "", "latest-version", { preserveTimestamps: true, overwrite: true });
+    touchFilesRelative(0, "latest-version/*");
 }
 
 function checkoutLatestVersion(): void
 {
     //console.log("checkout latest");
-    fse.copySync("latest-version/", "./");
+    fse.copySync("latest-version/", "./", { preserveTimestamps: true });
+    touchFilesRelative(0, "./*");
 }

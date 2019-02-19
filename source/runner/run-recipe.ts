@@ -25,9 +25,9 @@ export function runPlan(target: IFilePlan, variablemanager: IVariableManager): v
                 target.producedBy.orderOnly
             );
 
-        //console.error("RUN " + cmd);
+        //console.error("RUN2 " + cmd);
 
-        var ret = runShell(cmd, [], '.', "inherit").retCode;
+        var ret = runShell(cmd, '.', "inherit").retCode;
 
         if (ret != 0)
             exits.recipeExecutionError(ret, cmd);

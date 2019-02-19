@@ -51,7 +51,7 @@ export function parseUndefinedVariable(varname: string)
 export const COMMAND_UNKNOWN_GOAL = 106;
 export function commandUnknownGoal(goalName: string)
 {
-    var msg = "Target " + goalName + " not defined in makefile";
+    var msg = "No rule to make target '" + goalName + "'";
 
     console.error(msg);
     log.fatal(msg);
@@ -122,6 +122,17 @@ export function applicationErrorRedefiningTarget(targetname: string)
     console.error(msg);
     log.fatal(msg);
     process.exit(APPLICATION_ERROR_REDEFINING_TARGET);
+}
+
+
+export const RULE_RECIPE_BEFORE_TARGET = 113;
+export function ruleErrorPrematureRecipe()
+{
+    var msg =
+        "commands commence before first target.";
+    console.error(msg);
+    log.fatal(msg);
+    process.exit(RULE_RECIPE_BEFORE_TARGET);
 }
 
 

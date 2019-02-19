@@ -2,6 +2,7 @@ import { IActualResult } from "./actual-result";
 
 export interface IExpectedResult
 {
+    lines(): string[];
     assertActual(actual: IActualResult): void;
 }
 

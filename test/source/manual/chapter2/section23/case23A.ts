@@ -12,16 +12,16 @@ export function loadTests(): void
                 makefile: [
                     'objects = main.o kbd.o',
                     'edit : $(objects)',
-                    '   echo build edit',
-                    '   nodetouch edit',
+                    '\techo build edit',
+                    '\tnodetouch edit',
                     'main.o : main.c defs.h',
-                    '   echo build main.o',
-                    '   nodetouch main.o',
+                    '\techo build main.o',
+                    '\tnodetouch main.o',
                     'kbd.o : kbd.c defs.h command.h',
-                    '   echo build kbd.o',
-                    '   nodetouch kbd.o',
+                    '\techo build kbd.o',
+                    '\tnodetouch kbd.o',
                     'clean :',
-                    '        rm edit $(objects)'
+                    '\trm edit $(objects)'
                 ],
             },
             // +------+------------+--------------------+---------+-----------------+

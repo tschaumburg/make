@@ -29,6 +29,7 @@ export interface IVariableManager
      * in the src string with their values, and return the resulting 
      * value
      */
+    evaluateExpressionNoTrim(src: string): string;
     evaluateExpression(src: string): string;
 }
 
@@ -112,6 +113,11 @@ class VariableManager implements IVariableManager
         // function calls
         expression = expression.replace(/^\s+/, "");
 
+        return this.evaluateExpressionNoTrim(expression);
+    }
+
+    public evaluateExpressionNoTrim(expression: string): string
+    {
         var self = this;
         var res = 
             resolveString(
@@ -211,7 +217,7 @@ class VariableManager implements IVariableManager
 
     private _execute(shellCommand: string): string
     {
-        var res = runShell(shellCommand, [], '.', "string");
+        var res = runShell(shellCommand, '.', "string");
 
         if (res.retCode != 0)
             exits.recipeExecutionError(res.retCode, shellCommand);

@@ -38,10 +38,8 @@ A prerequisite is a file that is used as input to create the target.
 A target often depends on several files.
 
 <div>
-```makefile
-a: b
-    c
-```
+     a: b
+         c
 </div>
 
 A recipe is an action that make carries out. A recipe may have more than 

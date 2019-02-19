@@ -1,47 +1,67 @@
 import { createWorkingDir, TestDirConfig } from "./test-dir-config";
-import { registerTestStep, TestStepConfig } from "./test-step-config";
-import { dirname } from "path";
-import { loadExpected } from "../results";
+import { registerTest, TestStepConfig } from "./test-step-config";
+import * as path from "path";
 
-// export interface MultiTestcase extends TestDirConfig
-// {
-//     // makefile: string[] | string | { [name: string]: string[] | string },
-//     // id: string;
-//     // title?: string;
-// }
 export interface SimpleTestcase
 {
     title: string;
-    makefileName: string;
+    makefileName: string | string[];
+    prepare?: () => void;
     targets: string[];
-    expectedName: string;
+    expectedName: string | string[];
 }
 
+// Defining a test by callig simpletest with these parameters.
+// 
+//   simpleTest(
+//       {
+//           stepId: 419,
+//           makefileName: require.resolve("./Makefile"),
+//           expectedName: require.resolve("./expected"),
+//           ...
+//       };
+//   )
+//
+// will create the following directory structure for the test
+// to run in:
+//
+//   +-basedir
+//       +-419
+//          +-Makefile  (copied from source dir)
+//          +-expected  (copied from source dir)
 export function simpleTest(testConfig: SimpleTestcase): (basedir: string, caseNo: number) => void
 {
     var res =
         (basedir: string, caseNo: number) => 
         {
-            console.error("simpleTest basedir=" + basedir + " caseNo=" + caseNo);
-            describe(caseNo + " " + testConfig.title, function ()
+            let testdir = path.resolve(basedir, "" + caseNo);
+            console.error("simpleTest basedir=" + basedir + " caseNo=" + caseNo + " => testdir=" + testdir);
+            console.log("simpleTest basedir=" + basedir + " caseNo=" + caseNo + " => testdir=" + testdir);
+            //describe(caseNo + " " + testConfig.title, function ()
             {
-                var dirName = 
+                if (!!testConfig.makefileName)
+                {
                     createWorkingDir(
                         {
-                            dirname: basedir + "/" + caseNo,
-                            makefile: testConfig.makefileName
+                            dirname: testdir,
+                            files: {
+                                "Makefile": testConfig.makefileName
+                            }
                         }
                     );
-        
-                registerTestStep(
-                    dirName,
+                }
+
+                registerTest(
+                    testdir,
                     {
+                        stepId: caseNo, //testConfig.testId,
                         title: testConfig.title,
+                        prepare: testConfig.prepare,
                         targets: testConfig.targets,
                         expect: testConfig.expectedName
                     }
                 )
-            });
+            }//);
         };
 
     return res;

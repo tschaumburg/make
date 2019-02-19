@@ -4,9 +4,7 @@ import { ImplicitRule } from "./implicit-rule";
 import { StaticPatternRule } from "./static-pattern-rule";
 import { BaseRule } from "./base-rule";
 import { IRuleSet } from "./rule-set";
-import { IParseLocation, IParseContext } from "../result-builder";
-import { TargetPatternFactory, TargetFactory } from "../builder/target-factories";
-import { TargetName } from "../targets";
+import { TargetName, TargetPattern, Target } from "../targets";
 
 export function createRuleset(): IRuleSet
 {
@@ -22,32 +20,31 @@ class RuleSet implements IRuleSet
     public readonly implicitRules: ImplicitRule[] = [];
     public readonly staticPatternRules: StaticPatternRule[] = [];
     addRule(
-        location: IParseLocation,
-        context: IParseContext,
-        basedir: string,
-        targets: string[],
-        prerequisites: string[],
-        targetPattern: string[],
-        prereqPattern: string[],
-        orderOnlies: string[],
+        targets: Target[], // all TargetNames => static rule, all targetPatterns => implicit rule, mixed => error
+        prerequisites: Target[],
+        targetPattern: TargetPattern,
+        prereqPattern: Target[],
+        orderOnlies: Target[],
         inlineRecipe: string
     ): BaseRule
     {
+        //console.error("orderOnlies = " + JSON.stringify(orderOnlies));
         // console.error(
         //     "targets0 = " + targets0 + "\n" + 
         //     "targets1 = " + targets1 + "\n" + 
         //     "targets2 = " + targets2 + "\n" + 
         //     "targets3 = " + targets3 + "\n" 
         // );
+        if (!targets || targets.length == 0)
+        {
+            exits.ruleMissingTarget();
+        }
 
-        if (!!targetPattern && targetPattern.length > 0)
+        if (!!targetPattern) // && targetPattern.length > 0)
         {
             // Static pattern rule:
             let staticPatternRule =
                 new StaticPatternRule(
-                    location,
-                    context,
-                    basedir,
                     targets,
                     targetPattern,
                     prereqPattern, 
@@ -63,15 +60,20 @@ class RuleSet implements IRuleSet
             this.staticPatternRules.push(staticPatternRule);
             return staticPatternRule;
         }
-        else if (targets.some(t => TargetPatternFactory.isPattern(t)))
+        
+        if (targets.every(t => t.isPattern()))
         {
-            // Implicit pattern rule:
+            // Implicit pattern rule (10.5.1):
+            //
+            // Note: experimentation shows that Gnu make accepts multiple
+            // pattern targets, but no mix - i.e. a target list '%.o %.debug'
+            // is OK, but '%o %.debug compile.errors' is not
+            // 
+            // prerequisites: any mix allowed
+
             let implicitRule =
                 new ImplicitRule(
-                    location,
-                    context,
-                    basedir,
-                    targets, 
+                    targets.map(t => t as TargetPattern), 
                     prerequisites, 
                     orderOnlies,
                     inlineRecipe
@@ -80,7 +82,7 @@ class RuleSet implements IRuleSet
 
             if (!this._defaultTarget)
             {
-                let targetname = implicitRule.targetPatterns.find(t => !TargetPatternFactory.isPattern(t.relname)) as TargetName;
+                let targetname = implicitRule.targetPatterns.find(t => !t.isPattern()) as TargetName;
                 // console.log("   DEFAULT TARGET : " + JSON.stringify(targetname));
                 if (!!targetname)
                 {
@@ -90,14 +92,12 @@ class RuleSet implements IRuleSet
             
             return implicitRule;
         }
-        else
+        
+        if (targets.every(t => !t.isPattern()))
         {
             // Explicit ("normal") rule:
             let explicitRule =
                 new ExplicitRule(
-                    location,
-                    context,
-                    basedir,
                     targets, 
                     prerequisites, 
                     orderOnlies, 
@@ -105,14 +105,17 @@ class RuleSet implements IRuleSet
                 );
             
             //console.log("   DEFAULT TARGET 0: " + JSON.stringify(explicitRule.targets[0]));
+            this.explicitRules.push(explicitRule);
+
             if (!this._defaultTarget)
             {
                 this._defaultTarget = explicitRule.targets[0];
             }
 
-            this.explicitRules.push(explicitRule);
             return explicitRule;
         }
+    
+        throw new Error("mixed implicit and normal rules.");
     }
 }
 

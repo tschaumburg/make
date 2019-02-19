@@ -16,8 +16,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch npm-make",
-            "program": "${workspaceFolder}/dist/cli.js",
-            "cwd": "C:/Users/Thomas/npm-make-test/testing/37/7"
+            "program": "${workspaceFolder}/dist/cli.js", 
+            "cwd": "C:/Users/Thomas/npm-make-test/testing/42/1/63"
         },
         {
             "type": "node",

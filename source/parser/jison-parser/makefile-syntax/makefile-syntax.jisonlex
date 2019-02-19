@@ -1,62 +1,36 @@
-%options multiline
+%options multiline 
 %{
+const preprocessor = require("./preprocessor");
 const tokens = require("./makefile-syntax-tokens");
+const context = require("./parser-context");
 const variables = require("../variables");
+const utils = require("./makefile-syntax-utils");
+const normalize = require("../../result/normalize");
 
+/*const debugStates = true;
 
-function trimVarname(src)
-{
-    let res = src;                        // ' myvar ::= '
-    //res = res.replace(/^[\s]*/, "");      // => 'myvar ::= '
-
-    res = res.replace(/[:][:][=]$/, ""); // => 'myvar'
-    res = res.replace(/[:?!+]?[=]$/, "");
-    res = res.trim()
-
-    return res;
-}
-
-function trimVarvalue(src)
-{
-    //console.error("VAL " + src);
-    var res = src.replace(/^[\s]*/, "").replace(/[ =\r\n]*$/, "");
-    //console.error("RES " + res);
-    return res;
-}
-function trim(regex1, regex2)
-{
-    //console.error("yytext = '" + yytext + "'");
-    yytext = trimText(yytext, regex1, regex2);
-    //console.error("yytext = '" + yytext + "'");
-}
-
-function trimText(src, regex1, regex2)
-{
-    if (!src)
-        return src;
-
-    if (!!regex1)
-        src = src.replace(regex1, "");
-
-    if (!!regex2)
-        src = src.replace(regex2, "");
-
-    return src;
-}
-
-const debugStates = false;
-
-this.gotoState = 
+this.begin = 
     function(state) 
     {
         var pre = this.topState(); 
-
-        this.popState(); 
-        this.pushState(state); 
-
-        var post = this.topState(); 
         if (debugStates)
-            console.error("...gotoState(): " + pre + " => " + post); 
+            console.error("...begin(): " + pre + " => " + state); 
+
+        // from this.begin("INITIAL"):
+        {
+            var n = this.conditionStack.length - 1;
+            if (n > 0) {
+                return this.conditionStack.pop();
+            }
+            else{
+                console.error("ooops..");
+            }
+        }
+
+        // from this.pushState(state):
+        {
+            this.conditionStack.push(state);
+        }
     };
 
 initDebugDone: true;
@@ -82,35 +56,69 @@ this.initDebug = function initDebug() {
 
             var post = this.topState(); 
             if (debugStates)
-                console.error("...popState():  " + pre + " => " + post); 
+                console.error("...popState()):  " + pre + " => " + post); 
         };
     
     this.pushState = 
         function(s) 
         {
             var pre = this.topState(); 
+            if (debugStates)
+                console.error("...pushState(): " + pre + " => " + s); 
 
             this.conditionStack.push(s); 
-
-            var post = this.topState(); 
-            if (debugStates)
-                console.error("...pushState(): " + pre + " => " + post); 
         };
 
 }
 
 const goto = function (state)
 {
-     yy_.gotoState(state);
+     yy_.begin(state);
 }
-
+*/
 const match = function (index)
 {
     yytext = yy_.matches[index];
 }
+
+
+const resolveVariables = function (src)
+{
+    return context.getContext(yy).resultBuilder.expandVariables(src);
+}
+
+const trimStart = function (prefix)
+{
+    yytext = yytext.replace(prefix, "");
+}
+
+const trimColon = function ()
+{
+    trimStart(/^[ \t:]*/);
+}
+
+const trimPipe = function ()
+{
+    trimStart(/^[ \t|]*/);
+}
+
+const trimSemi = function ()
+{
+    trimStart(/^[ \t;]*/);
+}
+
+const isRecipe = function (line)
+{
+    var res =  line.startsWith("\t");
+    //console.error("Line '" + line + "' " + (res ? "IS" : "is NOT") + " a recipe line");
+    return res;
+}
 %}
 
-%s INITIAL PREPROCESSED RULE RECIPE INCLUDE COMMENT VAR_DEF VAR_VALUE VAR_DEF_END MACRO MACRO_VALUE IRECIPE INCLUDE_NAME
+%s INITIAL 
+%s PREPROCESSOR PREPROCESSOR_LINEBREAKS PREPROCESSOR_COMMENTS PREPROCESSOR_VARIABLES 
+%s PARSER PARSER_RULELINE PARSER_RULELINE_TARGETS RULETYPE TARGETPATTERNS PREREQUISITES PREREQPATTERNS ORDERONLIES PARSER_RECIPELINE ENDRULE INLINE_RECIPE INCLUDE COMMENT VAR_DEF VAR_VALUE VAR_DEF_END MACRO MACRO_VALUE INCLUDE_NAME
+
 
 safechar     [^\r\n\s:#|:\\]
 escapedchar  (?:\\[\x20:\t|\\])
@@ -119,132 +127,184 @@ dirname	    (?:(?:{safechar}|{escapedchar})+)
 separator   [/\\]
 path        (?:{separator}*(?:{dirname}{separator}+)*)
 filename    (?:{path}?{basename})
-target		(?:(?:{safechar}|{escapedchar})+)
+
 spc         [ \t]*
-ltargets    (?:(?:{target}{spc})*{spc})
-targets     (?:{spc}{ltargets})
-variable	(?:[^\s=:?+!])+
-varname	(?:[^\s=:?+!])+
-recipe		(?:[^\n\r]*)
 eol         (?:[\r]?[\n])
-noeol       [^\r\n]
+esc_eol     (?:[\\]{eol})
+non_eol     {esc_eol}|[^\r\n]
+restofline  [^\r\n]*(?={eol})
 
-rulesep [|;#\r\n]
-ruleitem [^|;#\r\n]*
+hash        [#]
+esc_hash    (?:[\]{hash})
+non_hash    (?:{esc_hash}|{esc_eol}|([\][\])|[^#\r\n\])
 
-defineStart  ^('define'{spc}{variable}{spc}?)
+variable	(?:[^\s=:?+!])+
+varname	    (?:[^\s=:?+!])+
+recipe		(?:[^\n\r]*)
+
+shared_plainchar       [^# :;|\r\n]
+shared_escapedchar     (?:\\[ #%:;\\|])
+shared_char            (?:{shared_plainchar}|{shared_escapedchar})
+shared_terminator      (?:[#\x20:;|\r\n]|$|<<EOF>>)
+shared                 {target_char}+
+
+target_plainchar       [^# :;|\r\n]
+target_escapedchar     (?:\\[ #%:;\\|])
+target_char            (?:{target_escapedchar}|{target_plainchar})
+target_terminator      (?:[#\x20:;\r\n]|$|<<EOF>>)
+target                 {target_char}+
+
+prereq_plainchar       [^# :;\r\n]
+prereq_escapedchar     (?:\\[ #%:;\\|])
+prereq_char            (?:{prereq_plainchar}|{prereq_escapedchar})
+prereq_terminator      (?:[#\x20:;|\r\n]|$|<<EOF>>)
+prereq                 {prereq_char}+
+
+orderonly_plainchar       [^# :;|\r\n]
+orderonly_escapedchar     (?:\\[ #%:;\\|])
+orderonly_char            (?:{orderonly_plainchar}|{orderonly_escapedchar})
+orderonly_terminator      (?:[#\x20:;|\r\n]|$|<<EOF>>)
+orderonly                 {prereq_char}+
+
+targetlist_terminator      (?:[#%:;|\r\n]|$)
+targetlist_char            (?:{target_char}|[ ])
+targetlist                 {targetlist_char}+(?={targetlist_terminator})
+
+prereq_terminator          (?:[#%:;|\r\n]|$)
+prereq_char                (?:{target_char}|[ ])
+prereqlist                     {prereq_char}+(?={prereq_terminator})
+
+orderonly_terminator      (?:[#%:;|\r\n]|$)
+orderonly_char            (?:{target_char}|[ ])
+orderonlylist                 {orderonly_char}+(?={orderonly_terminator})
+
+targetpatternlist       (?:{targetlist})
+
+targets          {targetlist}
+targetpatterns   (?:{spc}[:]{spc}){targetpatternlist}
+prereqs          (?:{spc}[:]{spc}){prereqlist}
+orderonlies      (?:{spc}[|]{spc}){orderonlylist}
+recipeline       (?:{spc}[;]{spc}){restofline}
+
+
+colon                (?:{spc}[:]{spc})
+pipe                 (?:{spc}[|]{spc})
+semicolon            (?:{spc}[;]{spc})
+
+defineStart  ^('define'{spc}{varname}{spc}?)
 defineEnd    ([ \t]*{eol})
+
+
+xruleline    {restofline}
+xtargets        (?:(?:(?:\\[%:;# \\|])|[^:;#\r\n\x00|\\%])*)
+xprerequisites  (?:(?:(?:\\[%:;# \\|])|[^:;#\r\n\x00|])*)
+xorderonlies    (?:(?:(?:\\[%:;# \\|])|[^;#\r\n\x00|])*)
+
+xtargetpatterns (?:[^:;#\r\n=\x00]|(?:\\[%:;# ]))+
+
+xprereqpatterns (?:[^|#=:\r\n\x00]|(?:\\[%|# ]))*
 
 %%
 
+<INITIAL>^{spc}{eol}                    { this.begin("INITIAL"); return tokens.EOL; }
+<INITIAL>^{spc}<<EOF>>                    { this.begin("INITIAL"); return tokens.EOF2; }
+
+<INITIAL>^ 
+    %{ 
+        //console.error("pre");
+        //console.error("   yytext: " + JSON.stringify(yytext));
+        //console.error("   _input: " + JSON.stringify(this._input));
+        this.begin("PARSER"); 
+    %}
+
 /***************************************************************
- * Preprocessor-like conversions:
- * ==============================
- *
+ * Preprocessor:
+ * =============
+ * See preprocessing.md
+ * 
  * NOTE: This should be the first rules in the lexer!
  **************************************************************/
+<PREPROCESSOR>.*
+    %{ 
+        this.begin("PARSER");
+        //this.unput(/*resolveVariables*/(yytext)); 
+    %}
 
-
-// Line-continuation:
-// ==================
-/*{spc}[\\]{eol}{spc}							{ return tokens.SPC; } */
-
-
-// Replacing variable references:
-// ==============================
-
-<INITIAL>^[^\r\n]*{eol}     { 
-                                this.initDebug();
-                                //var varValue = yy.makefileParserContext.resultBuilder.expandVariables(yytext);
-                                //console.error("...preprocessor: " + JSON.stringify(yytext) + " ==> " + JSON.stringify(varValue)); 
-                                this.unput(yytext); //varValue);
-                                this.pushState("PREPROCESSED");
-                            }
-/*
-<INITIAL>^.*{eol}           { 
-                                //this.initDebug();
-                                //console.error("...preprocessor: " + JSON.stringify(yytext) + " => unchanged"); 
-                                this.unput(yytext);
-                                this.pushState("PREPROCESSED"); 
-                            }
-*/
 /***************************************************************
  * Makefile lines:
  * ===============
  **************************************************************/
-<PREPROCESSED>(?=^'#')			          { this.gotoState("COMMENT");                          }
-<PREPROCESSED>(?=^'include')   	          { this.gotoState("INCLUDE"); }
-<PREPROCESSED>(?=^{varname}{spc}?'::=')   { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^{varname}{spc}?':=')    { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^{varname}{spc}?'+=')    { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^{varname}{spc}?'?=')    { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^{varname}{spc}?'!=')    { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^{varname}{spc}?'=')     { this.gotoState("VAR_DEF"); }
-<PREPROCESSED>(?=^'define'{spc})          { this.gotoState("MACRO"); }
-<PREPROCESSED>(?=^{ltargets}{spc}?':')    { this.gotoState("RULE");           return tokens.RULESTART; }
-<PREPROCESSED>(?=^[ \t]+{recipe}{eol})	  { this.gotoState("RECIPE"); }
-<PREPROCESSED>{eol}				          { this.popState(); return tokens.EOL; }
+<PARSER>^{eol}                    { this.begin("INITIAL"); return tokens.EOL; }
+<PARSER>^(?='include')            { this.begin("INCLUDE"); }
+<PARSER>^(?={varname}{spc}?'::=') { this.begin("VAR_DEF"); }
+<PARSER>^(?={varname}{spc}?':=')  { this.begin("VAR_DEF"); }
+<PARSER>^(?={varname}{spc}?'+=')  { this.begin("VAR_DEF"); }
+<PARSER>^(?={varname}{spc}?'?=')  { this.begin("VAR_DEF"); }
+<PARSER>^(?={varname}{spc}?'!=')  { this.begin("VAR_DEF"); }
+<PARSER>^(?={varname}{spc}?'=')   { this.begin("VAR_DEF"); }
+<PARSER>^(?='define'{spc})        { this.begin("MACRO"); }
 
+<PARSER>^(?:(?:{xtargets}{colon})|(?:.{restofline}))      
+    %{
+        if (yytext.startsWith("\t"))
+        {
+            this.begin("PARSER_RECIPELINE");
+            this.unput(yytext);
+        }
+        else
+        {
+            this.begin("PARSER_RULELINE");
+            this.unput(yytext);
+        }
+    %}
+    
 /***************************************************************
  * Rule definitions:
  * =================
- * The syntax for a rule line is:
- *
- *    targets? : prereqs? (| orderonlies)? (; recipe)? (# comment ) <eol>?
- *
- * As can be seen, the terms are separated by the rule separator
- * characters [:|;#\r\n]
+ * 
  **************************************************************/
-<RULE>^{ruleitem}[:]{ruleitem}[:]{ruleitem}  {                  return tokens.TARGET_PATTERN_PATTERN; }//.COLON; }
-<RULE>^{ruleitem}[:]{ruleitem}               {                  return tokens.TARGET_PREREQ; }//.COLON; }
-<RULE>[|]{ruleitem}        		             {                  return tokens.ORDERONLIES; }  //.PIPE; }
-<RULE>[;]{ruleitem}                          {                  return tokens.INLINE_RECIPE; } //SEMICOLON; }
-<RULE>[#].*{eol}		                     { this.popState(); return tokens.EOL; }
-<RULE>{eol}					                 { this.popState(); return tokens.EOL; }
-<RULE>[ \t]+                                 {}
-
-/***************************************************************
- * Inline recipe:
- * =============
- **************************************************************/
-<IRECIPE>{recipe}			    { this.popState(); return tokens.INLINE_RECIPE; }    
+<PARSER_RULELINE>{xruleline}                  { this.unput(resolveVariables(yytext)); this.begin("PARSER_RULELINE_TARGETS"); }
+<PARSER_RULELINE_TARGETS>{xtargets}           { this.begin("RULETYPE"); return tokens.TARGETS; }
+<RULETYPE>(?={colon}{xtargetpatterns}{colon}) { this.begin("TARGETPATTERNS"); }
+<RULETYPE>(?={colon}{xprerequisites})         { this.begin("PREREQUISITES"); }
+<TARGETPATTERNS>{colon}{xtargetpatterns}      { this.begin("PREREQPATTERNS"); trimColon(); return tokens.TARGETPATTERNS; }
+<PREREQPATTERNS>(?:{colon}{xprereqpatterns})? { this.begin("ORDERONLIES"); trimColon(); return tokens.PREREQPATTERNS; }
+<PREREQUISITES>{colon}{xprerequisites}        { this.begin("ORDERONLIES"); trimColon(); return tokens.PREREQUISITES; }
+<ORDERONLIES>(?:{pipe}{xorderonlies})?        { this.begin("INLINE_RECIPE"); trimPipe(); return tokens.ORDERONLIES; }
+<INLINE_RECIPE>((?:{semicolon}{restofline})?) { this.begin("ENDRULE"); return tokens.INLINE_RECIPE; }
+<ENDRULE>{eol}                                                 { this.begin("INITIAL"); return tokens.EOL; }
 
 /***************************************************************
  * Recipes:
  * ========
  **************************************************************/
-<RECIPE>^[ \t]+{recipe}(?={eol})		  {                  return tokens.RECIPE_LINE; }
-<RECIPE>{eol}			 	              { this.popState(); return tokens.EOL; }
+<PARSER_RECIPELINE>^[\t]{restofline}	     { yytext = yytext.substr(1);  return tokens.RECIPE_LINE; }
+<PARSER_RECIPELINE>{eol}			 	     { this.begin("INITIAL"); this.begin("INITIAL"); return tokens.EOL; }
+<PARSER_RECIPELINE><<EOF>>					 { return tokens.EOF2; }
                                 
-/***************************************************************
- * Comments:
- * =========
- **************************************************************/
-<COMMENT>^'#'[^\n\r]*{eol}			{ this.popState(); return tokens.EOL; }
-
 /***************************************************************
  * Includes:
  * =========
  **************************************************************/
-<INCLUDE>^'include'{spc}      { this.gotoState("INCLUDE_NAME"); }
+<INCLUDE>^'include'{spc}      { this.begin("INCLUDE_NAME"); }
 <INCLUDE_NAME>{filename}       { return tokens.INCLUDE; }
 <INCLUDE_NAME>\'{filename}\'   { return tokens.INCLUDE; }
 <INCLUDE_NAME>\"{filename}\"   { return tokens.INCLUDE; }
-<INCLUDE_NAME>{spc}?{eol}      { this.popState(); return tokens.EOL; }
+<INCLUDE_NAME>{spc}?{eol}      { this.begin("INITIAL"); return tokens.EOL; }
 
 
 /***************************************************************
  * Single-line variable definitions:
  * =================================
  **************************************************************/
-<VAR_DEF>^{variable}\s*'?='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_CONDITIONAL; }
-<VAR_DEF>^{variable}\s*'::='		{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
-<VAR_DEF>^{variable}\s*':='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
-<VAR_DEF>^{variable}\s*'+='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_APPEND; }
-<VAR_DEF>^{variable}\s*'!='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_SHELL; }
-<VAR_DEF>^{variable}\s*'='			{ this.gotoState("VAR_VALUE");   yytext = trimVarname(yytext);  return tokens.VARIABLE_SET_RECURSIVE; }
-<VAR_VALUE>[^\r\n]*(?={eol})		{ this.gotoState("VAR_DEF_END"); yytext = trimVarvalue(yytext); return tokens.VARIABLE_VALUE; }
-<VAR_DEF_END>{eol}            		{ this.popState();                                              return tokens.EOL; }
+<VAR_DEF>^{varname}\s*[?][=]		{ this.begin("VAR_VALUE");   yytext = utils.trimVarname(yytext);  return tokens.VARIABLE_SET_CONDITIONAL; }
+<VAR_DEF>^{varname}\s*[:][:][=]		{ this.begin("VAR_VALUE");   yytext = utils.trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
+<VAR_DEF>^{varname}\s*[:][=]		{ this.begin("VAR_VALUE");   yytext = utils.trimVarname(yytext);  return tokens.VARIABLE_SET_SIMPLE; }
+<VAR_DEF>^{varname}\s*[+][=]		{ this.begin("VAR_VALUE");   yytext = utils.trimVarname(yytext);  return tokens.VARIABLE_SET_APPEND; }
+<VAR_DEF>^{varname}\s*[!][=]		{ this.begin("VAR_VALUE");   yytext = utils.trimVarname(yytext);  return tokens.VARIABLE_SET_SHELL; }
+<VAR_DEF>^{varname}\s*[=]			{ this.begin("VAR_VALUE");   yytext = utils.trimVarname(yytext);  return tokens.VARIABLE_SET_RECURSIVE; }
+<VAR_VALUE>[^\r\n]*(?={eol})		{ this.begin("VAR_DEF_END"); yytext = utils.trimVarvalue(yytext); return tokens.VARIABLE_VALUE; }
+<VAR_DEF_END>{eol}            		{ this.begin("INITIAL");                                              return tokens.EOL; }
 
 
 /***************************************************************
@@ -267,14 +327,14 @@ defineEnd    ([ \t]*{eol})
  *  variable name to use."
  * console.error(JSON.stringify(this.matches, null, 3)); 
  **************************************************************/
-<MACRO>{defineStart}'='{defineEnd}   { match(4); goto("MACRO_VALUE"); return tokens.MACRO_RECURSIVE; }
-<MACRO>{defineStart}'?='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_CONDITIONAL; }
-<MACRO>{defineStart}':='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_SIMPLE; }
-<MACRO>{defineStart}'::='{defineEnd} { match(4); goto("MACRO_VALUE"); return tokens.MACRO_SIMPLE; }
-<MACRO>{defineStart}'+='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_APPEND; }
-<MACRO>{defineStart}'!='{defineEnd}	 { match(4); goto("MACRO_VALUE"); return tokens.MACRO_SHELL; }
-<MACRO>^{defineStart}{defineEnd}     { match(4); goto("MACRO_VALUE"); return tokens.MACRO_RECURSIVE; }
-<MACRO_VALUE>^'endef'\s*(?={eol})    {           this.popState();     return tokens.MACRO_END; }
+<MACRO>{defineStart}'='{defineEnd}   { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_RECURSIVE; }
+<MACRO>{defineStart}'?='{defineEnd}	 { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_CONDITIONAL; }
+<MACRO>{defineStart}':='{defineEnd}	 { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_SIMPLE; }
+<MACRO>{defineStart}'::='{defineEnd} { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_SIMPLE; }
+<MACRO>{defineStart}'+='{defineEnd}	 { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_APPEND; }
+<MACRO>{defineStart}'!='{defineEnd}	 { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_SHELL; }
+<MACRO>^{defineStart}{defineEnd}     { match(4); this.begin("MACRO_VALUE"); return tokens.MACRO_RECURSIVE; }
+<MACRO_VALUE>^'endef'\s*(?={eol})    {           this.begin("INITIAL");     return tokens.MACRO_END; }
 <MACRO_VALUE>[^\r\n]*{eol}           {                                return tokens.MACRO_VALUE; }
 
 
@@ -283,13 +343,16 @@ defineEnd    ([ \t]*{eol})
  * ====================
  **************************************************************/
 <INITIAL><<EOF>>						{ return tokens.EOF2; }
-<PREPROCESSED><<EOF>>						{ return tokens.EOF2; }
+<PARSER><<EOF>>						{ return tokens.EOF2; }
 <<EOF>>						{ return tokens.EOF2; }
-<RULE><<EOF>>						{ return tokens.EOF2; }
-<IRECIPE><<EOF>>						{ return tokens.EOF2; }
+<PARSER_RULELINE><<EOF>>						{ return tokens.EOF2; }
+<PARSER_RECIPELINE><<EOF>>						{ return tokens.EOF2; }
 <MACRO><<EOF>>						{ return tokens.EOF2; }
 <VAR_DEF><<EOF>>						{ return tokens.EOF2; }
 
-.   { /*console.error("MISMATCH: '" + yytext + "', state: " + this.topState());*/ }
+.   { console.error("MISMATCH: '" + yytext + "', state: " + this.topState()); 
+        console.error("   yytext: " + JSON.stringify(yytext));
+        console.error("   _input: " + JSON.stringify(this._input));
+}
 
 

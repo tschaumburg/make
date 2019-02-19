@@ -8,6 +8,7 @@ import { IExpectedResult, linesMatch } from "./expected-result";
 
 export class ExpectedSuccess implements IExpectedResult
 {
+    public lines(): string[] { return this.stdout; }
     public readonly stdout?: string[];
     constructor(expectation?: string | string[])
     {

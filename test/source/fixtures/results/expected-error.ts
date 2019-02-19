@@ -5,6 +5,7 @@ import { IExpectedResult, linesMatch } from "./expected-result";
 
 export class ExpectedError implements IExpectedResult
 {
+    public lines(): string[] { return this.stderr; }
     public readonly exit?: number;
     public readonly stderr?: string[];
     constructor(exitCode?: number, errorMessage?: string | string[])
