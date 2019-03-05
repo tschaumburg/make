@@ -1,4 +1,4 @@
-// import * as exits from '../return-codes';
+// import * as exits from '../make-errors';
 
 // export function createRuleManager(): IRuleManager
 // {

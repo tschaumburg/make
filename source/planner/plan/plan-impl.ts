@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 // import { ExplicitRule, TargetPattern, Target, TargetName, Recipe } from "../parser/result";
-import * as exits from "../../return-codes";
+import * as exits from "../../make-errors";
 import { IPlan, IFileRef, IAction, IFilePlan } from "./plan";
 import { IVariableManager } from '../../variables';
 // import { ExplicitRuleHandler } from "./explicit-rule-handler";

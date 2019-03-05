@@ -3,8 +3,6 @@ import { IPlanner } from "../planner/planner";
 import { MakeOptions } from "../options";
 import { IPlan, IFilePlan } from "../planner/plan";
 import { Engine } from './engine';
-import { TargetName } from '../parser/result';
-import { IVariableManager } from '../variables';
 
 export interface IRunner
 {
@@ -27,7 +25,9 @@ export class Runner implements IRunner
            plan = this.planner.plan(); 
         } while (this.updateMakefiles(plan));
 
+        log.info("Run phase begin...");
         this._run(plan, plan.goals); 
+        log.info("Run phase end");
     }
     
     private _run(plan: IPlan, goals: IFilePlan[]): boolean //Names: string[]): void 

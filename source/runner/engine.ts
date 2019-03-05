@@ -1,11 +1,9 @@
-import * as exits from '../return-codes';
+import * as exits from '../make-errors';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as log from '../makelog';
-import { IPlan, IFileRef, IAction, IFilePlan } from '../planner/plan';
+import { IPlan, IFilePlan } from '../planner/plan';
 import { FileRef } from '../planner/plan/plan-impl';
 import { runPlan } from './run-recipe';
-import { TargetName } from '../parser/result';
 
 const UNKNOWN_TARGET = 'target:unknown';
 

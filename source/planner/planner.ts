@@ -1,10 +1,12 @@
-import * as exits from '../return-codes';
+import * as exits from '../make-errors';
 import * as path from "path";
+import * as log from '../makelog';
 import { IParser } from "../parser";
 import { IPlan, IFileRef, IFilePlan } from "./plan";
 import { PlanBuilder, IPlanBuilder } from "./plan/plan-builder";
 import { MakeOptions } from "../options";
 import { PlanManager } from "./managers";
+import { TargetName } from '../parser/parser-impl/result-builder/targets/target-name';
 
 export interface IPlanner
 {
@@ -33,21 +35,36 @@ export class Planner implements IPlanner
     {
         let parseResult = this.parser.parse();
         let basedir = parseResult.basedir;
+        log.info("Plan phase begin...");
         //console.log("PARSING - starting a new context");
         let builder = new PlanBuilder(basedir, parseResult.makefileNames, parseResult.variablemanager);
-        let planManager = new PlanManager(builder, parseResult.explicitRules, parseResult.variablemanager);
+        let planManager = 
+            new PlanManager(
+                builder, 
+                parseResult.explicitRules, 
+                parseResult.implicitRules, 
+                parseResult.variablemanager
+            );
 
         for (var target of parseResult.goals)
         {
-            planManager.planGoal(target.basedir, target.relname);
+            planManager.planGoal(target);
         }
 
         for (var makefile of parseResult.makefileNames)
         {
-            planManager.planMakefile(path.dirname(makefile), path.basename(makefile));
+            planManager.planMakefile(
+                new TargetName(
+                    { filename: "none", fromLine: 0, fromCol: 0, toLine: 0, toCol: 0},
+                    { vpath: [] }, 
+                    path.dirname(makefile), 
+                    path.basename(makefile)
+                ))
+            ;
         }
         
         var res = builder.build();
+        log.info("Plan phase end...");
         return res;
     }
 

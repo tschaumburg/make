@@ -1,28 +1,37 @@
-import * as exits from '../../return-codes';
+import * as exits from '../../make-errors';
 import * as path from "path";
-//var globToRegExp = require('glob-to-regexp');
-import * as globToRegexp from "glob-to-regexp";
-import { ExplicitRule, TargetName, IParseResult, Target } from "../../parser/result";
+import { IExplicitRule, ITargetName, ITarget } from "../../parser";
 import { IFileRef, IFilePlan } from "../plan";
-//import { Action } from "../plan-impl";
 import { IPlanBuilder } from "../plan/plan-builder";
 import { Action, FileRef } from "../plan/plan-impl";
-import * as glob from "glob";
 import * as filemanager from "./file-manager";
 
 export class ExplicitRuleHandler
 {
+    public isMentioned(target: ITargetName): boolean
+    {
+        let fileFullname = target.fullname();
+        for (var rule of this._srcRules)
+        {
+            for (var _target of rule.targets)
+            {
+                var fileref = filemanager.doesFilenameMatchTarget(_target, fileFullname);
+                return !!fileref;
+            }
+        }
+    }
     constructor(
-        private readonly _planner: (target: TargetName) => IFilePlan,
-        private readonly _srcRules: ExplicitRule[],
+        private readonly _planner: (target: ITargetName) => IFilePlan,
+        private readonly _srcRules: IExplicitRule[],
         private readonly _planBuilder: IPlanBuilder
     ) {}
 
-    public applyMatchingRules(
+    public plan(
         fileFullname: string
-        ): IFilePlan 
+    ): IFilePlan 
     {
         //console.error("Finding explicit rules matching " + fileFullname);
+        let self = this;
         let res: IFilePlan = null;
 
         for (var rule of this._srcRules)
@@ -32,8 +41,19 @@ export class ExplicitRuleHandler
                 var fileref = filemanager.doesFilenameMatchTarget(target, fileFullname);
                 if (!!fileref)
                 {
+                    // OK,we found an explicit (rule, target) tuple that 
+                    // claims to generate fileFullname
+
+                    let planPrereqs = 
+                        rule.prereqs.map(p => self.planPrerequisite(p))
+                    
+                    let planOrderOnly = 
+                        rule.orderOnly.map(p => self.planPrerequisite(p))
+                    
+                    let planAction = new Action(planPrereqs, planOrderOnly, rule. recipe.steps);
+            
                     var vpath = filemanager.resolveVpath(target.basedir, target.parseContext.vpath, target.relname);
-                    res = this.updatePlanFromExplicitRule(res, fileref, fileFullname, rule, vpath);
+                    res = this._planBuilder.addPlan(fileref, planAction, vpath);
                 }
             }
         }
@@ -41,28 +61,28 @@ export class ExplicitRuleHandler
         return res;
     }
 
-    private updatePlanFromExplicitRule(
-        plan: IFilePlan,
-        targetfile: IFileRef, 
-        fileFullname: string, 
-        explicitRule: ExplicitRule,
-        vpath: IFileRef
-    ): IFilePlan
-    {
-        let self = this;
+    // private updatePlanFromExplicitRule(
+    //     plan: IFilePlan,
+    //     targetfile: IFileRef, 
+    //     fileFullname: string, 
+    //     explicitRule: IExplicitRule,
+    //     vpath: IFileRef
+    // ): IFilePlan
+    // {
+    //     let self = this;
 
-        let planPrereqs = 
-            explicitRule.prereqs.map(p => self.planPrerequisite(p))
+    //     let planPrereqs = 
+    //         explicitRule.prereqs.map(p => self.planPrerequisite(p))
         
-        let planOrderOnly = 
-            explicitRule.orderOnly.map(p => self.planPrerequisite(p))
+    //     let planOrderOnly = 
+    //         explicitRule.orderOnly.map(p => self.planPrerequisite(p))
         
-        let planAction = new Action(planPrereqs, planOrderOnly, explicitRule. recipe.steps);
+    //     let planAction = new Action(planPrereqs, planOrderOnly, explicitRule. recipe.steps);
 
-        return this._planBuilder.addPlan(targetfile, planAction, vpath);
-    }
+    //     return this._planBuilder.addPlan(targetfile, planAction, vpath);
+    // }
 
-    private planPrerequisite(prerequisite: Target): IFilePlan
+    private planPrerequisite(prerequisite: ITargetName): IFilePlan
     {
         let res = this._planner(prerequisite); 
 

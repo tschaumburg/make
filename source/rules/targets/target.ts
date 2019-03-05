@@ -1,6 +1,6 @@
 // import * as path from 'path';
 // import * as fs from 'fs';
-// import * as exits from '../../return-codes';
+// import * as exits from '../../make-errors';
 // import { IRule, ITarget } from '..';
 
 // export class Target implements ITarget

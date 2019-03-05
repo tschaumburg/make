@@ -1,5 +1,5 @@
 import * as path from "path";
-import * as exits from '../return-codes';
+import * as exits from '../make-errors';
 import * as log from '../makelog';
 import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
 import * as fs from 'fs';

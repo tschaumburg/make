@@ -1,13 +1,12 @@
 import * as slash from "slash";
 import * as path from "path";
 import * as glob from "glob";
-import * as log from '../../makelog';
-import { TargetName } from "../../parser/result";
 import { Action, FileRef } from "../plan/plan-impl";
 import { IFileRef } from "../plan";
 import globToRegexp = require("glob-to-regexp");
 import * as minimatch from "minimatch";
-import { makefileMissingTarget } from "../../return-codes";
+import { makefileMissingTarget } from "../../make-errors";
+import { ITargetName } from "../../parser";
 
 function simpleWildcardMatch(pattern: string, candidate: string): boolean
 {
@@ -94,7 +93,7 @@ function globMatch(basedirs: string[], glob: string, absoluteFilename: string): 
 //     return wildcardMatch(pattern.basedir, pattern.parseContext.vpath, pattern.relname, candidate);
 // }
 
-export function doesFilenameMatchTarget(target: TargetName, filename: string): IFileRef 
+export function doesFilenameMatchTarget(target: ITargetName, filename: string): IFileRef 
 {
     if (globMatch([target.basedir], target.relname, filename))
         return new FileRef(target.relname, filename);

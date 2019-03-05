@@ -1,11 +1,8 @@
 import * as os from "os";
-import * as exits from '../return-codes';
+import * as exits from '../make-errors';
 import * as log from '../makelog';
-//import { getValue } from '../../jison-parser/variables';
-import { include } from '../parser/jison-parser/makefile-syntax/makefile-syntax-result';
 import { resolveString } from './variable-expander';
 import { runShell } from '../run-shell';
-import { openSync } from 'fs';
 
 export interface IVariableManager
 {

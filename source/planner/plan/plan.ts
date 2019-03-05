@@ -1,4 +1,3 @@
-import { TargetName } from "../../parser/result";
 import { IVariableManager } from "../../variables";
 
 export interface IPlan 

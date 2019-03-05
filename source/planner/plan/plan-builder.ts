@@ -1,17 +1,16 @@
 import * as path from "path";
-import * as glob from "glob";
-import * as exits from "../../return-codes";
-import * as log from '../../makelog';
+import * as exits from "../../make-errors";
 import { IPlan, IFileRef, IFilePlan} from "./plan";
 import { FileRef, Action, createPlan, FilePlan } from "./plan-impl";
-import { IParseResult } from "../../parser/result";
-import { resolve } from "dns";
 import { IVariableManager } from "../../variables";
+import { ITargetName } from "../../parser";
 
 export interface IPlanBuilder
 {
     // expandTarget(src: TargetName, producedBy: Action): IFileRef[];
     // findFile(filename: string): IFileRef
+    getExistingPlan(target: ITargetName): FilePlan;
+    addMultiplan(target: ITargetName, otherTargets: ITargetName[], action: Action, vpath: FileRef): IFilePlan;
     addPlan(target: IFileRef, action: Action, vpath: FileRef): IFilePlan,
     build(): IPlan
 }
@@ -29,6 +28,25 @@ export class PlanBuilder implements IPlanBuilder
     )
     {
     }
+
+    public getExistingPlan(target: ITargetName): FilePlan
+    {
+        return this.fileplans[target.fullname()];
+    }
+      
+    
+    public addMultiplan(target: ITargetName, otherTargets: ITargetName[], action: Action, vpath: FileRef): IFilePlan
+    {
+        for (var _otherTarget of otherTargets)
+        {
+            let fileRef = new FileRef(_otherTarget.relname, path.resolve(_otherTarget.basedir, _otherTarget.relname));
+            this.addPlan(fileRef, action, vpath);
+        }
+
+        let fileRef = new FileRef(target.relname, path.resolve(target.basedir, target.relname));
+        return this.addPlan(fileRef, action, vpath);
+}
+
     
     public addPlan(target: IFileRef, action: Action, vpath: FileRef): IFilePlan
     {

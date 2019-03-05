@@ -1,5 +1,5 @@
 // import * as path from 'path';
-// import * as exits from '../../return-codes';
+// import * as exits from '../../make-errors';
 // import { IRule } from '../rule';
 // import { ITargetManager } from '../targets';
 // import { Rule } from './rule';
