@@ -3,7 +3,7 @@ import * as path from "path";
 import { IExplicitRule, ITargetName, ITarget } from "../../parser";
 import { IFileRef, IFilePlan } from "../plan";
 import { IPlanBuilder } from "../plan/plan-builder";
-import { Action, FileRef } from "../plan/plan-impl";
+//import { Action, FileRef } from "../plan/plan-impl";
 import * as filemanager from "./file-manager";
 
 export class ExplicitRuleHandler
@@ -49,11 +49,17 @@ export class ExplicitRuleHandler
                     
                     let planOrderOnly = 
                         rule.orderOnly.map(p => self.planPrerequisite(p))
-                    
-                    let planAction = new Action(planPrereqs, planOrderOnly, rule. recipe.steps);
             
                     var vpath = filemanager.resolveVpath(target.basedir, target.parseContext.vpath, target.relname);
-                    res = this._planBuilder.addPlan(fileref, planAction, vpath);
+                    
+                    //let planAction = 
+                    res = this._planBuilder.addPlan(
+                        fileref, 
+                        planPrereqs, 
+                        planOrderOnly, 
+                        rule.recipe.steps,
+                        vpath
+                    );
                 }
             }
         }
@@ -88,8 +94,8 @@ export class ExplicitRuleHandler
 
         if (!res) 
         {
-            let fullname = path.join(prerequisite.basedir, prerequisite.relname);
-            res = this._planBuilder.addPlan(new FileRef(prerequisite.relname, fullname), null, null);
+            //let fullname = path.join(prerequisite.basedir, prerequisite.relname);
+            res = this._planBuilder.addLeafnode(prerequisite);
         }
 
         return res;

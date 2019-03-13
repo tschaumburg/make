@@ -20,5 +20,19 @@ export interface IRuleSet
         inlineRecipe: string,
         isTerminal: boolean
     ): IBaseRule;
+    addExplicitRule(
+        targets: ITarget[], 
+        prerequisites: ITarget[],
+        orderOnlies: ITarget[],
+        inlineRecipe: string,
+        isTerminal: boolean
+    ): BaseRule;
+    addImplicitRule(
+        targets: ITargetPattern[], // all TargetNames => static rule, all targetPatterns => implicit rule, mixed => error
+        prerequisites: ITarget[],
+        orderOnlies: ITarget[],
+        inlineRecipe: string,
+        isTerminal: boolean
+    ): BaseRule;
 }
 

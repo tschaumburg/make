@@ -53,27 +53,23 @@ class ParseResultBuilderImpl implements IParseResultBuilder
      * 
      *********************************************************************/
     private currentRule: IBaseRule = null;
-    public startRule(
-        location: IParseLocation,
-        dirname: string,
-        targets: string,
-        prerequisites: string,
-        targetPattern: string,
-        prereqPattern: string,
-        orderOnlies: string,
-        inlineRecipe: string,
+    explicitRule(
+        location: IParseLocation, 
+        dirname: string, 
+        targets: string, 
+        prerequisites: string, 
+        orderOnlies: string, 
+        inlineRecipe: string, 
         isTerminal: boolean
-    ): void
+    ):void
     {
         var basedir = path.resolve(process.cwd(), dirname);
 
         //console.error("orderOnlies = " + JSON.stringify(orderOnlies));
         this.currentRule = 
-            this.rules.addRule(
+            this.rules.addExplicitRule(
                 createTargetList(targets, location, this._parseContext, basedir),
                 createTargetList(prerequisites, location, this._parseContext, basedir),
-                createTargetPattern(targetPattern, location, this._parseContext, basedir),
-                createTargetList(prereqPattern, location, this._parseContext, basedir),
                 createTargetList(orderOnlies, location, this._parseContext, basedir),
                 inlineRecipe,
                 isTerminal
@@ -81,21 +77,29 @@ class ParseResultBuilderImpl implements IParseResultBuilder
 
         this.setDefaultTarget(this.rules.defaultTarget);
     }
-
-    public isNameList(yy, src: string): boolean
+    implicitRule(
+        location: IParseLocation, 
+        dirname: string, 
+        targetPatterns: string, 
+        prerequisites: string, 
+        orderOnlies: string, 
+        inlineRecipe: string, 
+        isTerminal: boolean
+    ): void
     {
-        if (!src)
-            return false;
+        var basedir = path.resolve(process.cwd(), dirname);
 
-        return (createTargetNameList(src, null, null, ".") != null);
-    }
+        //console.error("orderOnlies = " + JSON.stringify(orderOnlies));
+        this.currentRule = 
+            this.rules.addImplicitRule(
+                createTargetPatternList(targetPatterns, location, this._parseContext, basedir),
+                createTargetList(prerequisites, location, this._parseContext, basedir),
+                createTargetList(orderOnlies, location, this._parseContext, basedir),
+                inlineRecipe,
+                isTerminal
+            );
 
-    public isPatternList(yy, src: string): boolean
-    {
-        if (!src)
-            return false;
-
-        return (createTargetPatternList(src, null, null, ".") != null);
+        this.setDefaultTarget(this.rules.defaultTarget);
     }
 
     // private expandTargets(targetExpression: string): TargetInfo[]

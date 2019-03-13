@@ -3,19 +3,24 @@ import { IParseLocation } from "./parse-location";
 export interface IParseEvents
 {
     startMakefile(fullMakefileName: string): void;
-    startRule(
-        location: IParseLocation,
-        dirname: string,
-        targets: string,
-        prerequisites: string,
-        targetPattern: string,
-        prereqPattern: string,
-        orderOnlies: string,
-        inlineRecipeExpression: string,
+    explicitRule(
+        location: IParseLocation, 
+        basedir: string, 
+        targets: string, 
+        prerequisites: string, 
+        orderOnlies: string, 
+        irecipe: string, 
         isTerminal: boolean
-    ): void;
-    isNameList(yy, src: string): boolean;
-    isPatternList(yy, src: string): boolean;
+    ): any;
+    implicitRule(
+        location: IParseLocation, 
+        basedir: string, 
+        targetPatterns: string, 
+        prerequisites: string, 
+        orderOnlies: string, 
+        irecipe: string, 
+        isTerminal: boolean
+    ): any;
     recipeLine(line: string): void;
     endRule(): void;
     vpathDirective(vpaths: string[]): void;

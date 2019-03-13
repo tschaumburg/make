@@ -1,17 +1,14 @@
-import * as fs from 'fs';
+// import * as fs from 'fs';
 // import { ExplicitRule, TargetPattern, Target, TargetName, Recipe } from "../parser/result";
-import * as exits from "../../make-errors";
-import { IPlan, IFileRef, IAction, IFilePlan } from "./plan";
-import { IVariableManager } from '../../variables';
-// import { ExplicitRuleHandler } from "./explicit-rule-handler";
-// import { FileRefHandler } from "./file-ref-handler";
+import { IPlan, IAction, IFilePlan } from "../plan";
+import { IVariableManager } from '../../../variables';
 
 export function createPlan(
     basedir: string, 
     variablemanager: IVariableManager,
     makefileNames: string[], // fullnames!
     goals: IFilePlan[],
-    filerefs: { [fullname: string]: FilePlan }
+    filerefs: { [fullname: string]: IFilePlan }
 ): IPlan
 {
     return new Plan(basedir, variablemanager, makefileNames, goals, filerefs);
@@ -24,7 +21,7 @@ class Plan implements IPlan
         public readonly variablemanager: IVariableManager,
         public readonly makefileNames: string[], // fullnames!
         public readonly goals: IFilePlan[],
-        private readonly filerefs: { [fullname: string]: FilePlan }
+        private readonly filerefs: { [fullname: string]: IFilePlan }
     ){} 
     
     getFilePlan(fullname: string): IFilePlan
@@ -66,56 +63,35 @@ class Plan implements IPlan
     // }
 }
 
-export class FileRef implements IFileRef
+export class Action implements IAction
 {
     constructor(
-        public readonly orgname: string,
-        public readonly fullname: string
-    ){}
-    public timestamp(): number
-    {
-        return timestamp(this.fullname);
-    }
-}
-
-export class FilePlan implements IFilePlan 
-{
-    constructor(
-        public readonly file: FileRef,
-        public producedBy: Action,
-        public readonly vpath: FileRef
-    ) {};
-}
-
-export  class Action implements IAction
-{
-    constructor(
-        public readonly prerequisites: FilePlan[],
-        public readonly orderOnly: FilePlan[],
+        public readonly prerequisites: IFilePlan[],
+        public readonly orderOnly: IFilePlan[],
         public readonly recipe: string[]
     ){}
 }
 
 
-function timestamp(fullName: string): number
-{
-    let res = -1;
+// function timestamp(fullName: string): number
+// {
+//     let res = -1;
 
-    if (!fullName)
-    {
-        res = 0;
-    }
-    else if (!fs.existsSync(fullName))
-    {
-        //if (fullName.endsWith(".h"))
-        //    throw new Error(fullName + " missing");
+//     if (!fullName)
+//     {
+//         res = 0;
+//     }
+//     else if (!fs.existsSync(fullName))
+//     {
+//         //if (fullName.endsWith(".h"))
+//         //    throw new Error(fullName + " missing");
 
-        res = 0;
-    }
-    else 
-    {
-        res = fs.statSync(fullName).mtimeMs;;
-    }
+//         res = 0;
+//     }
+//     else 
+//     {
+//         res = fs.statSync(fullName).mtimeMs;;
+//     }
 
-    return res;
-}
+//     return res;
+// }

@@ -1,6 +1,6 @@
 import * as exits from '../../make-errors';
 import * as path from "path";
-import { IFilePlan, PlanBuilder } from "../plan";
+import { IFilePlan, IPlanBuilder } from "../plan";
 import { ExplicitRuleHandler } from "./explicit-rule-manger";
 import { IVariableManager } from '../../variables';
 import { IExplicitRule, IImplicitRule, ITargetName } from '../../parser';
@@ -13,7 +13,7 @@ export class PlanManager
     private readonly implicitRuleHandler: ImplicitRuleHandler;
     ;
     constructor(
-        private readonly builder: PlanBuilder, 
+        private readonly builder: IPlanBuilder, 
         explicitRules: IExplicitRule[],
         implicitRules: IImplicitRule[],
         private readonly variablemanager: IVariableManager
@@ -46,7 +46,7 @@ export class PlanManager
             exits.commandUnknownGoal(target.relname);
         }
 
-        this.builder.goals.push(goal);
+        this.builder.addGoal(goal);
     }
 
     public planMakefile(target: ITargetName): void
@@ -55,7 +55,7 @@ export class PlanManager
 
         if (!!goal)
         {
-            this.builder.goals.push(goal);
+            this.builder.addGoal(goal);
         }
     }
 
@@ -66,7 +66,7 @@ export class PlanManager
         let fullname = target.fullname();
 
         if (!res)
-            res = this.builder.existingPlan(fullname);
+            res = this.builder.getExistingPlan(target);
 
         if (!res)
             res = this.explicitRuleHandler.plan(fullname);
@@ -90,6 +90,9 @@ export class PlanManager
         if (!res || !res.producedBy || !res.producedBy.recipe || res.producedBy.recipe.length == 0)
             res = this.implicitRuleHandler.plan(target);
             
+        if (!res)
+            res = this.builder.getExistingPlan(target);
+
         return res;
     }
 }

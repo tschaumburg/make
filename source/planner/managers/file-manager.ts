@@ -1,12 +1,14 @@
 import * as slash from "slash";
 import * as path from "path";
 import * as glob from "glob";
-import { Action, FileRef } from "../plan/plan-impl";
 import { IFileRef } from "../plan";
 import globToRegexp = require("glob-to-regexp");
 import * as minimatch from "minimatch";
 import { makefileMissingTarget } from "../../make-errors";
 import { ITargetName } from "../../parser";
+import { TargetName } from "../../parser/parser-impl/result-builder/targets/target-name";
+import { IVirtualPath } from "../plan/plan";
+import { VirtualPath } from "../plan/impl/fileref-impl";
 
 function simpleWildcardMatch(pattern: string, candidate: string): boolean
 {
@@ -93,15 +95,20 @@ function globMatch(basedirs: string[], glob: string, absoluteFilename: string): 
 //     return wildcardMatch(pattern.basedir, pattern.parseContext.vpath, pattern.relname, candidate);
 // }
 
-export function doesFilenameMatchTarget(target: ITargetName, filename: string): IFileRef 
+export function doesFilenameMatchTarget(target: ITargetName, filename: string): ITargetName 
 {
     if (globMatch([target.basedir], target.relname, filename))
-        return new FileRef(target.relname, filename);
+        return new TargetName(
+            target.location, 
+            target.parseContext, 
+            target.basedir, 
+            path.relative(target.basedir, filename)
+        ); //new FileRef(target.relname, filename);
 
     return null;
 }
 
-export function resolveVpath(basedir: string, vpath: string[], relname: string): IFileRef
+export function resolveVpath(basedir: string, vpath: string[], relname: string): IVirtualPath
 {
     // log.locateFiles(
     //     () => "Resolving target '" + relname + "' ref. from '" + basedir + "':"
@@ -120,7 +127,7 @@ export function resolveVpath(basedir: string, vpath: string[], relname: string):
             }
 
             var relname = path.relative(dir, files[0]);
-            return new FileRef(relname, files[0]);
+            return new VirtualPath(/*relname,*/ files[0]);
         }
     }
     return null;

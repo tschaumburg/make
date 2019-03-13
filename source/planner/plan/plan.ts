@@ -37,13 +37,18 @@ export interface IFilePlan {
     //      rebuilt locally, not in the directory found via
     //      directory search.
     //
-    readonly vpath: IFileRef;
+    readonly vpath: IVirtualPath;
 }
 
 export interface IFileRef {
     readonly orgname: string;
     readonly fullname: string;
     timestamp(): number;
+}
+
+export interface IVirtualPath {
+    // readonly orgname: string;
+    readonly fullname: string;
 }
 
 export interface IAction {

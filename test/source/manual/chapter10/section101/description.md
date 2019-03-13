@@ -26,52 +26,52 @@ If an implicit rule is found, it can supply both a recipe and one or more prereq
 > ```
 > with the following combinations of foo.src and foo.intermediate:
 >
-> - **Case 1a:** no foo.o and no foo.testsrc => fail, 
-> - **Case 1b:** foo.testsrc but no foo.o => build foo.o, 
-> - **Case 1c:** foo.testsrc newer than foo.o => build foo.o,
-> - **Case 1d:** foo.o newer than foo.testsrc => do nothing
+> - **Case 1a:** no foo.intermediate and no foo.src => fail, 
+> - **Case 1b:** foo.src but no foo.intermediate => build foo.intermediate, 
+> - **Case 1c:** foo.src newer than foo.ointermediate => build foo.intermediate,
+> - **Case 1d:** foo.intermediate newer than foo.src => do nothing
 >
 > | Case | `foo.src` | `foo.intermediate` | Expected result
 > | ---- | --------- | ------------------ | ---------------
 > |  1a  |   none    |        none        | Error
-> |  1b  |  present  |        none        | Build
-> |  1c  |  newest   |       oldest       | Build
-> |  1d  |  oldest   |       newest       | nothing
+> |  1b  |  present  |        none        | Build intermediate + target
+> |  1c  |  newest   |       oldest       | Build intermediate + target
+> |  1d  |  oldest   |       newest       | Build target
 
 You would want to write a rule for foo.o with no recipe if you need to specify additional prerequisites, such as header files, that the implicit rule cannot supply.
 
 > ### Test case 2 : Reusing the rules above, add the following
 > 
 > ```makefile
->    foo.o : common.h 
+>    foo.intermediate : common.h 
 > ```
 > 
-> Case   | foo.o | foo.testsrc | common.h  | Expected
-> ------ | ------ | ----------- | --------- | ------
-> case2a |   -   |      -      |     -     | error
-> case2b |   -   |      -      |   exists  | error
-> case2c |   -   |   exists    |     -     | error
-> case2d |   -   |   exists    |   exists  | build
-> case2e |oldest |   middle    |   newest  | build
-> case2f |oldest |   newest    |   middle  | build
-> case2g |middle |   oldest    |   newest  | build
-> case2h |middle |   newest    |   oldest  | build
-> case2i |newest |   oldest    |   middle  | nothing
-> case2j |newest |   middle    |   oldest  | nothing
+> Case   | foo.intermediate | foo.src | common.h  | Expected
+> ------ | ---------------- | ------- | --------- | ------
+> case2a |        -         |    -    |     -     | error
+> case2b |        -         |    -    |   exists  | error
+> case2c |        -         | exists  |     -     | error
+> case2d |        -         | exists  |   exists  | build intermediate + target
+> case2e |     oldest       | middle  |   newest  | build intermediate + target
+> case2f |     oldest       | newest  |   middle  | build intermediate + target
+> case2g |     middle       | oldest  |   newest  | build intermediate + target
+> case2h |     middle       | newest  |   oldest  | build intermediate + target
+> case2i |     newest       | oldest  |   middle  | nothing
+> case2j |     newest       | middle  |   oldest  | nothing
 
 Each implicit rule has a target pattern and prerequisite patterns. There may be many implicit rules with the same target pattern. For example, numerous rules make ‘.o’ files: one, from a ‘.c’ file with the C compiler; another, from a ‘.p’ file with the Pascal compiler; and so on. The rule that actually applies is the one whose prerequisites exist or can be made. So, if you have a file foo.c, make will run the C compiler; otherwise, if you have a file foo.p, make will run the Pascal compiler; and so on.
 
 > ### Test case 3: Multiple implicit rules
 >
 > ```makefile
->     %.o: %.testsrc1
+>     %.intermediate: %.src1
 >         echo build from $<
 > 
->     %.o: %.testsrc2
+>     %.intermediate: %.src2
 >         echo build from $<
 > ```
 > 
-> Case   | foo.testsrc1 | foo.testsrc2 | Expected
+> Case   |   foo.src1   | foo.src2 | Expected
 > ------ | ------------ | ------------ | --------
 > case3a |    exists    |      -       | build from testsrc1
 > case3b |      -       |    exists    | build from testsrc2

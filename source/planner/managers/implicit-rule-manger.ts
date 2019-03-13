@@ -2,14 +2,11 @@ import * as exits from '../../make-errors';
 import * as path from "path";
 import * as fs from "fs";
 import { IExplicitRule, ITargetName, ITarget, IImplicitRule, IStem, ITargetPattern } from "../../parser";
-import { IFileRef, IFilePlan } from "../plan";
+import { IAction, IFilePlan, IFileRef } from "../plan";
 import { IPlanBuilder } from "../plan/plan-builder";
-import { Action, FileRef } from "../plan/plan-impl";
 import * as filemanager from "./file-manager";
 import { match } from 'minimatch';
-import { METHODS } from 'http';
 import { TargetName } from '../../parser/parser-impl/result-builder/targets/target-name';
-import { file } from 'tmp';
 
 export class ImplicitRuleHandler
 {
@@ -26,7 +23,7 @@ export class ImplicitRuleHandler
     {
         let applicableRule = this.findApplicableImplicitRule(xtarget);
         if (!applicableRule)
-            return this._planBuilder.getExistingPlan(xtarget)
+            return null;
 
         // Once a rule that applies has been found, each target pattern 
         // of the rule (other than the one that matched targetFullname)
@@ -46,10 +43,19 @@ export class ImplicitRuleHandler
         let planOrderOnly = 
             applicableRule.orderOnly.map(p => this.planPrerequisite(p));
         
-        let planAction = new Action(planPrereqs, planOrderOnly, applicableRule.rule.recipe.steps);
+        //let planAction = new Action(planPrereqs, planOrderOnly, applicableRule.rule.recipe.steps);
 
         var vpath = filemanager.resolveVpath(target.basedir, target.parseContext.vpath, target.relname);
-        return this._planBuilder.addMultiplan(target, otherTargets, planAction, vpath);
+        let plan =
+            this._planBuilder.addMultiplan(
+                target, 
+                otherTargets, 
+                // planAction, 
+                planPrereqs, 
+                planOrderOnly, 
+                applicableRule.rule.recipe.steps,
+                vpath
+            );
     }
 
     private findApplicableImplicitRule(target: ITargetName): ImplicitRuleMatch
@@ -172,26 +178,26 @@ export class ImplicitRuleHandler
         return matchingRules;
     }
 
-    private updatePlanFromExplicitRule(
-        plan: IFilePlan,
-        targetfile: IFileRef, 
-        fileFullname: string, 
-        explicitRule: IExplicitRule,
-        vpath: IFileRef
-    ): IFilePlan
-    {
-        let self = this;
+    // private updatePlanFromExplicitRule(
+    //     plan: IFilePlan,
+    //     targetfile: IFileRef, 
+    //     fileFullname: string, 
+    //     explicitRule: IExplicitRule,
+    //     vpath: IFileRef
+    // ): IFilePlan
+    // {
+    //     let self = this;
 
-        let planPrereqs = 
-            explicitRule.prereqs.map(p => self.planPrerequisite(p))
+    //     let planPrereqs = 
+    //         explicitRule.prereqs.map(p => self.planPrerequisite(p))
         
-        let planOrderOnly = 
-            explicitRule.orderOnly.map(p => self.planPrerequisite(p))
+    //     let planOrderOnly = 
+    //         explicitRule.orderOnly.map(p => self.planPrerequisite(p))
         
-        let planAction = new Action(planPrereqs, planOrderOnly, explicitRule. recipe.steps);
+    //     let planAction = new Action(planPrereqs, planOrderOnly, explicitRule. recipe.steps);
 
-        return this._planBuilder.addPlan(targetfile, planAction, vpath);
-    }
+    //     return this._planBuilder.addPlan(targetfile, planAction, vpath);
+    // }
 
     private planPrerequisite(prerequisite: ITargetName): IFilePlan
     {
@@ -199,8 +205,8 @@ export class ImplicitRuleHandler
 
         if (!res) 
         {
-            let fullname = path.join(prerequisite.basedir, prerequisite.relname);
-            res = this._planBuilder.addPlan(new FileRef(prerequisite.relname, fullname), null, null);
+            //let fullname = path.join(prerequisite.basedir, prerequisite.relname);
+            res = this._planBuilder.addLeafnode(prerequisite);
         }
 
         return res;
@@ -218,7 +224,7 @@ class ImplicitRuleMatch
     constructor(public readonly rule: IImplicitRule, matchedTarget: ITargetPattern, public readonly stem: IStem)
     {
         this.matchedTarget = matchedTarget.expand(stem);
-        this.otherTargets = rule.targetPatterns.map(tp => tp.expand(stem));
+        this.otherTargets = rule.targetPatterns.filter(tp => tp !== matchedTarget).map(tp => tp.expand(stem));
         this.prerequisite = rule.prereqPatterns.map(tp => expandTarget(tp, stem));
         this.orderOnly = rule.orderOnlyPatterns.map(tp => expandTarget(tp, stem));
     }

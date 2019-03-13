@@ -1,0 +1,1 @@
+cc -c -g foo.c

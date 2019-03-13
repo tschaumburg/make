@@ -3,6 +3,14 @@ const os = require("os");
 const parseEvents = require("./makefile-syntax-events");
 const log = require("../../../makelog");
 const errors = require("../../../make-errors");
+const targetparser = require("../result-builder/targets");
+function nonEmpty(src)
+{
+   if (!src)
+      return false;
+   
+   return src.trim().length > 0;
+}
 %}
 
 %start makefile
@@ -23,7 +31,7 @@ makefile
  ;
 
 statement
- : rulestatement        { log.info("sendStartRule call"); parseEvents.sendStartRule(yy, @1, $1); }
+ : rulestatement        { log.info("sendStartRule call"); }
  | RECIPE_LINE          { log.info("sendRecipeLine call"); parseEvents.sendRecipeLine(yy, @1, $1); log.info("sendRecipeLine return"); }
  | INCLUDE              { log.info("sendInclude call"); parseEvents.sendInclude(yy, @1, $1); }
  | variable_definition  { log.info("sendDefineVariable call"); parseEvents.sendDefineVariable(yy, @1, $1); }
@@ -43,222 +51,28 @@ emptyline
 /****************************************************************************
  * RULES:
  * ======
- *
- *    Explicit rules (aka "normal rules" or just "rules"):
- *    ----------------------------------------------------
- *         targets: prereqs [|orderonly] [;recipe]
- *
- *    Static pattern rules:
- *    ---------------------
- *         targets: target-patterns: prereq-patterns [|orderonly] [;recipe]
- *
- *    Pattern rules (aka "implicit rules"):
- *    -------------------------------------
- *        target-patterns: prereq-patterns [|orderonly] [;recipe]
- *
- * where
- *   
- *   targets:         a whitespace-separated list of target names
- *   prereqs:         a whitespace-separated list of target names
- *   recipe:          a string that is handed to the shell when the rule
- *                    is triggered
- *   target-pattern:  a target name containing exactly one ' '
- *   target-patterns: a whitespace-separated list of target-patterns
- *   prereq-patterns: a whitespace-separated list of target-patterns
- *
- * Generalized rule syntax:
- * ------------------------
- *      targets0: targets1 [:targets2] [|targets3] [;recipe]
- * meaning
- *    IF ([:targets2] not null) THEN => static pattern rule
- *    ELSE IF (targets0 contains patterns) THEN => patternrule
- *    ELSE => explicit rule
  ***************************************************************************/ 
-/**
-   Returns:
-*     {
-*        targets0: [ 
-*           { 
-*              targetName: "foo", 
-*              location: {line: 1, col: 1} 
-*           }, 
-*           { 
-*              targetName: "bar", 
-*              location: {line: 1, col: 5} 
-*           }
-*        ]
-*        targets1: [ -do- ],
-*        targets2: [ -do- ],
-*        targets3: [ -do- ],
-*        irecipe:  "echo 'making foo and bar'"
-*     }
-*/
 rulestatement
-   :   RULE_START COLON_TARGETS colon_targets_optional orderonlies2  inline_recipe
+   :  TARGETS COLON_TARGETS colon_targets_optional pipe_targets_optional inline_recipe_optional
       {
-         if (!$1 || $1.trim().length == 0)
+         if (targetparser.isPatternList($1) && nonEmpty($1))
          {
-            console.error("" + JSON.stringify($$));
-            errors.ruleMissingTarget();
-         }
-
-         if (parseEvents.isPatternList(yy, $1))
+            parseEvents.sendImplicitRule(yy, @1, $1, $2, $4, $5, false);
+         } 
+         else if ($3 !== null)
          {
-            // implicit:
-            if (!!$3)
-            {
-               console.error("" + JSON.stringify($$));
-               errors.unknownRuleType(currentLine);
-            }
-            $$ = parseEvents.RuleParseInfo.implicit($1, $2, $4, $5, false);
-         }
-         else if (parseEvents.isNameList(yy, $1))
-         {
-            if (!$3)
-            {
-               // explicit
-               $$ = parseEvents.RuleParseInfo.explicit($1, $2, $4, $5, false);
-            }
-            else
-            {
-               // static patterns
-            }
+            parseEvents.sendStaticPatternRule(yy, @1, $1, $2, $3, $4, $5, false);
          }
          else
          {
-            console.error("" + JSON.stringify($$));
-            errors.unknownRuleType(currentLine);
+            parseEvents.sendExplicitRule(yy, @1, $1, $2, $4, $5, false);
          }
-
       }
    ;
 
-orderonlies2 
-   : PIPE_TARGETS
-      {
-         $$ = $0;
-      }
-   | /* empty */
-      {
-         $$ = null;
-      }
-   ;
-
-inline_recipe
-   : INLINE_RECIPE
-      {
-         $$ = $0;
-      }
-   | /* empty */
-      {
-         $$ = null;
-      }
-   ;
-
-colon_targets_optional
-   : COLON_TARGETS
-      {
-         $$ = $0;
-      }
-   | /* empty */
-      {
-         $$ = null;
-      }
-   ;
-
-
-rulestatementxxxx
- : EXPLICIT_RULE PREREQUISITES ORDERONLIES INLINE_RECIPE
-   {
-      $$ = new parseEvents.RuleParseInfo($1, null, $2, null, $3, $4, false);
-      //console.error("parser: " + JSON.stringify($1, null, 3));
-	}
- | IMPLICIT_RULE PREREQUISITES ORDERONLIES INLINE_RECIPE
-   {
-      //$$ = {};
-
-      //$$.targets = $1;
-      //$$.targetPattern = null;
-      //$$.prerequisites = $2;
-      //$$.prereqPattern = null;
-      //$$.orderOnlies = $3;
-      //$$.irecipe = $4;
-
-      $$ = new parseEvents.RuleParseInfo(null, $1, null, $2, $3, $4, false);
-      //console.error("parser: " + JSON.stringify($1, null, 3));
-	}
- | TARGETS TARGETPATTERNS PREREQPATTERNS ORDERONLIES INLINE_RECIPE
-   {
-      //$$ = {};
-
-      //$$.targets = $1;
-      //$$.targetPattern = $2;
-      //$$.prerequisites = null;
-      //$$.prereqPattern = $3;
-      //$$.orderOnlies = $4;
-      //$$.irecipe = $5;
-
-      $$ = new parseEvents.RuleParseInfo($1, $2, null, $3, $4, $5, false);
-      //console.error("parser: " + JSON.stringify($1, null, 3));
-	}
- ;
-
- target_prereq
-  : targetlist COLON targetlist //TARGET_PREREQ
-    {
-      //var target_prereq = $1.split(':');
-      $$ = {};
-      $$.targets = $1;
-      $$.targetPattern = null;
-      $$.prereqPattern = null;
-      $$.prerequisites = $3;
-    }
-    |targetlist COLON targetlist COLON targetlist
-    {
-       $$ = {};
-      $$.targets = $1;
-      $$.targetPattern = $3;
-      $$.prereqPattern = $5;
-      $$.prerequisites = null;
-    }
-  ;
-
- orderonlies
-  : PIPE targetlist
-    {
-       $$ = {};
-       $$.orderOnlies = $2;
-    }
-  | /* empty */
-    {
-       $$ = {};
-       $$.orderOnlies = null;
-    }
-  ;
-
-targetlist
-  : targetlist TARGET
-     {
-      $$.push( { location: @2, targetName: $2.trim() });
-	 }
-   | /* empty */
-     {
-      $$ = [];
-	 }
- ;
-
-inline_recipe_definition
-  : INLINE_RECIPE
-    {
-       $$ = {};
-      $$.irecipe = $1;
-	 }
-   | /* empty */
-    {
-       $$ = {};
-      $$.irecipe = "";
-	 }
- ;
+colon_targets_optional: COLON_TARGETS { $$ = $1; } | /* empty */ { $$ = null;};
+pipe_targets_optional:  PIPE_TARGETS  { $$ = $1; } | /* empty */ { $$ = null;};
+inline_recipe_optional: INLINE_RECIPE { $$ = $1; } | /* empty */ { $$ = null;};
 
 /****************************************************************************
  * VARIABLE DEFINITIONS:

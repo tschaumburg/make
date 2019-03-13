@@ -3,8 +3,7 @@ import * as exits from '../make-errors';
 import * as log from '../makelog';
 import { spawnSync, SpawnSyncOptionsWithStringEncoding } from "child_process";
 import * as fs from 'fs';
-import { IAction, IFilePlan } from "../planner";
-import { FileRef, FilePlan } from "../planner/plan/plan-impl";
+import { IAction, IFilePlan, IFileRef } from "../planner";
 import { IVariableManager } from "../variables";
 import { runShell } from "../run-shell";
 const os = require('os')
@@ -36,9 +35,9 @@ export function runPlan(target: IFilePlan, variablemanager: IVariableManager): v
 
 function expandSymbols(
     cmd: string, 
-    target: FilePlan, 
-    prerequisites: FilePlan[], 
-    orderonlies: FilePlan[]
+    target: IFilePlan, 
+    prerequisites: IFilePlan[], 
+    orderonlies: IFilePlan[]
 ): string
 {
     // $@:
@@ -164,7 +163,7 @@ function distinct(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-function newerThan(target: FileRef, prerequisites: FileRef[]): FileRef[]
+function newerThan(target: IFileRef, prerequisites: IFileRef[]): IFileRef[]
 {
     let targetTime = target.timestamp();
     return prerequisites.filter(p => p.timestamp() > targetTime);

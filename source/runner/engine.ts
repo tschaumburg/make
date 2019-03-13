@@ -1,8 +1,7 @@
 import * as exits from '../make-errors';
 import * as fs from 'fs';
 import * as log from '../makelog';
-import { IPlan, IFilePlan } from '../planner/plan';
-import { FileRef } from '../planner/plan/plan-impl';
+import { IPlan, IFilePlan, IFileRef } from '../planner/plan';
 import { runPlan } from './run-recipe';
 
 const UNKNOWN_TARGET = 'target:unknown';
@@ -191,7 +190,7 @@ export class Engine
         return true;
     }
 
-    private readonly phonies: FileRef[] = [];
+    private readonly phonies: IFileRef[] = [];
     private isPhony(target: IFilePlan): any 
     {
         if (this.phonies.indexOf(target.file) >= 0)

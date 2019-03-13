@@ -1,6 +1,6 @@
 export const TARGET = "TARGET";
 export const INCLUDE = "INCLUDE";
-export const RULE_START = "RULE_START";
+export const TARGETS = "TARGETS";
 export const COLON_TARGETS = "COLON_TARGETS";
 export const PIPE_TARGETS = "PIPE_TARGETS";
 export const EXPLICIT_RULE = "EXPLICIT_RULE";

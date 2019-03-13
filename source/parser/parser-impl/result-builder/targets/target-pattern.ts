@@ -113,7 +113,7 @@ export class TargetPattern extends Target implements ITargetPattern
             let filenameBase = this.baseExpand(stemBase);
 
             let relname = path.join(stemDir, filenameBase);
-            return new TargetName(this.location, this.parseContext, stem.basedir, stem.stem);
+            return new TargetName(this.location, this.parseContext, stem.basedir, relname);
         }
 
         // Expand (pattern contains a slash):

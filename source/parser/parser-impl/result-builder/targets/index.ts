@@ -1,2 +1,2 @@
-export { createTargetNameList, createTargetList, createTargetPatternList } from "./create-target-list";
-export { createTargetPattern } from "./create-target";
+export { createTargetNameList, createTargetList, createTargetPatternList } from "./parse";
+export { createTargetPattern, isNameList, isPatternList } from "./parse";

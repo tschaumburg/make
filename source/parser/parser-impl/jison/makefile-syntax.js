@@ -72,12 +72,12 @@
   }
 */
 var makefileSyntax = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,12],$V1=[2,9],$V2=[1,5],$V3=[1,6],$V4=[1,9],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,20],$Ve=[1,21],$Vf=[45,50],$Vg=[2,41],$Vh=[5,12,18,19],$Vi=[1,39],$Vj=[5,12,19];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,12],$V1=[2,9],$V2=[1,5],$V3=[1,6],$V4=[1,9],$V5=[1,12],$V6=[1,13],$V7=[1,14],$V8=[1,15],$V9=[1,16],$Va=[1,17],$Vb=[1,18],$Vc=[1,19],$Vd=[1,20],$Ve=[1,21],$Vf=[30,35],$Vg=[2,30],$Vh=[5,12,18,19],$Vi=[1,39],$Vj=[5,12,19];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"makefile":3,"statements":4,"EOF2":5,"statement":6,"rulestatement":7,"RECIPE_LINE":8,"INCLUDE":9,"variable_definition":10,"emptyline":11,"EOL":12,"RULE_START":13,"COLON_TARGETS":14,"colon_targets_optional":15,"orderonlies2":16,"inline_recipe":17,"PIPE_TARGETS":18,"INLINE_RECIPE":19,"rulestatementxxxx":20,"EXPLICIT_RULE":21,"PREREQUISITES":22,"ORDERONLIES":23,"IMPLICIT_RULE":24,"TARGETS":25,"TARGETPATTERNS":26,"PREREQPATTERNS":27,"target_prereq":28,"targetlist":29,"COLON":30,"orderonlies":31,"PIPE":32,"TARGET":33,"inline_recipe_definition":34,"inline_variable_definition":35,"multiline_variable_definition":36,"VARIABLE_SET_SIMPLE":37,"VARIABLE_VALUE":38,"VARIABLE_SET_RECURSIVE":39,"VARIABLE_SET_APPEND":40,"VARIABLE_SET_CONDITIONAL":41,"VARIABLE_SET_SHELL":42,"MACRO_SIMPLE":43,"multiline_values":44,"MACRO_END":45,"MACRO_RECURSIVE":46,"MACRO_APPEND":47,"MACRO_CONDITIONAL":48,"MACRO_SHELL":49,"MACRO_VALUE":50,"optional_recipes":51,"recipes":52,"test":53,"dotest":54,"evt":55,"RULELINE":56,"VARSTART":57,"SPC":58,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF2",8:"RECIPE_LINE",9:"INCLUDE",12:"EOL",13:"RULE_START",14:"COLON_TARGETS",18:"PIPE_TARGETS",19:"INLINE_RECIPE",21:"EXPLICIT_RULE",22:"PREREQUISITES",23:"ORDERONLIES",24:"IMPLICIT_RULE",25:"TARGETS",26:"TARGETPATTERNS",27:"PREREQPATTERNS",30:"COLON",32:"PIPE",33:"TARGET",37:"VARIABLE_SET_SIMPLE",38:"VARIABLE_VALUE",39:"VARIABLE_SET_RECURSIVE",40:"VARIABLE_SET_APPEND",41:"VARIABLE_SET_CONDITIONAL",42:"VARIABLE_SET_SHELL",43:"MACRO_SIMPLE",45:"MACRO_END",46:"MACRO_RECURSIVE",47:"MACRO_APPEND",48:"MACRO_CONDITIONAL",49:"MACRO_SHELL",50:"MACRO_VALUE",56:"RULELINE",57:"VARSTART",58:"SPC"},
-productions_: [0,[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[4,3],[4,1],[11,0],[7,5],[16,1],[16,0],[17,1],[17,0],[15,1],[15,0],[20,4],[20,4],[20,5],[28,3],[28,5],[31,2],[31,0],[29,2],[29,0],[34,1],[34,0],[10,1],[10,1],[35,2],[35,2],[35,2],[35,2],[35,2],[36,3],[36,3],[36,3],[36,3],[36,3],[44,2],[44,0],[51,1],[51,0],[52,2],[52,1],[53,1],[54,2],[54,0],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1],[55,1]],
+symbols_: {"error":2,"makefile":3,"statements":4,"EOF2":5,"statement":6,"rulestatement":7,"RECIPE_LINE":8,"INCLUDE":9,"variable_definition":10,"emptyline":11,"EOL":12,"TARGETS":13,"COLON_TARGETS":14,"colon_targets_optional":15,"pipe_targets_optional":16,"inline_recipe_optional":17,"PIPE_TARGETS":18,"INLINE_RECIPE":19,"inline_variable_definition":20,"multiline_variable_definition":21,"VARIABLE_SET_SIMPLE":22,"VARIABLE_VALUE":23,"VARIABLE_SET_RECURSIVE":24,"VARIABLE_SET_APPEND":25,"VARIABLE_SET_CONDITIONAL":26,"VARIABLE_SET_SHELL":27,"MACRO_SIMPLE":28,"multiline_values":29,"MACRO_END":30,"MACRO_RECURSIVE":31,"MACRO_APPEND":32,"MACRO_CONDITIONAL":33,"MACRO_SHELL":34,"MACRO_VALUE":35,"optional_recipes":36,"recipes":37,"test":38,"dotest":39,"evt":40,"RULELINE":41,"RULE_START":42,"EXPLICIT_RULE":43,"IMPLICIT_RULE":44,"TARGETPATTERNS":45,"PREREQUISITES":46,"PREREQPATTERNS":47,"ORDERONLIES":48,"VARSTART":49,"PIPE":50,"COLON":51,"SPC":52,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF2",8:"RECIPE_LINE",9:"INCLUDE",12:"EOL",13:"TARGETS",14:"COLON_TARGETS",18:"PIPE_TARGETS",19:"INLINE_RECIPE",22:"VARIABLE_SET_SIMPLE",23:"VARIABLE_VALUE",24:"VARIABLE_SET_RECURSIVE",25:"VARIABLE_SET_APPEND",26:"VARIABLE_SET_CONDITIONAL",27:"VARIABLE_SET_SHELL",28:"MACRO_SIMPLE",30:"MACRO_END",31:"MACRO_RECURSIVE",32:"MACRO_APPEND",33:"MACRO_CONDITIONAL",34:"MACRO_SHELL",35:"MACRO_VALUE",41:"RULELINE",42:"RULE_START",43:"EXPLICIT_RULE",44:"IMPLICIT_RULE",45:"TARGETPATTERNS",46:"PREREQUISITES",47:"PREREQPATTERNS",48:"ORDERONLIES",49:"VARSTART",50:"PIPE",51:"COLON",52:"SPC"},
+productions_: [0,[3,2],[6,1],[6,1],[6,1],[6,1],[6,1],[4,3],[4,1],[11,0],[7,5],[15,1],[15,0],[16,1],[16,0],[17,1],[17,0],[10,1],[10,1],[20,2],[20,2],[20,2],[20,2],[20,2],[21,3],[21,3],[21,3],[21,3],[21,3],[29,2],[29,0],[36,1],[36,0],[37,2],[37,1],[38,1],[39,2],[39,0],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1],[40,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -89,7 +89,7 @@ case 1:
       
 break;
 case 2:
- log.info("sendStartRule call"); parseEvents.sendStartRule(yy, _$[$0], $$[$0]); 
+ log.info("sendStartRule call"); 
 break;
 case 3:
  log.info("sendRecipeLine call"); parseEvents.sendRecipeLine(yy, _$[$0], $$[$0]); log.info("sendRecipeLine return"); 
@@ -102,394 +102,276 @@ case 5:
 break;
 case 10:
 
-         if (!$$[$0-4] || $$[$0-4].trim().length == 0)
+         if (targetparser.isPatternList($$[$0-4]) && nonEmpty($$[$0-4]))
          {
-            console.error("" + JSON.stringify(this.$));
-            errors.ruleMissingTarget();
-         }
-
-         if (parseEvents.isPatternList(yy, $$[$0-4]))
+            parseEvents.sendImplicitRule(yy, _$[$0-4], $$[$0-4], $$[$0-3], $$[$0-1], $$[$0], false);
+         } 
+         else if ($$[$0-2] !== null)
          {
-            // implicit:
-            if (!!$$[$0-2])
-            {
-               console.error("" + JSON.stringify(this.$));
-               errors.unknownRuleType(currentLine);
-            }
-            this.$ = parseEvents.RuleParseInfo.implicit($$[$0-4], $$[$0-3], $$[$0-1], $$[$0], false);
-         }
-         else if (parseEvents.isNameList(yy, $$[$0-4]))
-         {
-            if (!$$[$0-2])
-            {
-               // explicit
-               this.$ = parseEvents.RuleParseInfo.explicit($$[$0-4], $$[$0-3], $$[$0-1], $$[$0], false);
-            }
-            else
-            {
-               // static patterns
-            }
+            parseEvents.sendStaticPatternRule(yy, _$[$0-4], $$[$0-4], $$[$0-3], $$[$0-2], $$[$0-1], $$[$0], false);
          }
          else
          {
-            console.error("" + JSON.stringify(this.$));
-            errors.unknownRuleType(currentLine);
+            parseEvents.sendExplicitRule(yy, _$[$0-4], $$[$0-4], $$[$0-3], $$[$0-1], $$[$0], false);
          }
-
       
 break;
-case 11: case 13: case 15:
-
-         this.$ = $$[$0-1];
-      
-break;
-case 12: case 14: case 16:
-
-         this.$ = null;
-      
-break;
-case 17:
-
-      this.$ = new parseEvents.RuleParseInfo($$[$0-3], null, $$[$0-2], null, $$[$0-1], $$[$0], false);
-      //console.error("parser: " + JSON.stringify($$[$0-3], null, 3));
-	
-break;
-case 18:
-
-      //this.$ = {};
-
-      //this.$.targets = $$[$0-3];
-      //this.$.targetPattern = null;
-      //this.$.prerequisites = $$[$0-2];
-      //this.$.prereqPattern = null;
-      //this.$.orderOnlies = $$[$0-1];
-      //this.$.irecipe = $$[$0];
-
-      this.$ = new parseEvents.RuleParseInfo(null, $$[$0-3], null, $$[$0-2], $$[$0-1], $$[$0], false);
-      //console.error("parser: " + JSON.stringify($$[$0-3], null, 3));
-	
-break;
-case 19:
-
-      //this.$ = {};
-
-      //this.$.targets = $$[$0-4];
-      //this.$.targetPattern = $$[$0-3];
-      //this.$.prerequisites = null;
-      //this.$.prereqPattern = $$[$0-2];
-      //this.$.orderOnlies = $$[$0-1];
-      //this.$.irecipe = $$[$0];
-
-      this.$ = new parseEvents.RuleParseInfo($$[$0-4], $$[$0-3], null, $$[$0-2], $$[$0-1], $$[$0], false);
-      //console.error("parser: " + JSON.stringify($$[$0-4], null, 3));
-	
-break;
-case 20:
-
-      //var target_prereq = $$[$0-2].split(':');
-      this.$ = {};
-      this.$.targets = $$[$0-2];
-      this.$.targetPattern = null;
-      this.$.prereqPattern = null;
-      this.$.prerequisites = $$[$0];
-    
-break;
-case 21:
-
-       this.$ = {};
-      this.$.targets = $$[$0-4];
-      this.$.targetPattern = $$[$0-2];
-      this.$.prereqPattern = $$[$0];
-      this.$.prerequisites = null;
-    
-break;
-case 22:
-
-       this.$ = {};
-       this.$.orderOnlies = $$[$0];
-    
-break;
-case 23:
-
-       this.$ = {};
-       this.$.orderOnlies = null;
-    
-break;
-case 24:
-
-      this.$.push( { location: _$[$0], targetName: $$[$0].trim() });
-	 
-break;
-case 25:
-
-      this.$ = [];
-	 
-break;
-case 26:
-
-       this.$ = {};
-      this.$.irecipe = $$[$0];
-	 
-break;
-case 27:
-
-       this.$ = {};
-      this.$.irecipe = "";
-	 
-break;
-case 28: case 29:
+case 11: case 13: case 15: case 17: case 18:
  this.$ = $$[$0]; 
 break;
-case 30:
+case 12: case 14: case 16:
+ this.$ = null;
+break;
+case 19:
 
       this.$ = { kind: 'simple', name: $$[$0-1], value: $$[$0] }
    
 break;
-case 31:
+case 20:
 
       this.$ = { kind: 'recursive', name: $$[$0-1], value: $$[$0] }
    
 break;
-case 32:
+case 21:
 
       this.$ = { kind: 'append', name: $$[$0-1], value: $$[$0] }
    
 break;
-case 33:
+case 22:
 
       this.$ = { kind: 'conditional', name: $$[$0-1], value: $$[$0] }
    
 break;
-case 34:
+case 23:
 
       this.$ = { kind: 'shell', name: $$[$0-1], value: $$[$0] }
    
 break;
-case 35:
+case 24:
 
       this.$ = { kind: 'simple', name: $$[$0-2], value: $$[$0-1].join(os.EOL) }
       //console.log("parser assign " + JSON.stringify(this.$, null, 3));
    
 break;
-case 36:
+case 25:
 
       this.$ = { kind: 'recursive', name: $$[$0-2], value: $$[$0-1].join(os.EOL) }
       //console.log("parser assign " + JSON.stringify(this.$, null, 3));
    
 break;
-case 37:
+case 26:
 
       this.$ = { kind: 'append', name: $$[$0-2], value: $$[$0-1].join(os.EOL) }
       //console.log("parser assign " + JSON.stringify(this.$, null, 3));
    
 break;
-case 38:
+case 27:
 
       this.$ = { kind: 'conditional', name: $$[$0-2], value: $$[$0-1].join(os.EOL) }
       //console.log("parser assign " + JSON.stringify(this.$, null, 3));
    
 break;
-case 39:
+case 28:
 
       this.$ = { kind: 'shell', name: $$[$0-2], value: $$[$0-1].join(os.EOL) }
       //console.log("parser assign " + JSON.stringify(this.$, null, 3));
    
 break;
-case 40:
+case 29:
 
       $$[$0-1].push($$[$0].replace(/\r?\n$/, ""));
       this.$ = $$[$0-1];
    
 break;
-case 41:
+case 30:
  
       this.$ = []; 
    
 break;
-case 43:
+case 32:
  this.$ = []; 
 break;
-case 44:
+case 33:
  $$[$0-1].push($$[$0]); this.$ = $$[$0-1] 
 break;
-case 45:
+case 34:
  this.$ = [$$[$0]] 
 break;
-case 48:
+case 37:
 
       this.$ = 123;
       //console.error("REGISTERING");
       yy.preprocessor = { expandVariables: function (s) { console.error("REPLACING"); return "value_of_" + s; }}
    
 break;
-case 49:
+case 38:
 
 	     console.error("RULELINE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 50:
+case 39:
 
 	     console.error("RULE_START (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 51:
+case 40:
 
 	     console.error("EXPLICIT_RULE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 52:
+case 41:
 
 	     console.error("IMPLICIT_RULE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 53:
+case 42:
 
 	     console.error("TARGETPATTERNS (" + JSON.stringify(yytext) + ")");
      
 break;
-case 54:
+case 43:
 
 	     console.error("PREREQUISITES (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 55:
+case 44:
 
 	     console.error("PREREQPATTERNS (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 56:
+case 45:
 
 	     console.error("ORDERONLIES (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 57:
+case 46:
 
 	     console.error("RECIPE_LINE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 58:
+case 47:
 
 	     console.error("INLINE_RECIPE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 59:
+case 48:
 
 	     console.error("INCLUDE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 60:
+case 49:
 
 	     console.error("VARSTART (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 61:
+case 50:
 
 	     console.error("PIPE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 62:
+case 51:
 
 	     console.error("COLON (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 63:
+case 52:
 
 	     console.error("TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 64:
+case 53:
 
 	     console.error("PIPE_TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 65:
+case 54:
 
 	     console.error("COLON_TARGETS (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 66:
+case 55:
 
 	     console.error("EOL (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 67:
+case 56:
 
 	     console.error("SPC (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 68:
+case 57:
 
 	     console.error("VARIABLE_SET_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 69:
+case 58:
 
 	     console.error("VARIABLE_SET_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 70:
+case 59:
 
 	     console.error("VARIABLE_SET_APPEND (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 71:
+case 60:
 
 	     console.error("VARIABLE_SET_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 72:
+case 61:
 
 	     console.error("VARIABLE_SET_SHELL (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 73:
+case 62:
 
 	     console.error("VARIABLE_VALUE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 74:
+case 63:
 
 	     console.error("MACRO_SIMPLE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 75:
+case 64:
 
 	     console.error("MACRO_RECURSIVE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 76:
+case 65:
 
 	     console.error("MACRO_APPEND (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 77:
+case 66:
 
 	     console.error("MACRO_CONDITIONAL (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 78:
+case 67:
 
 	     console.error("MACRO_SHELL (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 79:
+case 68:
 
 	     console.error("MACRO_VALUE (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 80:
+case 69:
 
 	     console.error("MACRO_END (" + JSON.stringify(yytext) + ")");
 	  
 break;
-case 81:
+case 70:
 
 	     console.error("EOF2: " + JSON.stringify(JSON.stringify(yytext)) + ", state: " + yy.lexer.topState());
 	  
 break;
 }
 },
-table: [o($V0,$V1,{3:1,4:2,6:3,7:4,10:7,11:8,35:10,36:11,8:$V2,9:$V3,13:$V4,37:$V5,39:$V6,40:$V7,41:$V8,42:$V9,43:$Va,46:$Vb,47:$Vc,48:$Vd,49:$Ve}),{1:[3]},{5:[1,22],12:[1,23]},o($V0,[2,8]),o($V0,[2,2]),o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{14:[1,24]},o($V0,[2,28]),o($V0,[2,29]),{38:[1,25]},{38:[1,26]},{38:[1,27]},{38:[1,28]},{38:[1,29]},o($Vf,$Vg,{44:30}),o($Vf,$Vg,{44:31}),o($Vf,$Vg,{44:32}),o($Vf,$Vg,{44:33}),o($Vf,$Vg,{44:34}),{1:[2,1]},o($V0,$V1,{7:4,10:7,11:8,35:10,36:11,6:35,8:$V2,9:$V3,13:$V4,37:$V5,39:$V6,40:$V7,41:$V8,42:$V9,43:$Va,46:$Vb,47:$Vc,48:$Vd,49:$Ve}),o($Vh,[2,16],{15:36,14:[1,37]}),o($V0,[2,30]),o($V0,[2,31]),o($V0,[2,32]),o($V0,[2,33]),o($V0,[2,34]),{45:[1,38],50:$Vi},{45:[1,40],50:$Vi},{45:[1,41],50:$Vi},{45:[1,42],50:$Vi},{45:[1,43],50:$Vi},o($V0,[2,7]),o($Vj,[2,12],{16:44,18:[1,45]}),o($Vh,[2,15]),o($V0,[2,35]),o($Vf,[2,40]),o($V0,[2,36]),o($V0,[2,37]),o($V0,[2,38]),o($V0,[2,39]),o($V0,[2,14],{17:46,19:[1,47]}),o($Vj,[2,11]),o($V0,[2,10]),o($V0,[2,13])],
+table: [o($V0,$V1,{3:1,4:2,6:3,7:4,10:7,11:8,20:10,21:11,8:$V2,9:$V3,13:$V4,22:$V5,24:$V6,25:$V7,26:$V8,27:$V9,28:$Va,31:$Vb,32:$Vc,33:$Vd,34:$Ve}),{1:[3]},{5:[1,22],12:[1,23]},o($V0,[2,8]),o($V0,[2,2]),o($V0,[2,3]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),{14:[1,24]},o($V0,[2,17]),o($V0,[2,18]),{23:[1,25]},{23:[1,26]},{23:[1,27]},{23:[1,28]},{23:[1,29]},o($Vf,$Vg,{29:30}),o($Vf,$Vg,{29:31}),o($Vf,$Vg,{29:32}),o($Vf,$Vg,{29:33}),o($Vf,$Vg,{29:34}),{1:[2,1]},o($V0,$V1,{7:4,10:7,11:8,20:10,21:11,6:35,8:$V2,9:$V3,13:$V4,22:$V5,24:$V6,25:$V7,26:$V8,27:$V9,28:$Va,31:$Vb,32:$Vc,33:$Vd,34:$Ve}),o($Vh,[2,12],{15:36,14:[1,37]}),o($V0,[2,19]),o($V0,[2,20]),o($V0,[2,21]),o($V0,[2,22]),o($V0,[2,23]),{30:[1,38],35:$Vi},{30:[1,40],35:$Vi},{30:[1,41],35:$Vi},{30:[1,42],35:$Vi},{30:[1,43],35:$Vi},o($V0,[2,7]),o($Vj,[2,14],{16:44,18:[1,45]}),o($Vh,[2,11]),o($V0,[2,24]),o($Vf,[2,29]),o($V0,[2,25]),o($V0,[2,26]),o($V0,[2,27]),o($V0,[2,28]),o($V0,[2,16],{17:46,19:[1,47]}),o($Vj,[2,13]),o($V0,[2,10]),o($V0,[2,15])],
 defaultActions: {22:[2,1]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
@@ -642,6 +524,14 @@ const os = require("os");
 const parseEvents = require("./makefile-syntax-events");
 const log = require("../../../makelog");
 const errors = require("../../../make-errors");
+const targetparser = require("../result-builder/targets");
+function nonEmpty(src)
+{
+   if (!src)
+      return false;
+   
+   return src.trim().length > 0;
+}
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
 var lexer = ({
@@ -1128,7 +1018,7 @@ case 14:
 break;
 case 15:
         this.begin("RULE");
-        return tokens.RULE_START;
+        return tokens.TARGETS;
     
 break;
 case 16:

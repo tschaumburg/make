@@ -1,6 +1,7 @@
 import { createWorkingDir, TestDirConfig } from "./test-dir-config";
 import { registerTest, TestStepConfig } from "./test-step-config";
 import * as path from "path";
+import { ExpectedSuccess, ExpectedError } from "../results";
 
 export interface SimpleTestcase
 {
@@ -8,7 +9,8 @@ export interface SimpleTestcase
     makefileName: string | string[];
     prepare?: () => void;
     targets: string[];
-    expectedName: string | string[];
+    expectedName: string | string[] | ExpectedError | ExpectedSuccess;
+    after?: () => void;
 }
 
 // Defining a test by callig simpletest with these parameters.
@@ -58,7 +60,8 @@ export function simpleTest(testConfig: SimpleTestcase): (basedir: string, caseNo
                         title: testConfig.title,
                         prepare: testConfig.prepare,
                         targets: testConfig.targets,
-                        expect: testConfig.expectedName
+                        expect: testConfig.expectedName,
+                        after: testConfig.after
                     }
                 )
             }//);

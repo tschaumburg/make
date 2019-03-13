@@ -1,21 +1,18 @@
-import * as mocha from "mocha";
-import { multiTestcase, successFile } from "../../../../fixtures"
-import { simpleTest } from "../../../../fixtures/testcases/simple-testcase";
-import { deleteFiles } from "../../../../test-utils";
+import * as path from "path";
 
-export const loadTests = 
-    simpleTest(
+import * as case1a from "./case1a";
+import * as case1b from "./case1b";
+import * as case1c from "./case1c";
+import * as case1d from "./case1d";
+
+export function loadTests(baseDir: string): void
+{
+    var thisDir = path.resolve(baseDir, "case1");
+        describe('case1: Simple implicit rule', function ()
         {
-            title: 'Simple implicit rule',
-            makefileName: require.resolve('./makefile'),
-            prepare: () => 
-            {
-                 deleteFiles("foo*");
-            },
-            targets: ['foo.target'],
-            expectedName: [
-                ''
-            ]
-        }
-    );
-
+            case1a.loadTests(thisDir, 1);
+            case1b.loadTests(thisDir, 2);
+            case1c.loadTests(thisDir, 3);
+            case1d.loadTests(thisDir, 4);
+        });
+    }

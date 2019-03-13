@@ -12,6 +12,7 @@ export interface TestStepConfig
     env?: { [name: string]: string };
     targets: string[];
     expect: ExpectedError | ExpectedSuccess | string | string[] ; //| { [name: string]: string[] | string };
+    after?: () => void;
 }
 
 export function registerTest(
@@ -22,6 +23,7 @@ export function registerTest(
     console.error("EXPECTS " + JSON.stringify(step.expect));
     let expectedResult = loadExpected(step.expect);
     let prepare = step.prepare;
+    let after = step.after;
     //console.error("   => " + JSON.stringify(expectedResult));
     it(
         step.title,
@@ -32,7 +34,10 @@ export function registerTest(
 
             // Run npm-make:
             let result = make(dirName, step.targets, step.env);
-            fs.writeFileSync(path.join(dirName, "expected.txt"), expectedResult.lines().join("\n"));
+            runPrepare(dirName, after);
+
+            if (!!expectedResult.lines())
+                fs.writeFileSync(path.join(dirName, "expected.txt"), expectedResult.lines().join("\n"));
             fs.writeFileSync(path.join(dirName, "actual.txt"), result.stdout.concat(result.stderr).join("\n"));
 
             let msg = "Working dir: " + dirName;

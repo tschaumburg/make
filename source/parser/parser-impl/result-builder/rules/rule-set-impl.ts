@@ -29,17 +29,6 @@ class RuleSet implements IRuleSet
         isTerminal: boolean
     ): BaseRule
     {
-        //console.error("orderOnlies = " + JSON.stringify(orderOnlies));
-        // console.error(
-        //     "targets0 = " + targets0 + "\n" + 
-        //     "targets1 = " + targets1 + "\n" + 
-        //     "targets2 = " + targets2 + "\n" + 
-        //     "targets3 = " + targets3 + "\n" 
-        // );
-
-        // All rules must begin with
-        //    targets:...
-        // where 'targets' is a list of one or more targets
         if (!targets || targets.length == 0)
         {
             error.ruleMissingTarget();
@@ -158,5 +147,69 @@ class RuleSet implements IRuleSet
     
         throw new Error("mixed implicit and normal rules.");
     }
+
+    public addExplicitRule(
+        targets: ITarget[], 
+        prerequisites: ITarget[],
+        orderOnlies: ITarget[],
+        inlineRecipe: string,
+        isTerminal: boolean
+    ): BaseRule
+    {
+        if (!targets || targets.length == 0)
+        {
+            error.ruleMissingTarget();
+        }
+
+        // Explicit ("normal") rule:
+        // =========================
+        let explicitRule =
+            new ExplicitRule(
+                targets.map(t => t as ITargetName), 
+                prerequisites.map(t => t as ITargetName), 
+                orderOnlies.map(t => t as ITargetName), 
+                inlineRecipe ,
+                isTerminal
+            );
+        
+        //console.log("   DEFAULT TARGET 0: " + JSON.stringify(explicitRule.targets[0]));
+        this.explicitRules.push(explicitRule);
+
+        if (!this._defaultTarget)
+        {
+            this._defaultTarget = explicitRule.targets[0];
+        }
+
+        return explicitRule;
+
+        // throw new Error("mixed implicit and normal rules.");
+    }
+
+    public addImplicitRule(
+        targets: ITargetPattern[], // all TargetNames => static rule, all targetPatterns => implicit rule, mixed => error
+        prerequisites: ITarget[],
+        orderOnlies: ITarget[],
+        inlineRecipe: string,
+        isTerminal: boolean
+    ): BaseRule
+    {
+        if (!targets || targets.length == 0)
+        {
+            error.ruleMissingTarget();
+        }
+
+        let implicitRule =
+            new ImplicitRule(
+                targets.map(t => t as ITargetPattern), 
+                prerequisites, 
+                orderOnlies,
+                inlineRecipe,
+                isTerminal
+            );
+        this.implicitRules.push(implicitRule);
+        return implicitRule;
+        // throw new Error("mixed implicit and normal rules.");
+    }
+
 }
 

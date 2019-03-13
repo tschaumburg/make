@@ -218,7 +218,7 @@ xprereqpatterns (?:[^|#=:\r\n\x00]|(?:\\[%|# ]))*
 <RULE_START>{target-mix-list}
     %{
         this.begin("RULE");
-        return tokens.RULE_START;
+        return tokens.TARGETS;
     %}
 
 <RULE>[:]{target-mix-list}

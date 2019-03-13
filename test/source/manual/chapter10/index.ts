@@ -1,5 +1,6 @@
 import * as mocha from "mocha";
 import * as section101 from "./section101";
+import * as section104 from "./section104";
 
 export function loadTests()
 {
@@ -7,5 +8,6 @@ export function loadTests()
     {
         var thisDir = "C:/Users/Thomas/npm-make-test/testing";
         section101.loadTests(thisDir);
+        section104.loadTests(thisDir);
     });
 }

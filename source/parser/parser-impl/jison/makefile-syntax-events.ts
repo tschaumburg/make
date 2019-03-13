@@ -1,137 +1,73 @@
 import * as warn from '../../../make-warnings';
 import { isArray } from "util";
 import * as log from '../../../makelog';
+import * as errors from "../../../make-errors";
 import { IParseEvents } from '../parse-events';
 import { IParseLocation } from '../parse-location';
-
-// General character classes:
-// ==========================
-const backslash = "\\\\";
-const tab = "\\t";
-const inlineWhitespace = " " + tab;
-const spc = "[" + inlineWhitespace + "]*";
-
-// Target character classes:
-// =========================
-const escapeableNameChars = "%:;#|" + inlineWhitespace + backslash;
-const disallowedNameChars = "\\r\\n\\x00";
-const nameChar = 
-    backslash + "[" + escapeableNameChars + "]" + 
-    "|" + 
-    "[^" + escapeableNameChars + disallowedNameChars + "]";
-const targetPart = "(?:" + nameChar + ")*";
-
-// Target names:
-// =============
-const targetName = "(" + targetPart + ")";
-const targetNameList = "^" + spc + "(?:" + targetName + spc + ")*$";
-
-// Target patterns:
-// ================
-const targetPattern = "(" + targetPart + "[%]"+ targetPart + ")";
-const targetPatternList = "^" + spc + "(?:" + targetPattern + spc + ")*$";
-
-export function isNameList(yy, src: string): boolean
-{
-    if (!src)
-        return false;
-
-    let tester = new RegExp(targetNameList, "g");
-    let res = tester.test(src); // src.match(tester);
-    //console.error("isNameList(" + src + "): " + JSON.stringify(src.match(tester)));
-    return (!!res);
-}
-
-export function isPatternList(yy, src: string): boolean
-{
-    if (!src)
-        return false;
-
-    let tester = new RegExp(targetPatternList, "g");
-    let res = tester.test(src); // src.match(tester);
-    //console.error("isPatternList(" + src + "): " + JSON.stringify(src.match(tester)));
-    return (!!res);
-}
-
-export class RuleParseInfo
-{
-    private readonly _discriminator: string = "59BABAFD-27C1-4691-BABA-718E5832FEB3";
-    public isValid(): boolean
-    {
-        return "59BABAFD-27C1-4691-BABA-718E5832FEB3" === this._discriminator;
-    }
-
-    public constructor(
-        public readonly targets: string,
-        public readonly targetPattern: string,
-        public readonly prerequisites: string,
-        public readonly prereqPattern: string,
-        public readonly orderOnlies: string,
-        public readonly irecipe: string,
-        public readonly isTerminal: boolean
-    ) {}
-
-    public static explicit(
-        targets: string,
-        prerequisites: string,
-        orderOnlies: string,
-        irecipe: string,
-        isTerminal: boolean
-    ): RuleParseInfo
-    {
-        return new RuleParseInfo(targets, null, prerequisites, null, orderOnlies, irecipe, isTerminal);
-    }
-
-    public static implicit(
-        targetPattern: string,
-        prereqPattern: string,
-        orderOnlies: string,
-        irecipe: string,
-        isTerminal: boolean
-    ): RuleParseInfo
-    {
-        return new RuleParseInfo(null, targetPattern, null, prereqPattern, orderOnlies, irecipe, isTerminal);
-    }
-}
-
-export function sendStartRule(
+export function sendExplicitRule(
     yy,
     jisonLocation,
-    ruleParseInfo: RuleParseInfo
+    targets: string,
+    prerequisites: string,
+    orderOnlies: string,
+    irecipe: string,
+    isTerminal: boolean
 ): void
 {
-    log.info("sendStartRule");
-    // This is called from typeless javascript, so check the types:
-    if (!ruleParseInfo)
-        throw new Error("ruleDetails");
+    log.info("sendExplicitRule");
 
-    if (!ruleParseInfo.isValid())
-        throw new Error("ruleDetails");
+    if (!targets || targets.trim().length == 0)
+    {
+       errors.ruleMissingTarget();
+    }
 
     let location: IParseLocation = getLocation(yy, jisonLocation);
     let builder: IParseEvents = getResultBuilder(yy);
     let basedir: string = getBasedir(yy);
 
-    log.error("ruleParseInfo: " + JSON.stringify(ruleParseInfo, null, 3));
-    // let targets = getTargetNames(ruleDetails, "targets");
-    // let prerequisites = getTargetNames(ruleDetails, "prerequisites");
-    // let targetPattern = getTargetNames(ruleDetails, "targetPattern");
-    // let prereqPattern = getTargetNames(ruleDetails, "prereqPattern");
-    // let orderOnlies = getTargetNames(ruleDetails, "orderOnlies");
-    // let inlinerecipe = getStringOpt(ruleDetails, "irecipe");
-
-    builder.startRule(
+    builder.explicitRule(
         location, 
         basedir, 
-        ruleParseInfo.targets, 
-        ruleParseInfo.prerequisites, 
-        ruleParseInfo.targetPattern, 
-        ruleParseInfo.prereqPattern, 
-        ruleParseInfo.orderOnlies, 
-        ruleParseInfo.irecipe,
-        ruleParseInfo.isTerminal
-    );
-    log.info("...sendStartRule done");
+        targets,
+        prerequisites,
+        orderOnlies,
+        irecipe,
+        isTerminal
+            );
+    log.info("...sendExplicitRule done");
+}
+
+export function sendImplicitRule(
+    yy,
+    jisonLocation,
+    targetPatterns: string,
+    prerequisites: string,
+    orderOnlies: string,
+    irecipe: string,
+    isTerminal: boolean
+): void
+{
+    log.info("sendImplicitRule");
+
+    if (!targetPatterns || targetPatterns.trim().length == 0)
+    {
+       errors.ruleMissingTarget();
+    }
+
+    let location: IParseLocation = getLocation(yy, jisonLocation);
+    let builder: IParseEvents = getResultBuilder(yy);
+    let basedir: string = getBasedir(yy);
+
+    builder.implicitRule(
+        location, 
+        basedir, 
+        targetPatterns,
+        prerequisites,
+        orderOnlies,
+        irecipe,
+        isTerminal
+        );
+    log.info("...sendImplicitRule done");
 }
 
 export function sendRecipeLine(

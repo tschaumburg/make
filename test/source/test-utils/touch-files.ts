@@ -22,14 +22,14 @@ export function touchFilesRelative(relativeMillis: number , ...files: string[]):
         {
             for (let f of glob.sync(_pattern)||[])
             {
-                //console.error("TOUCH " + f);
-                touch.sync(f, { time: timestamp++, mtime: true });
+                console.error("TOUCH " + f + ": " + timestamp);
+                touch.sync(f, { time: timestamp, mtime: true });
             }
         }
         else
         {
-            //console.error("TOUCH " + _pattern);
-            touch.sync(_pattern, { time: timestamp++, mtime: true });
+            console.error("TOUCH " + _pattern + ": " + timestamp);
+            touch.sync(_pattern, { time: timestamp, mtime: true });
         }
     }
 }

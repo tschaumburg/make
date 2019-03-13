@@ -1,9 +1,9 @@
-import { Target } from "./target";
+import { Target } from "../target";
 import { findNextSplitter, splitPattern, unescapeTargetName } from "./split-target-list";
-import { TargetPattern } from "./target-pattern";
-import { TargetName } from "./target-name";
-import { IParseContext } from "../../../parse-result";
-import { IParseLocation } from "../../parse-location";
+import { TargetPattern } from "../target-pattern";
+import { TargetName } from "../target-name";
+import { IParseContext } from "../../../../parse-result";
+import { IParseLocation } from "../../../parse-location";
 
 export function createTarget(
     src: string,

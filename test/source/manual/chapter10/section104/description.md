@@ -8,7 +8,7 @@ However, even if n.c does not exist and is not mentioned, make knows how to envi
 
 In this case, n.c is called an intermediate file. Once make has decided to use the intermediate file, it is entered in the data base as if it had been mentioned in the makefile, along with the implicit rule that says how to create it.
 
-> ### Case 1: Chains of implicit rules 
+> ### Case 1a: Chains of implicit rules 
 > 
 > Given a rule chain
 >
@@ -18,36 +18,29 @@ In this case, n.c is called an intermediate file. Once make has decided to use t
 >     clean:                        ; del foo.* && touch foo.src
 > ```
 >
-> Now making `clean` and `foo.target` should print
->
-> ```
-> making foo.target from foo.intermediate
-> making foo.intermediate from foo.src
-> ```
->
-> and `dir /b foo.*` should list `foo.target` (chaining)
+> Case | Files<br>(oldest first) | Goal | Expected output
+> ---|---|---|---
+> 1a | foo.src | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate
 
 Intermediate files are remade using their rules just like all other files. But intermediate files are treated differently in two ways.
 
 The first difference is what happens if the intermediate file does not exist. If an ordinary file b does not exist, and make considers a target that depends on b, it invariably creates b and then updates the target from b. But if b is an intermediate file, then make can leave well enough alone. It won’t bother updating b, or the ultimate target, unless some prerequisite of b is newer than that target or there is some other reason to update that target.
 
-> ### Case 2: Intermediate skipping
+> ### Case 1b: Intermediate skipping
 >
-> If the target is newer than the prerequisites:
+> If the target is newer than the prerequisites make should skip building the intermediates
 >
-> ```
-> del foo.*
-> touch foo.src
-> touch foo.target
-> ```
->
-> make should skip building the intermediates
+> Case | Files before<br>(oldest first) | Goal | Expected output 
+> ---|---|---|--- 
+> 1b | foo.src<br>foo.target | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate 
 
 The second difference is that if make does create b in order to update something else, it deletes b later on after it is no longer needed. Therefore, an intermediate file which did not exist before make also does not exist after make. make reports the deletion to you by printing a ‘rm -f’ command showing which file it is deleting.
 
-> ### Case 3: Intermediate deletion
+> ### Case 1c: Intermediate deletion
 >
-> and `dir /b foo.intermediate*` should list no matches (intermediate deletion)
+> Case | Files before<br>(oldest first) | Goal | Expected output | Files after
+> ---|---|---|--- | ---
+> 1c | foo.src<br>foo.target | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate | foo.src<br>foo.target
 
 Ordinarily, a file cannot be intermediate if it is mentioned in the makefile as a target or prerequisite. However, you can explicitly mark a file as intermediate by listing it as a prerequisite of the special target .INTERMEDIATE. This takes effect even if the file is mentioned explicitly in some other way.
 

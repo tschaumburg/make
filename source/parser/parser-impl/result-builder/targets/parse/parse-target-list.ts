@@ -1,10 +1,10 @@
-import { Target } from "./target";
+import { Target } from "../target";
 import { splitTargetList } from "./split-target-list";
-import { createTarget, createTargetName, createTargetPattern } from "./create-target";
-import { TargetName } from "./target-name";
-import { IParseContext } from "../../../parse-result";
-import { IParseLocation } from "../../parse-location";
-import { TargetPattern } from "./target-pattern";
+import { createTarget, createTargetName, createTargetPattern } from "./parse-target";
+import { TargetName } from "../target-name";
+import { IParseContext } from "../../../../parse-result";
+import { IParseLocation } from "../../../parse-location";
+import { TargetPattern } from "../target-pattern";
 
 export function createTargetList(
     src: string,
