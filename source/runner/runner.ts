@@ -34,7 +34,9 @@ export class Runner implements IRunner
     {
         log.info("plan: " + JSON.stringify(plan, null, 3));
         var engine = new Engine(plan);
-        return engine.updateGoals(goals); //goalNames);
+        let res = engine.updateGoals(goals); //goalNames);
+        engine.cleanup();
+        return res;
     }
     
     watch(onChange: () => void): void 

@@ -1,7 +1,6 @@
-// import * as fs from 'fs';
-// import { ExplicitRule, TargetPattern, Target, TargetName, Recipe } from "../parser/result";
-import { IPlan, IAction, IFilePlan } from "../plan";
 import { IVariableManager } from '../../../variables';
+import { IFilePlan } from '../file-plan';
+import { IPlan } from '../plan';
 
 export function createPlan(
     basedir: string, 
@@ -61,15 +60,6 @@ class Plan implements IPlan
     //         this.createAction(prereqFiles, orderOnlyFiles, recipe.steps);
     //     }
     // }
-}
-
-export class Action implements IAction
-{
-    constructor(
-        public readonly prerequisites: IFilePlan[],
-        public readonly orderOnly: IFilePlan[],
-        public readonly recipe: string[]
-    ){}
 }
 
 

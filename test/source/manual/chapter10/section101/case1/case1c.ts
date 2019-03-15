@@ -11,7 +11,7 @@ export const loadTests =
             prepare: () => 
             {
                  deleteFiles("foo*");
-                 touchFilesRelative(-1, "foo.intermediate");
+                 touchFilesRelative(-10, "foo.intermediate");
                  touchFiles("foo.src");
             },
             targets: ['foo.target'],

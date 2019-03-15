@@ -17,10 +17,17 @@ export interface IParseResult
      * is done):
      */
     readonly explicitlyMentionedFiles: string[];
+    readonly specialTargets: ISpecialTargets;
     readonly makefileNames: string[];
     readonly goals: ITargetName[];
 }
 
+export interface ISpecialTargets
+{
+    readonly INTERMEDIATE: ReadonlySet<string>;
+    readonly SECONDARY: ReadonlySet<string>;
+    readonly PRECIOUS: ReadonlySet<string>;
+}
 export interface IParseContext
 {
     vpath: string[];

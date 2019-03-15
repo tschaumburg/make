@@ -16,7 +16,8 @@ export const loadTests =
             targets: ['foo.target'],
             expectedName: [
                 'making foo.intermediate from foo.src',
-                'making foo.target from foo.intermediate'
+                'making foo.target from foo.intermediate',
+                'rm foo.intermediate'
             ]
         }
     );

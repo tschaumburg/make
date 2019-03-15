@@ -41,7 +41,8 @@ export class Planner implements IPlanner
                 basedir, 
                 parseResult.makefileNames, 
                 parseResult.variablemanager,
-                parseResult.explicitlyMentionedFiles
+                parseResult.explicitlyMentionedFiles.concat(parseResult.goals.map(g => g.fullname())),
+                parseResult.specialTargets
             );
         let planManager = 
             new PlanManager(

@@ -1,5 +1,5 @@
 import { simpleTest } from "../../../../fixtures/testcases/simple-testcase";
-import { touchFiles, deleteFiles } from "../../../../test-utils";
+import { touchFiles, deleteFiles, touchFilesRelative } from "../../../../test-utils";
 
 export const loadTests = 
     simpleTest(
@@ -8,10 +8,10 @@ export const loadTests =
             makefileName: require.resolve('./makefile'),
             prepare: () => { 
                 touchFiles(
-                    "defs.h",
-                    "foo.o",
-                    "foo.c",
                 ); 
+                touchFilesRelative(-2, "defs.h");
+                touchFilesRelative(-1, "foo.o");
+                touchFilesRelative(0, "foo.c");
             },
             targets: ['foo.o'],
             expectedName: require.resolve('./expected'),

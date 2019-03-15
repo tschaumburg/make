@@ -1,15 +1,43 @@
 import * as path from "path";
 import * as exits from "../../../make-errors";
-import { IPlan,  IFilePlan, IFileRef, IVirtualPath} from "../plan";
 import { IVariableManager } from "../../../variables";
-import { ITargetName } from "../../../parser";
+import { ITargetName, ISpecialTargets } from "../../../parser";
 import { IPlanBuilder } from "../plan-builder";
-import { FileRef } from "./fileref-impl";
-import { Action, createPlan } from "./plan-impl";
-import { FilePlan } from "./fileplan-impl";
+import { FileRef } from "./file-ref-impl";
+import {  createPlan } from "./plan-impl";
+import { FilePlan } from "./file-plan-impl";
+import { IFilePlan } from "../file-plan";
+import { IFileRef } from "../file-ref";
+import { IVirtualPath } from "../virtual-path";
+import { IPlan } from "../plan";
+import { Action } from "./action-impl";
 
+export function createPlanBuilder(
+    basedir: string, 
+    makefileNames: string[], 
+    variablemanager: IVariableManager, 
+    explicitlyMentionedFiles:string[],
+    specialTargets: ISpecialTargets
+): IPlanBuilder
+{
+    let builder = 
+        new PlanBuilder(
+            basedir, 
+            makefileNames, 
+            variablemanager,
+            explicitlyMentionedFiles,
+            specialTargets
+        );
+
+    return builder;
+}
 export class PlanBuilder implements IPlanBuilder
 {
+    private isExplicitlyMentioned(fullname: string): boolean
+    {
+        return (this.explicitlyMentionedFiles.indexOf(fullname)>=0);
+    }
+
     private readonly goals: IFilePlan[] = [];
     public addGoal(goal: IFilePlan): void
     {
@@ -22,7 +50,8 @@ export class PlanBuilder implements IPlanBuilder
         private readonly basedir: string, 
         private readonly makefileNames: string[],
         private readonly variablemanager: IVariableManager,
-        private readonly explicitlyMentionedFiles: string[]
+        private readonly explicitlyMentionedFiles: string[],
+        private readonly specialTargets: ISpecialTargets
     )
     {
     }
@@ -40,7 +69,7 @@ export class PlanBuilder implements IPlanBuilder
         prerequisites: IFilePlan[],
         orderOnly: IFilePlan[],
         recipeSteps: string[],
-        vpath: IFileRef
+        vpath: string //IFileRef
     ): IFilePlan
     {
 
@@ -55,10 +84,15 @@ export class PlanBuilder implements IPlanBuilder
 
     private registerFile(target: ITargetName, isIntermediate: boolean): IFileRef
     {
+        let fullname = target.fullname();
         var targetRef = 
             new FileRef(
                 target.relname, 
-                path.resolve(target.basedir, target.relname)
+                fullname,
+                this.isExplicitlyMentioned(fullname),
+                this.specialTargets.INTERMEDIATE.has(fullname),
+                this.specialTargets.SECONDARY.has(fullname),
+                this.specialTargets.PRECIOUS.has(fullname)
             );
 
         return targetRef
@@ -69,9 +103,29 @@ export class PlanBuilder implements IPlanBuilder
         prerequisites: IFilePlan[], 
         orderOnly: IFilePlan[], 
         recipeSteps: string[],
-        vpath: IVirtualPath
+        vpath: string //IVirtualPath
     ): IFilePlan
     {
+        let self = this;
+        if (target.relname.startsWith("."))
+        {
+            let propertyName = target.relname.substr(1);
+            let propertyDescriptor = 
+                Object.getOwnPropertyDescriptor(this.specialTargets, propertyName);
+
+            if (!!propertyDescriptor)
+            {
+                let propertyValue = propertyDescriptor.value as Set<string>;
+                prerequisites.forEach(p => propertyValue.add(p.file.fullname));
+                orderOnly.forEach(p => propertyValue.add(p.file.fullname));
+            }
+        }
+        // if (target.relname === ".INTERMEDIATE")
+        // {
+        //     prerequisites.forEach(p => self.INTERMEDIATE.add(p.file.fullname));
+        //     orderOnly.forEach(p => self.INTERMEDIATE.add(p.file.fullname));
+        // }
+
         let t: IFileRef = this.registerFile(target, false);
         let plan = this.fileplans[t.fullname];
         
@@ -84,7 +138,7 @@ export class PlanBuilder implements IPlanBuilder
 
         if (!plan)
         {
-            let fileRef = new FileRef(t.orgname, t.fullname);
+            let fileRef = t; // new FileRef(t.orgname, t.fullname);
             plan = new FilePlan(fileRef, action, vpath);
             this.fileplans[target.fullname()] = plan;
             return plan;
@@ -120,7 +174,7 @@ export class PlanBuilder implements IPlanBuilder
         target: ITargetName
     ): IFilePlan
     {
-        let fileRef = new FileRef(target.relname, target.fullname());
+        let fileRef = this.registerFile(target, false); // new FileRef(target.relname, target.fullname());
         let plan = new FilePlan(fileRef, null, null);
         this.fileplans[target.fullname()] = plan;
         return plan;

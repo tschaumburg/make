@@ -7,8 +7,9 @@ import * as minimatch from "minimatch";
 import { makefileMissingTarget } from "../../make-errors";
 import { ITargetName } from "../../parser";
 import { TargetName } from "../../parser/parser-impl/result-builder/targets/target-name";
-import { IVirtualPath } from "../plan/plan";
-import { VirtualPath } from "../plan/impl/fileref-impl";
+import { IVirtualPath } from "../plan/virtual-path";
+// import { i } from "../plan/plan";
+// import { VirtualPath } from "../plan/impl/fileref-impl";
 
 function simpleWildcardMatch(pattern: string, candidate: string): boolean
 {
@@ -108,7 +109,7 @@ export function doesFilenameMatchTarget(target: ITargetName, filename: string): 
     return null;
 }
 
-export function resolveVpath(basedir: string, vpath: string[], relname: string): IVirtualPath
+export function resolveVpath(basedir: string, vpath: string[], relname: string): string //IVirtualPath
 {
     // log.locateFiles(
     //     () => "Resolving target '" + relname + "' ref. from '" + basedir + "':"
@@ -127,7 +128,7 @@ export function resolveVpath(basedir: string, vpath: string[], relname: string):
             }
 
             var relname = path.relative(dir, files[0]);
-            return new VirtualPath(/*relname,*/ files[0]);
+            return files[0];//return new VirtualPath(/*relname,*/ files[0]);
         }
     }
     return null;

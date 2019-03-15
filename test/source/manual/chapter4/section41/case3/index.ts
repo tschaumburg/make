@@ -1,5 +1,5 @@
 import { simpleTest } from "../../../../fixtures/testcases/simple-testcase";
-import { touchFiles, deleteFiles } from "../../../../test-utils";
+import { touchFiles, deleteFiles, touchFilesRelative } from "../../../../test-utils";
 
 export const loadTests = 
     simpleTest(
@@ -12,7 +12,10 @@ export const loadTests =
                     "foo.o",
                     "defs.h",
                 ); 
-            },
+                touchFilesRelative(-2, "foo.c");
+                touchFilesRelative(-1, "foo.o");
+                touchFilesRelative(0, "defs.h");
+    },
             targets: ['foo.o'],
             expectedName: require.resolve('./expected'),
         }
