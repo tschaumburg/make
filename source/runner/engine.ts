@@ -17,7 +17,12 @@ export class Engine
         let res = false;
         for (let goal of goals)
         {
-            res = this._updateTarget(goal, this.timestamp(goal.file.fullname, Number.NEGATIVE_INFINITY), "*") || res;
+            let timestampBefore = this.timestamp(goal.file.fullname, Number.NEGATIVE_INFINITY);
+            res = this._updateTarget(goal, timestampBefore , "*") || res;
+            let timestampAfter = this.timestamp(goal.file.fullname, Number.NEGATIVE_INFINITY);
+
+            let goalHasBeenUpdated = (timestampAfter != timestampBefore);
+            res = res || goalHasBeenUpdated;
         }
 
         return res;
@@ -31,131 +36,14 @@ export class Engine
      * Returns true if target changed
      * @param target
      */
-    private _hasChangesAfter(fileplan: IFilePlan, ignoreChangesBefore: number, prefix: string): boolean
+    private _updateTarget(fileplan: IFilePlan, skipIntermediatesBefore: number,  prefix: string): boolean
     {
         let self = this;
         let targetFullname = fileplan.file.fullname;
         let action = fileplan.producedBy;
 
-        //console.error(prefix + "TESTING(" + targetFullname + "): start");
-
         // Source file:
         // ============
-        //
-        // Targets appearing only as prerequisites (i.e with no specification
-        // of how they should be produced) are assumed to be source files:
-        //
-        //     foo.o: foo.c foo.h bar.h
-        //          cc foo.c -o foo.o
-        //
-        //     bar.c bar.h: bar.spec
-        //          ...
-        // 
-        // (in the above example foo.c, foo.h and bar.spec are sources, but
-        // bar.c and bar.h are not)
-
-        if (this.isSourceFile(fileplan))
-        {
-            if (!fs.existsSync(targetFullname))
-            {
-                exits.ruleUnknownTarget(targetFullname, targetFullname);
-            }
-
-            return this.timestamp(targetFullname) >= ignoreChangesBefore;
-        }
-
-        // Naked leaf nodes:
-        // =================
-        //
-        //    specification.zip: ALWAYS
-        //           wget ftp://foo.com/specification.zip
-        //    ALWAYS:
-        //
-        // 4.7: ...If a target has no prerequisites or recipe
-        // [henceforth a "naked leaf node", tsc], and the target
-        // of the rule is a nonexistent file, then make imagines 
-        // this target to have been updated whenever its rule
-        // is run.This implies that all targets depending on 
-        // this one will always have their recipe run.
-
-        if (this.isNakedLeaf(fileplan))
-        {
-            if (!fs.existsSync(targetFullname))
-            {
-                //log.info(
-                //    prefix + "SCHEDULING(" + target.name + "): " +
-                //    target.fullName + " is a naked leaf node"
-                //);
-                return true;
-            }
-        }
-
-        // Phony targets:
-        // ==============
-        //
-        //    clean:
-        //         rm *.o
-        //
-        // 4.6: A phony target is one that is not really the name 
-        // of a file; rather it is just a name for a recipe to be 
-        // executed when you make an explicit request.
-
-        if (this.isPhony(fileplan))
-        {
-            log.info(
-                prefix + "SCHEDULING(" + targetFullname + "): " +
-                targetFullname + " is .PHONY"
-            );
-            //this._execute(fileplan);
-            return true;
-        }
-
-        // Intermediate files:
-        // ===================
-        // Intermediate files are remade using their rules just like all other
-        // files. But intermediate files are treated differently in two ways.
-        //
-        // The first difference is what happens if the intermediate file does
-        // not exist.
-        //
-        // If an ordinary file b does not exist, and make considers
-        // a target that depends on b, it invariably creates b and then updates
-        // the target from b.
-        //
-        // But if b is an intermediate file, then make can leave well enough
-        // alone. It won’t bother updating b, or the ultimate target, unless
-        // some prerequisite of b is newer than that target or there is some
-        // other reason to update that target.
-
-        // Depth-first recursion:
-        // ----------------------
-        if (action.prerequisites.some(pr => self._hasChangesAfter(pr, ignoreChangesBefore, prefix + "   ")))
-            return true;
-
-        // Rebuild target if it is missing:
-        // --------------------------------
-        let isOrdinary = (fileplan.file.isIntermediate() == false && fileplan.file.isSecondary() == false);
-        if (!fs.existsSync(targetFullname))
-            return isOrdinary;
-
-        return false;
-    }
-
-    /**
-     * Returns true if target changed
-     * @param target
-     */
-    private _updateTarget(fileplan: IFilePlan, parentTimestamp: number,  prefix: string): boolean
-    {
-        let self = this;
-        let targetFullname = fileplan.file.fullname;
-        let action = fileplan.producedBy;
-
-        //console.error(prefix + "TESTING(" + targetFullname + "): start");
-
-        // Source file:
-        // ============
-        //
         // Targets appearing only as prerequisites (i.e with no specification
         // of how they should be produced) are assumed to be source files.
         // 
@@ -219,7 +107,7 @@ export class Engine
                 targetFullname + " is .PHONY"
             );
             this._execute(fileplan);
-            return true;
+            return false;
         }
 
         // Intermediate files:
@@ -238,80 +126,92 @@ export class Engine
         // alone. It won’t bother updating b, or the ultimate target, unless
         // some prerequisite of b is newer than that target or there is some
         // other reason to update that target.
-        let isOrdinary = fileplan.file.isIntermediate() == false && fileplan.file.isSecondary() == false;
-        let thisTimestamp = isOrdinary ? this.timestamp(targetFullname, Number.NEGATIVE_INFINITY): parentTimestamp;
+
         // Depth-first recursion:
         // ----------------------
-        // First update any prerequisites.
-        let rebuilt = false;
-        let rebuiltNames = "";
+        if (this.isOrdinary(fileplan))
+            skipIntermediatesBefore = this.timestamp(targetFullname, Number.NEGATIVE_INFINITY);
+
+        let forceRebuild = false;
         for (var prereq of action.prerequisites)
         {
-            if (this._updateTarget(prereq, thisTimestamp, prefix + "   "))
-            {
-                rebuilt = true;
-                rebuiltNames = rebuiltNames + " " + prereq.file.fullname;
-            }
+            if (this._updateTarget(prereq, skipIntermediatesBefore, prefix + "   "))
+                forceRebuild = true;
         }
 
-        // If any prerequisites were updated, this
-        // target needs updating too:
-        if (rebuilt)
+        if (forceRebuild)
         {
-            // log.info(
-            //     prefix + "SCHEDULING(" + targetFullname + ") " +
-            //     "because prerequisites (" + rebuiltNames.trim() + ") were scheduled for update"
-            // );
-
-            // self._execute(fileplan);
-            // return true;
+            log.info(prefix + "SCHEDULING(" + targetFullname + ") because prerequisites forced rebuild");
+            self._execute(fileplan);
+            return false;
         }
 
-        if (!fs.existsSync(targetFullname))
+        // If target exists:
+        // -----------------
+        // ...ensure that it's up-to-date wrt. prerequisites
+        if (fs.existsSync(targetFullname))
         {
-            if (isOrdinary)
+            let thisTimestamp = fs.statSync(targetFullname).mtimeMs;
+            for (var prereq of action.prerequisites)
             {
-                log.info(
-                    prefix + "SCHEDULING(" + targetFullname + ") " +
-                    "because file " + targetFullname + " doesn't exist"
-                );
-
-                self._execute(fileplan);
-                return true;
-            }
-            else
-            {
-                // Check if the parent target is outdated by any prerequisites:
-                // -------------------------------------------------------------
-                let outdated = false;
-                let outdatedBy = "";
-                for (var prereq of action.prerequisites)
+                if (!fs.existsSync(prereq.file.fullname))
                 {
-                    if (this.timestamp(prereq.file.fullname) >= parentTimestamp)
+                    if (this.isOrdinary(prereq))
                     {
-                        outdated = true;
-                        outdatedBy = outdatedBy + " " + prereq.file.fullname;
+                        exits.targetVanished(prereq.file.fullname);
                     }
-                }
 
-                if (outdated)
-                {
                     log.info(
-                        prefix + "SCHEDULING(" + targetFullname + ") " +
-                        "because prerequisites (" + outdatedBy.trim() + ") are newer"
+                        "Skipped intermediate " + prereq.file.fullname + ", " + 
+                        "so target " + targetFullname + " accepts that " + 
+                        prereq.file.fullname + " is missing"
                     );
-        
-                    self._execute(fileplan);
-                    return true;
+
+                    continue;
                 }
 
-                log.info(
-                    prefix + "SKIPPING " + targetFullname + "(" + parentTimestamp + ") " +
-                    "because file " + targetFullname + " is up-to-date" +
-                    "compared to (" + outdatedBy + ")"
-                );
+                let prereqTimestamp = fs.statSync(prereq.file.fullname).mtimeMs;
+                if (prereqTimestamp >= thisTimestamp)
+                {
+                    log.info(prefix + "SCHEDULING(" + targetFullname + ") because prerequisites are newer");
+                    self._execute(fileplan);
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
+        // If an ordinary target doesn't exist:
+        // ------------------------------------
+        // ...build it
+        if (this.isOrdinary(fileplan))
+        {
+            log.info(
+                prefix + "SCHEDULING(" + targetFullname + ") " + 
+                "because file " + targetFullname + " doesn't exist");
+            self._execute(fileplan);
+            return false;
+        }
+
+        // If an INTERMEDIATE target doesn't exist:
+        // ----------------------------------------
+        // ...check if the parent target is outdated by any prerequisites:
+        for (var prereq of action.prerequisites)
+        {
+            if (this.timestamp(prereq.file.fullname) >= skipIntermediatesBefore)
+            {
+                log.info("prereq = " + this.timestamp(prereq.file.fullname) + ", skipIntermediatesBefore = " + skipIntermediatesBefore);
+                log.info(prefix + "SCHEDULING INTERMEDIATE(" + targetFullname + ") because prerequisites are newer");
+                self._execute(fileplan);
+                return false;
             }
         }
+
+        log.info(
+            prefix + "SKIPPING INTERMEDIATE " + targetFullname + "(" + skipIntermediatesBefore + ") " +
+            "because file " + targetFullname + " is up-to-date"
+        );
 
         return false;
     }
@@ -394,6 +294,17 @@ export class Engine
             return false;
 
         if (rule.prerequisites && rule.prerequisites.length > 0)
+            return false;
+
+        return true;
+    }
+
+    private isOrdinary(target: IFilePlan): boolean 
+    {
+        if (target.file.isIntermediate())
+            return false;
+        
+        if (target.file.isSecondary())
             return false;
 
         return true;

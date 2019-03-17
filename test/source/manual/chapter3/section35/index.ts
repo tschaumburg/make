@@ -21,9 +21,9 @@ export function loadTests(): void
         multiTestcase(
             {
                 makefile: case4.makefile,
-            id: "testing/35/4",
-        },
-        ...case4.steps
+                id: "testing/35/4",
+            },
+            ...case4.steps
         );
     });
 }

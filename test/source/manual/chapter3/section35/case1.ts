@@ -12,7 +12,7 @@ export var makefile =
         '\techo Makefile unchanged',
         '',
         'Makefile: Makefile.template',
-        '\tcopy /Y Makefile.template Makefile > NUL',
+        '\tcopy /Y Makefile.template Makefile > nul',
     ],
 };
 

@@ -26,7 +26,7 @@ export class FileRef implements IFileRef
 
     public isSecondary(): boolean
     {
-        if (this.isSecondary)
+        if (this.isDotSecondary)
             return true;
 
         return false;
