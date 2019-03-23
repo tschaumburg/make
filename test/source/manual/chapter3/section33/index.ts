@@ -1,9 +1,11 @@
+import * as path from "path";
 import * as mocha from "mocha";
 import { multiTestcase } from "../../../fixtures"
 import * as setup33 from "./setup";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.join(baseDir, "section03");
     //*******************************************
     //*  3.3 Including Other Makefiles:
     //*  =====================================
@@ -13,7 +15,7 @@ export function loadTests(): void
         multiTestcase(
             {
                 makefile: setup33.makefiles1,
-                id: "testing/33/1",
+                id: path.join(thisDir, "1"),
             },
             {
                 title: "case 1",

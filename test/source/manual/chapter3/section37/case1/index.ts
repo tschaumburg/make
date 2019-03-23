@@ -1,7 +1,8 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import { multiTestcase, successFile } from "../../../../fixtures"
+import { pathExists } from "fs-extra";
 
-export function loadTests(caseNo: number): void
+export function loadTests(basedir: string, caseNo: number): void
 {
     //*******************************************
     //*  3.7 How make Reads a Makefile
@@ -12,7 +13,7 @@ export function loadTests(caseNo: number): void
         multiTestcase(
             {
                 makefile: require.resolve('./makefile'),
-                id: "testing/37/" + caseNo,
+                id: path.join(basedir, "" + caseNo)
             },
             {
                 title: "case " + caseNo,

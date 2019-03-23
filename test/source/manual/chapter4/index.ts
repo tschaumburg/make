@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as mocha from "mocha";
 //import * as section22 from "./section22";
 //import * as section23 from "./section23";
@@ -13,15 +14,15 @@ import * as section42 from "./section42";
 import * as section43 from "./section43";
 import * as section44 from "./section44";
 
-export function loadTests()
+export function loadTests(baseDir: string)
 {
-    describe('Chapter 4', function ()
+    describe('Chapter 04', function ()
     {
-        var thisDir = "C:/Users/Thomas/npm-make-test/testing"; // 41");
+        var thisDir = path.join(baseDir, "chapter04");
         section41.loadTests(thisDir);
         section42.loadTests(thisDir);
-        section43.loadTests();
-        section44.loadTests();
+        section43.loadTests(thisDir);
+        section44.loadTests(thisDir);
         // section33.loadTests();
         // section34.loadTests();
         // section35.loadTests();

@@ -1,15 +1,16 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import { suite, it } from "mocha";
 import { deleteFiles, touchFiles, error, multiTestcase } from "../../.."
 // import * as setup22 from "./setup22";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.resolve(baseDir, "case22a");
     describe('22A: Testing the section 2.2 example', function ()
     {
         multiTestcase(
             {
-                id: "22A",
+                id: thisDir,
                 title: "",
                 makefile: [
                     'edit : main.o kbd.o',
@@ -41,7 +42,7 @@ export function loadTests(): void
                 prepare: () => 
                 { touchFiles('edit'); },
                 targets: ["edit"],
-                expect: []
+                expect: ["'edit' is up to date"]
             },
             {
                 title: "header changed",

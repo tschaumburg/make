@@ -15,13 +15,13 @@ import * as case4 from "./case4";
 // import * as case11 from "./case11";
 // import * as case12 from "./case12";
 
-export function loadTests(basedir: string): void
+export function loadTests(baseDir: string): void
 {
     //*******************************************
     //*  4.1 Rule Example
     //*  =====================================
     //*******************************************
-    var thisDir = path.resolve(basedir,  "41");
+    var thisDir = path.resolve(baseDir, "section01");
     describe('4.1 Rule Example', function ()
     {
         case1.loadTests(thisDir, 1);

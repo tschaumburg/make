@@ -12,7 +12,7 @@ export interface TestStepConfig
     env?: { [name: string]: string };
     targets: string[];
     expect: ExpectedError | ExpectedSuccess | string | string[] ; //| { [name: string]: string[] | string };
-    after?: () => void;
+    assertAfter?: () => void;
 }
 
 export function registerTest(
@@ -23,19 +23,18 @@ export function registerTest(
     console.error("EXPECTS " + JSON.stringify(step.expect));
     let expectedResult = loadExpected(step.expect);
     let prepare = step.prepare;
-    let after = step.after;
+    let assertAfter = step.assertAfter;
     //console.error("   => " + JSON.stringify(expectedResult));
     it(
         step.title,
         function (done)
         {
             // Prepare:
-            runPrepare(dirName, prepare);
+            runLocal(dirName, prepare);
 
             // Run npm-make:
             let result = make(dirName, step.targets, step.env);
-            runPrepare(dirName, after);
-
+            
             if (!!expectedResult.lines())
                 fs.writeFileSync(path.join(dirName, "expected.txt"), expectedResult.lines().join("\n"));
             fs.writeFileSync(path.join(dirName, "actual.txt"), result.stdout.concat(result.stderr).join("\n"));
@@ -48,13 +47,16 @@ export function registerTest(
             console.error("EXPECTED: " + JSON.stringify(expectedResult, null, 3));
             console.error("ACTUAL: " + JSON.stringify(result, null, 3));
             expectedResult.assertActual(result);
+ 
+            if (!!assertAfter)
+                runLocal(dirName, assertAfter);
 
             done();
         }
     );
 }
 
-function runPrepare(dirName: string, prepare: () => void): void
+function runLocal(dirName: string, prepare: () => void): void
 {
     //console.error("runprepare: dirName=" + dirName + " prepare=" + prepare);
     if (!!prepare)

@@ -1,4 +1,4 @@
-import { IParseResult } from "./parse-result";
+import { IParseResult } from "./result";
 
 export interface IParser
 {

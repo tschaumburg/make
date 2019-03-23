@@ -1,10 +1,11 @@
 import { success, error, IExpectedResult, TestStepConfig } from "../../../fixtures"
-import * as mocha from "mocha";
+import * as path from "path";
 import { multiTestcase } from "../../../fixtures"
 //import { makefile, expected } from "./setup";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.resolve(baseDir, "case24a");
     //*******************************************
     //*  2.4 Variables Make Makefiles Simpler:
     //*  =====================================
@@ -35,7 +36,7 @@ export function loadTests(): void
 
                     multiTestcase(
                         {
-                            id: "24A " + "t" + T + "-p" + P + "-r" + R,
+                            id: path.join(thisDir, "t" + T + "-p" + P + "-r" + R),
                             title: "t" + T + "-p" + P + "-r" + R ,
                             makefile: makefile(R, T, P),
                         },

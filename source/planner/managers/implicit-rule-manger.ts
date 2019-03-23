@@ -6,7 +6,7 @@ import { IAction, IFilePlan, IFileRef } from "../plan";
 import { IPlanBuilder } from "../plan/plan-builder";
 import * as filemanager from "./file-manager";
 import { match } from 'minimatch';
-import { TargetName } from '../../parser/parser-impl/result-builder/targets/target-name';
+import { TargetName } from '../../parser/implementation/result-builder/targets/target-name';
 
 export class ImplicitRuleHandler
 {
@@ -56,6 +56,8 @@ export class ImplicitRuleHandler
                 applicableRule.rule.recipe.steps,
                 vpath
             );
+
+        return plan;
     }
 
     private findApplicableImplicitRule(target: ITargetName): ImplicitRuleMatch
@@ -82,7 +84,7 @@ export class ImplicitRuleHandler
             //      say it ought to exist.)
             //      If all prerequisites exist or ought to exist, or there 
             //      are no prerequisites, then this rule applies.
-            if (this.prequisitesExistsOrOughtToExist(prerequisites))
+            if (this.everyPrequisiteExistsOrOughtToExist(prerequisites))
             {
                 return patternRuleMatch;
             }
@@ -109,7 +111,7 @@ export class ImplicitRuleHandler
             //      can be made by an implicit rule.
             //   5. If all prerequisites exist, ought to exist, or can 
             //      be made by implicit rules, then this rule applies.
-            if (this.prequisitesExistsOrOughtToExistOrCanBeMade(prerequisiteFullnames))
+            if (this.everyPrequisiteExistsOrOughtToExistOrCanBeMade(prerequisiteFullnames))
             {
                 return patternRuleMatch;
             }
@@ -123,35 +125,48 @@ export class ImplicitRuleHandler
         return null;
     }
 
-    private prequisitesExistsOrOughtToExist(prerequisiteFullnames: TargetName[]): boolean
+    private everyPrequisiteExistsOrOughtToExist(prerequisites: TargetName[]): boolean
     {
-        if (!prerequisiteFullnames)
-        return true;
+        prerequisites = prerequisites || [];
 
-        for (var prereq of prerequisiteFullnames)
+        return prerequisites.every(prereq => this._exists(prereq) || this._oughtToExist(prereq));
+    }
+
+    private everyPrequisiteExistsOrOughtToExistOrCanBeMade(prerequisites: TargetName[]): boolean
+    {
+        prerequisites = prerequisites || [];
+
+        if (this.everyPrequisiteExistsOrOughtToExist(prerequisites))
+            return true; // <= OR
+
+        for (var prereq of prerequisites)
         {
-            if (fs.existsSync(prereq.fullname()))
-                continue;
-
-            if (this._isMentioned(prereq) == false)
+            if (!this._canBeMade(prereq))
                 return false;
         }
 
         return true;
     }
 
-    private prequisitesExistsOrOughtToExistOrCanBeMade(prerequisiteFullnames: TargetName[]): boolean
+    private _exists(prereq: TargetName): boolean
     {
-        if (this.prequisitesExistsOrOughtToExist(prerequisiteFullnames))
+        if (!prereq)
             return true;
 
-        for (var prereq of prerequisiteFullnames)
-        {
-            if (this.plan(prereq) == null )
-            {
-                return false;
-            }
-        }
+        return fs.existsSync(prereq.fullname());
+    }
+
+    private _oughtToExist(prereq: TargetName): boolean
+    {
+        if (!prereq)
+            return false;
+
+        return this._isMentioned(prereq);
+    }
+
+    private _canBeMade(prereq: TargetName): boolean
+    {
+        return (this.plan(prereq) !== null );
     }
 
     private findMatchingImplicitRules(target: ITargetName): ImplicitRuleMatch[]
@@ -227,6 +242,7 @@ class ImplicitRuleMatch
         this.otherTargets = rule.targetPatterns.filter(tp => tp !== matchedTarget).map(tp => tp.expand(stem));
         this.prerequisite = rule.prereqPatterns.map(tp => expandTarget(tp, stem));
         this.orderOnly = rule.orderOnlyPatterns.map(tp => expandTarget(tp, stem));
+        this.allPrerequisiteFullNames = this.prerequisite.concat(this.orderOnly);
     }
 
     public static match(implicitRule: IImplicitRule, target: ITargetName): ImplicitRuleMatch

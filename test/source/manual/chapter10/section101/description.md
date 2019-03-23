@@ -71,12 +71,12 @@ Each implicit rule has a target pattern and prerequisite patterns. There may be 
 >         echo build from $<
 > ```
 > 
-> Case   |   foo.src1   | foo.src2 | Expected
-> ------ | ------------ | ------------ | --------
-> case3a |    exists    |      -       | build from testsrc1
-> case3b |      -       |    exists    | build from testsrc2
-> case3c |      -       |      -       | error
-> case3d |    exists    |    exists    | build from ???
+> Case   |    Goal    |   foo.src1   |   foo.src2   | Expected
+> ------ | ---------- | ------------ | --------
+> case3a | foo.target |      -       |      -       | error
+> case3b | foo.target |    exists    |      -       | build from foo.src1
+> case3c | foo.target |      -       |    exists    | build from foo.src2
+> case3d | foo.target |    exists    |    exists    | build from foo.src1
 
 Of course, when you write the makefile, you know which implicit rule you want make to use, and you know it will choose that one because you know which possible prerequisite files are supposed to exist. See Catalogue of Built-In Rules, for a catalogue of all the predefined implicit rules.
 

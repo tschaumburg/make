@@ -1,4 +1,4 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import { multiTestcase, successFile } from "../../../fixtures"
 
 import * as case1 from "./case1";
@@ -14,27 +14,29 @@ import * as case10 from "./case10";
 import * as case11 from "./case11";
 import * as case12 from "./case12";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.join(baseDir, "section07");
+
     //*******************************************
     //*  3.7 How make Reads a Makefile
     //*  =====================================
     //*******************************************
-    var thisDir = "C:/Users/Thomas/npm-make-test/testing/37";
+    var thisDir = path.join(baseDir, "section07");
     describe('3.7 How make Reads a Makefile', function ()
     {
-        case1.loadTests(1);
-        case2.loadTests(2);
-        case3.loadTests(3);
-        case4.loadTests(4);
-        case5.loadTests(5);
-        case6.loadTests(6);
+        case1.loadTests(thisDir, 1);
+        case2.loadTests(thisDir, 2);
+        case3.loadTests(thisDir, 3);
+        case4.loadTests(thisDir, 4);
+        case5.loadTests(thisDir, 5);
+        case6.loadTests(thisDir, 6);
         
-        case7.loadTests(7);
-        case8.loadTests(8);
-        case9.loadTests(9);
-        case10.loadTests(10);
-        case11.loadTests(11);
+        case7.loadTests(thisDir, 7);
+        case8.loadTests(thisDir, 8);
+        case9.loadTests(thisDir, 9);
+        case10.loadTests(thisDir, 10);
+        case11.loadTests(thisDir, 11);
         case12.loadTests(thisDir, 12);
     });
 }

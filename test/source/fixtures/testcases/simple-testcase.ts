@@ -10,7 +10,7 @@ export interface SimpleTestcase
     prepare?: () => void;
     targets: string[];
     expectedName: string | string[] | ExpectedError | ExpectedSuccess;
-    after?: () => void;
+    assertAfter?: () => void;
 }
 
 // Defining a test by callig simpletest with these parameters.
@@ -61,7 +61,7 @@ export function simpleTest(testConfig: SimpleTestcase): (basedir: string, caseNo
                         prepare: testConfig.prepare,
                         targets: testConfig.targets,
                         expect: testConfig.expectedName,
-                        after: testConfig.after
+                        assertAfter: testConfig.assertAfter
                     }
                 )
             }//);

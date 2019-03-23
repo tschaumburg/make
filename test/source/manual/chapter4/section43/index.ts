@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as mocha from "mocha";
 import { multiTestcase, successFile } from "../../../fixtures"
 
@@ -14,13 +15,13 @@ import { multiTestcase, successFile } from "../../../fixtures"
 // import * as case11 from "./case11";
 // import * as case12 from "./case12";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
     //*******************************************
     //*  4.3 Order-only prerequisites
     //*  =====================================
     //*******************************************
-    var thisDir = "C:/Users/Thomas/npm-make-test/testing/43"; // 41");
+    var thisDir = path.resolve(baseDir, "section03");
     describe('4.3 Order-only prerequisites', function ()
     {
         // case1.loadTests(thisDir, 1);

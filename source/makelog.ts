@@ -5,7 +5,7 @@ const chalk  = require('chalk');
 const npmlog = require('npmlog');
 var logfile = require('npmlog-file')
 //import * as npmlog from "npmlog";
-import { error, info, success, warning } from 'log-symbols';
+import * as logsymbols from 'log-symbols';
 //npmlog.heading = prefix;
 var devnull = require('dev-null');
 

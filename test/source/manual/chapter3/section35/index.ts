@@ -1,10 +1,13 @@
+import * as path from "path";
 import * as mocha from "mocha";
 import { multiTestcase } from "../../../fixtures"
 import * as case1 from "./case1";
 import * as case4 from "./case4";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.join(baseDir, "section05");
+
     //*******************************************
     //*  3.5 How Makefiles Are Remade
     //*  =====================================
@@ -14,14 +17,14 @@ export function loadTests(): void
         multiTestcase(
             {
                 makefile: case1.makefile,
-            id: "testing/35/1",
+                id: path.join(thisDir, "case1"),
         },
         ...case1.steps
         );
         multiTestcase(
             {
                 makefile: case4.makefile,
-                id: "testing/35/4",
+                id: path.join(thisDir, "case4"),
             },
             ...case4.steps
         );

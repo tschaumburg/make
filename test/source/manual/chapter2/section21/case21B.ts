@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as mocha from "mocha";
 import { multiTestcase, deleteFiles, touchFiles, error } from "../../.."
 
@@ -18,8 +19,9 @@ function repeat(src: string[], nReps: number): string[]
     return res;
 }
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.resolve(baseDir, "case21b");
     describe('21B: Testing basic rule shapes', function ()
     {
         //*******************************************
@@ -54,7 +56,7 @@ export function loadTests(): void
                     ];
                     multiTestcase(
                         {
-                            id: "21B-" + ntargets + "t-" + nprerequisites + "p-" + nrecipes + "r",
+                            id: path.join(thisDir, ntargets + "t-" + nprerequisites + "p-" + nrecipes + "r"),
                             title: "",
                             makefile: makefile,
                         },
@@ -73,7 +75,7 @@ export function loadTests(): void
 
         multiTestcase(
             {
-                id: "21C",
+                id: thisDir,
                 title: "",
                 makefile: [
                     'hello.exe: hello.c  # comment',

@@ -159,7 +159,7 @@ function expandSymbols(
     return cmd;
 }
 
-function distinct(value, index, self) { 
+function distinct(value: any, index: any, self: any) { 
     return self.indexOf(value) === index;
 }
 

@@ -2,7 +2,7 @@ import * as mocha from "mocha";
 import { multiTestcase, successFile } from "../../../../fixtures"
 import { simpleTest } from "../../../../fixtures/testcases/simple-testcase";
 import { deleteFiles, touchFiles, touchFilesRelative } from "../../../../test-utils";
-import { listFiles } from "../../../../test-utils/list-files";
+import { assertFiles } from "../../../../test-utils";
 
 export const loadTests = 
     simpleTest(
@@ -16,11 +16,13 @@ export const loadTests =
                  touchFiles("foo.target")
             },
             targets: ['foo.target'],
-            after: () =>
+            assertAfter: () =>
             {
-                listFiles("foo.*");
+                assertFiles("foo.*",["foo.src", "foo.target"]);
             },
-            expectedName: []
+            expectedName: [
+                "'foo.target' is up to date"
+            ]
         }
     );
 

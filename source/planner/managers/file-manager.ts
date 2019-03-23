@@ -1,4 +1,5 @@
-import * as slash from "slash";
+// import * as slash from "slash";
+const slash = require("slash");
 import * as path from "path";
 import * as glob from "glob";
 import { IFileRef } from "../plan";
@@ -6,7 +7,7 @@ import globToRegexp = require("glob-to-regexp");
 import * as minimatch from "minimatch";
 import { makefileMissingTarget } from "../../make-errors";
 import { ITargetName } from "../../parser";
-import { TargetName } from "../../parser/parser-impl/result-builder/targets/target-name";
+import { TargetName } from "../../parser/implementation/result-builder/targets/target-name";
 import { IVirtualPath } from "../plan/virtual-path";
 // import { i } from "../plan/plan";
 // import { VirtualPath } from "../plan/impl/fileref-impl";

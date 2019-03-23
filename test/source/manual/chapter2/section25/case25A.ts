@@ -1,7 +1,7 @@
 import * as mocha from "mocha";
 import { multiTestcase, deleteFiles, touchFiles, error } from "../../.."
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
     describe('21A: Testing basic out-of-date detection', function ()
     {

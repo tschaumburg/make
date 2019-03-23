@@ -30,11 +30,11 @@ export class Runner implements IRunner
         log.info("Run phase end");
     }
     
-    private _run(plan: IPlan, goals: IFilePlan[]): boolean //Names: string[]): void 
+    private _run(plan: IPlan, goals: IFilePlan[], isMakefileBuild: boolean = false): boolean //Names: string[]): void 
     {
         log.info("plan: " + JSON.stringify(plan, null, 3));
         var engine = new Engine(plan);
-        let res = engine.updateGoals(goals); //goalNames);
+        let res = engine.updateGoals(goals, isMakefileBuild); //goalNames);
         engine.cleanup();
         return res;
     }
@@ -51,6 +51,6 @@ export class Runner implements IRunner
 
         log.info("updating " + JSON.stringify(makefiles) + "\n\n\n==> " + makefilePlans.length + ": " +  JSON.stringify(makefilePlans, null, 3));
 
-        return this._run(plan, makefilePlans);
+        return this._run(plan, makefilePlans, true);
     }
 }

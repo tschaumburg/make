@@ -63,13 +63,12 @@ export class PlanManager
     {
         //console.error("planGoal(" + basedir + ", " + relname + ")");
         let res: IFilePlan = null;
-        let fullname = target.fullname();
 
         if (!res)
             res = this.builder.getExistingPlan(target);
 
         if (!res)
-            res = this.explicitRuleHandler.plan(fullname);
+            res = this.explicitRuleHandler.plan(target);
 
         // "...To allow make to find a customary method [implicit rule] for
         // updating a target file, all you have to do is refrain from 

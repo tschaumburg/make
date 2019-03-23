@@ -1,3 +1,4 @@
+import * as path from "path";
 import * as mocha from "mocha";
 //import * as section22 from "./section22";
 //import * as section23 from "./section23";
@@ -10,14 +11,15 @@ import * as section34 from "./section34";
 import * as section35 from "./section35";
 import * as section37 from "./section37";
 
-export function loadTests()
+export function loadTests(baseDir: string)
 {
-    describe('Chapter 3', function ()
+    describe('Chapter 03', function ()
     {
+        var thisDir = path.join(baseDir, "chapter03");
         //section31.loadTests();
-        section33.loadTests();
-        section34.loadTests();
-        section35.loadTests();
-        section37.loadTests();
+        section33.loadTests(thisDir);
+        section34.loadTests(thisDir);
+        section35.loadTests(thisDir);
+        section37.loadTests(thisDir);
     });
 }

@@ -11,7 +11,7 @@ export function loadTests(baseDir: string): void
     {
         var nextCaseNo = 1;
         registerTestcase(thisDir, nextCaseNo++, [], 109);
-        registerTestcase(thisDir, nextCaseNo++, ['h'], 109);
+        registerTestcase(thisDir, nextCaseNo++, ['h'], ['target']);
         registerTestcase(thisDir, nextCaseNo++, ['src'], 109);
         registerTestcase(thisDir, nextCaseNo++, ['h', 'src'], ['intermediate', 'target']);
 

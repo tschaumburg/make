@@ -5,7 +5,7 @@ import { IParser } from "../parser";
 import { IPlan, IFileRef, IFilePlan, IPlanBuilder, createPlanBuilder } from "./plan";
 import { MakeOptions } from "../options";
 import { PlanManager } from "./managers";
-import { TargetName } from '../parser/parser-impl/result-builder/targets/target-name';
+import { TargetName } from '../parser/implementation/result-builder/targets/target-name';
 
 export interface IPlanner
 {
@@ -34,7 +34,7 @@ export class Planner implements IPlanner
     {
         let parseResult = this.parser.parse();
         let basedir = parseResult.basedir;
-        //console.log("PARSING - starting a new context");
+
         log.info("Plan phase begin...");
         let builder = 
             createPlanBuilder(
@@ -70,7 +70,9 @@ export class Planner implements IPlanner
         }
         
         var res = builder.build();
+
         log.info("Plan phase end...");
+
         return res;
     }
 

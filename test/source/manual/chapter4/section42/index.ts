@@ -15,7 +15,7 @@ export function loadTests(baseDir: string): void
     //*  4.2 Rule syntax
     //*  =====================================
     //*******************************************
-    var thisDir = path.resolve(baseDir, "42"); // "C:/Users/Thomas/npm-make-test/testing/42"; // 41");
+    var thisDir = path.resolve(baseDir, "section02");
     describe('4.2 Rule syntax', function ()
     {
         case1.loadTests(thisDir);

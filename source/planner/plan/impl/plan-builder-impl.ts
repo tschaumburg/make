@@ -82,17 +82,28 @@ export class PlanBuilder implements IPlanBuilder
         return this.addPlan(target, prerequisites, orderOnly, recipeSteps, vpath);
     }
 
-    private registerFile(target: ITargetName, isIntermediate: boolean): IFileRef
+    private registerSourceFile(target: ITargetName): IFileRef
+    {
+        return this._registerFile(target, true);
+    }
+
+    private registerTargetFile(target: ITargetName): IFileRef
+    {
+        return this._registerFile(target, false);
+    }
+
+    private _registerFile(target: ITargetName, isSource: boolean): IFileRef
     {
         let fullname = target.fullname();
         var targetRef = 
             new FileRef(
                 target.relname, 
                 fullname,
+                isSource,
                 this.isExplicitlyMentioned(fullname),
-                this.specialTargets.INTERMEDIATE.has(fullname),
-                this.specialTargets.SECONDARY.has(fullname),
-                this.specialTargets.PRECIOUS.has(fullname)
+                this.specialTargets.INTERMEDIATE.indexOf(fullname) >= 0,
+                this.specialTargets.SECONDARY.indexOf(fullname) >= 0,
+                this.specialTargets.PRECIOUS.indexOf(fullname) >= 0
             );
 
         return targetRef
@@ -126,7 +137,7 @@ export class PlanBuilder implements IPlanBuilder
         //     orderOnly.forEach(p => self.INTERMEDIATE.add(p.file.fullname));
         // }
 
-        let t: IFileRef = this.registerFile(target, false);
+        let t: IFileRef = this.registerTargetFile(target);
         let plan = this.fileplans[t.fullname];
         
         let action = 
@@ -174,7 +185,7 @@ export class PlanBuilder implements IPlanBuilder
         target: ITargetName
     ): IFilePlan
     {
-        let fileRef = this.registerFile(target, false); // new FileRef(target.relname, target.fullname());
+        let fileRef = this.registerSourceFile(target);
         let plan = new FilePlan(fileRef, null, null);
         this.fileplans[target.fullname()] = plan;
         return plan;

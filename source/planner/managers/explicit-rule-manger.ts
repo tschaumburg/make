@@ -27,18 +27,19 @@ export class ExplicitRuleHandler
     ) {}
 
     public plan(
-        fileFullname: string
+        _target: ITargetName //fileFullname: string
     ): IFilePlan 
     {
         //console.error("Finding explicit rules matching " + fileFullname);
         let self = this;
         let res: IFilePlan = null;
+        let fileFullname = _target.fullname();
 
         for (var rule of this._srcRules)
         {
-            for (var target of rule.targets)
+            for (var ruleTarget of rule.targets)
             {
-                var fileref = filemanager.doesFilenameMatchTarget(target, fileFullname);
+                var fileref = filemanager.doesFilenameMatchTarget(ruleTarget, fileFullname);
                 if (!!fileref)
                 {
                     // OK,we found an explicit (rule, target) tuple that 
@@ -50,11 +51,16 @@ export class ExplicitRuleHandler
                     let planOrderOnly = 
                         rule.orderOnly.map(p => self.planPrerequisite(p))
             
-                    var vpath = filemanager.resolveVpath(target.basedir, target.parseContext.vpath, target.relname);
+                    var vpath = 
+                        filemanager.resolveVpath(
+                            ruleTarget.basedir, 
+                            ruleTarget.parseContext.vpath, 
+                            ruleTarget.relname
+                        );
                     
                     //let planAction = 
                     res = this._planBuilder.addPlan(
-                        fileref, 
+                        _target, //fileref, 
                         planPrereqs, 
                         planOrderOnly, 
                         rule.recipe.steps,

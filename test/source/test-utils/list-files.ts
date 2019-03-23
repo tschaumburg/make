@@ -5,6 +5,8 @@ import * as del from "del";
 
 export function listFiles(...files: string[]): void
 {
+    console.log("listFiles");
+
     var res: string[] = [];
     for (let pattern of files)
     {

@@ -1,8 +1,9 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import { multiTestcase, deleteFiles, touchFiles, error } from "../../.."
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.resolve(baseDir, "case21a");
     describe('21A: Testing basic out-of-date detection', function ()
     {
         multiTestcase(
@@ -12,14 +13,13 @@ export function loadTests(): void
                     '\t  dir > log.txt',
                     '\t  echo cc hello.c -o hello.exe',''
                 ],
-                id: "21A",
+                id: thisDir,
                 title: "updates out-of-date targets"
             },
             {
                 title: "Simple build",
                 prepare: function ()
                 {
-                    console.error("PREPARE wd=" + process.cwd());
                     touchFiles("hello.c");
                     deleteFiles("hello.exe");
                 },

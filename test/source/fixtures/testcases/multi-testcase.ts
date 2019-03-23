@@ -26,14 +26,39 @@ function convertFiles(makefile: string[] | string | { [name: string]: string[] |
     return makefile;
 }
 
+export function multiTestcaseNew(
+    spec: MultiTestcase,
+    ...steps: TestStepConfig[]
+): (basedir: string, caseNo: number) => void
+{
+    var res =
+        (basedir: string, caseNo: number) => 
+        {
+            let testdir = path.resolve(basedir, "" + caseNo);
+        
+            _multiTestcase(testdir, spec, ...steps);
+        };
+
+    return res;    
+}
+
 export function multiTestcase(
     spec: MultiTestcase,
     ...steps: TestStepConfig[]
 ): void
 {
     let basedir = path.join(os.homedir(), "npm-make-test");
-    let testdir = path.join(basedir, spec.id);
+    let testdir = path.resolve(basedir, spec.id);
 
+    _multiTestcase(testdir, spec, ...steps);
+}
+
+function _multiTestcase(
+    testdir: string,
+    spec: MultiTestcase,
+    ...steps: TestStepConfig[]
+): void
+{
     var config: TestDirConfig =
     {
         dirname: testdir,

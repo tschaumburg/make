@@ -1,9 +1,11 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import { multiTestcase } from "../../../fixtures"
 import * as setup31 from "./setup";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.join(baseDir, "section01");
+
     //*******************************************
     //*  3.1.1 Splitting Long Lines:
     //*  =====================================
@@ -19,7 +21,7 @@ export function loadTests(): void
                         multiTestcase(
                             {
                                 makefile: makefile,
-                                id: "testing/311/" + makefileNo + "-" + targetNo,
+                                id: path.join(thisDir, makefileNo + "-" + targetNo),
                             },
                             {
                                 title: "mf" + makefileNo + "-" + target.join(""),

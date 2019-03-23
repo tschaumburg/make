@@ -7,6 +7,7 @@ export class FileRef implements IFileRef
     constructor(
         public readonly orgname: string,
         public readonly fullname: string,
+        public readonly isSource: boolean,
         private readonly isExplicitlyMentioned: boolean,
         private readonly isDotIntermediate: boolean,
         private readonly isDotSecondary: boolean,

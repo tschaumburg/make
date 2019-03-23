@@ -1,11 +1,14 @@
+import * as path from "path";
 import * as mocha from "mocha";
 import { multiTestcase } from "../../../fixtures"
 import * as case1 from "./case1";
 import * as case3 from "./case3";
 import * as case4 from "./case4";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
+    var thisDir = path.join(baseDir, "section04");
+
     //*******************************************
     //*  3.4 The Variable MAKEFILES:
     //*  =====================================
@@ -15,7 +18,7 @@ export function loadTests(): void
         multiTestcase(
             {
                 makefile:  case1.makefile,
-                id: "testing/34/1",
+                id: path.join(thisDir, "case1"),
             },
             {
                 title: "case 1",
@@ -28,7 +31,7 @@ export function loadTests(): void
         multiTestcase(
             {
                 makefile: case3.makefile,
-                id:"testing/34/3",
+                id: path.join(thisDir, "case3"),
             },
             {
                 title: "case 3",
@@ -41,7 +44,7 @@ export function loadTests(): void
         multiTestcase(
             {
                 makefile: case4.makefile,
-                id: "testing/34/4",
+                id: path.join(thisDir, "case4"),
             },
             {
                 title: "case 4",

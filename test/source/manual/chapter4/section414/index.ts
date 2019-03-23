@@ -1,4 +1,4 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import { multiTestcase, successFile } from "../../../fixtures"
 
 // import * as case1 from "./case1";
@@ -14,13 +14,13 @@ import { multiTestcase, successFile } from "../../../fixtures"
 // import * as case11 from "./case11";
 // import * as case12 from "./case12";
 
-export function loadTests(): void
+export function loadTests(baseDir: string): void
 {
     //*******************************************
     //*  
     //*  =====================================
     //*******************************************
-    var thisDir = "C:/Users/Thomas/npm-make-test/testing/4"; // 41");
+    var thisDir = path.resolve(baseDir, "section14");
     describe('', function ()
     {
         // case1.loadTests(thisDir, 1);

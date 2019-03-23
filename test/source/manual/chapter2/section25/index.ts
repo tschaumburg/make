@@ -1,11 +1,12 @@
-import * as mocha from "mocha";
+import * as path from "path";
 import * as case25A from "./case25A";
 
-export function loadTests()
+export function loadTests(baseDir: string)
 {
     describe('Section 2.5', function ()
     {
-        case25A.loadTests();
+        var thisDir = path.join(baseDir, "section05");
+        case25A.loadTests(thisDir);
         //section22.loadTests();
         //section23.loadTests();
         //section24.loadTests();

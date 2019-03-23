@@ -12,7 +12,7 @@ export class Engine
     constructor(private readonly plan: IPlan) 
     {}
 
-    public updateGoals(goals: IFilePlan[]): boolean
+    public updateGoals(goals: IFilePlan[], isMakefileBuild: boolean): boolean
     {
         let res = false;
         for (let goal of goals)
@@ -22,6 +22,8 @@ export class Engine
             let timestampAfter = this.timestamp(goal.file.fullname, Number.NEGATIVE_INFINITY);
 
             let goalHasBeenUpdated = (timestampAfter != timestampBefore);
+            if (!res && !isMakefileBuild) //goalHasBeenUpdated)
+                console.log("'" + goal.file.orgname + "' is up to date");
             res = res || goalHasBeenUpdated;
         }
 
@@ -143,7 +145,7 @@ export class Engine
         {
             log.info(prefix + "SCHEDULING(" + targetFullname + ") because prerequisites forced rebuild");
             self._execute(fileplan);
-            return false;
+            return true; //false;
         }
 
         // If target exists:
@@ -175,7 +177,7 @@ export class Engine
                 {
                     log.info(prefix + "SCHEDULING(" + targetFullname + ") because prerequisites are newer");
                     self._execute(fileplan);
-                    return false;
+                    return true; //false;
                 }
             }
 
@@ -191,7 +193,7 @@ export class Engine
                 prefix + "SCHEDULING(" + targetFullname + ") " + 
                 "because file " + targetFullname + " doesn't exist");
             self._execute(fileplan);
-            return false;
+            return true; //false;
         }
 
         // If an INTERMEDIATE target doesn't exist:
@@ -204,7 +206,7 @@ export class Engine
                 log.info("prereq = " + this.timestamp(prereq.file.fullname) + ", skipIntermediatesBefore = " + skipIntermediatesBefore);
                 log.info(prefix + "SCHEDULING INTERMEDIATE(" + targetFullname + ") because prerequisites are newer");
                 self._execute(fileplan);
-                return false;
+                return true; //false;
             }
         }
 
@@ -288,15 +290,16 @@ export class Engine
         if (this.phonies.indexOf(target.file) >= 0)
             return true;
 
-        let rule = target.producedBy;
+        return false;
+        // let rule = target.producedBy;
 
-        if (!rule)
-            return false;
+        // if (!rule)
+        //     return false;
 
-        if (rule.prerequisites && rule.prerequisites.length > 0)
-            return false;
+        // if (rule.prerequisites && rule.prerequisites.length > 0)
+        //     return false;
 
-        return true;
+        // return true;
     }
 
     private isOrdinary(target: IFilePlan): boolean 

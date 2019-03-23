@@ -6,21 +6,14 @@ import { deleteFiles, touchFiles, touchFilesRelative } from "../../../../test-ut
 
 export function loadTests(baseDir: string): void
 {
-    var thisDir = path.resolve(baseDir, "case2");
-    describe('case2: Adding explicit dependency to implicit rule', function ()
+    var thisDir = path.resolve(baseDir, "case3");
+    describe('case3: Multiple implicit rules', function ()
     {
         var nextCaseNo = 1;
-        registerTestcase(thisDir, nextCaseNo++, [], 109);
-        registerTestcase(thisDir, nextCaseNo++, ['h'], 109);
-        registerTestcase(thisDir, nextCaseNo++, ['src'], 109);
-        registerTestcase(thisDir, nextCaseNo++, ['h', 'src'], ['intermediate', 'target']);
-
-        registerTestcase(thisDir, nextCaseNo++, ['intermediate', 'src', 'h'], ['intermediate', 'target']);
-        registerTestcase(thisDir, nextCaseNo++, ['intermediate', 'h', 'src'], ['intermediate', 'target']);
-        registerTestcase(thisDir, nextCaseNo++, ['src', 'intermediate', 'h'], ['intermediate', 'target']);
-        registerTestcase(thisDir, nextCaseNo++, ['h', 'intermediate', 'src'], ['intermediate', 'target']);
-        registerTestcase(thisDir, nextCaseNo++, ['src', 'h', 'intermediate'], ['target']);
-        registerTestcase(thisDir, nextCaseNo++, ['h', 'src', 'intermediate'], ['target']);
+        registerTestcase(thisDir, nextCaseNo++, [], 106);
+        registerTestcase(thisDir, nextCaseNo++, ['foo.src1'], ['build from foo.src1']);
+        registerTestcase(thisDir, nextCaseNo++, ['foo.src2'], ['build from foo.src2']);
+        registerTestcase(thisDir, nextCaseNo++, ['foo.src1', 'foo.src2'], ['build from foo.src1']);
     });
 
 }
@@ -32,7 +25,7 @@ function registerTestcase(thisDir: string, caseNo: number, generateFiles: string
     var registrar =
         simpleTest(
             {
-                title: 'case 2' + caseId, // + ': foo.src but no foo.intermediate => build foo.intermediate, ',
+                title: 'case 3' + caseId, // + ': foo.src but no foo.intermediate => build foo.intermediate, ',
                 makefileName: require.resolve('./makefile'),
                 prepare: () => 
                 {
@@ -41,7 +34,7 @@ function registerTestcase(thisDir: string, caseNo: number, generateFiles: string
                     var relativeMillis = 0;
                     for (var n = generateFiles.length - 1; n >= 0; n--)
                     {
-                        touchFilesRelative(relativeMillis, "foo." + generateFiles[n]);
+                        touchFilesRelative(relativeMillis, generateFiles[n]);
                         relativeMillis = relativeMillis - 300;
                     }
                 },
@@ -61,6 +54,6 @@ function expectation(expect: string[]|number): string|string[]|ExpectedError|Exp
     }
     else
     {
-        return expect.map(x => "building foo." + x)
+        return expect; 
     }
 }

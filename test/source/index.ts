@@ -1,13 +1,13 @@
 import * as mocha from "mocha";
 import * as manual from "./manual";
 
-export function loadTests()
+export function loadTests(baseDir: string)
 {
     describe(
         'npm-make unit test suite',
         function ()
         {
-            manual.loadTests();
+            manual.loadTests("C:/Users/Thomas/npm-make-test");
         }
     );
 }

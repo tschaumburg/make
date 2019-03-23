@@ -91,7 +91,7 @@ export function resolveString(
  * @param src 
  * 
  */
-function expandString(src: StringLexer, getValue: (string) => string, ...terminators: string[]): string
+function expandString(src: StringLexer, getValue: (s: string) => string, ...terminators: string[]): string
 {
     //_traceenter("Resolving '" + src.src + "'...");
     var res = "";
@@ -118,7 +118,7 @@ function expandString(src: StringLexer, getValue: (string) => string, ...termina
  * @param src 'abc$(myvar)def'
  * @param getValue 
  */
-function expandVariable(src: StringLexer, getValue: (string) => string): string
+function expandVariable(src: StringLexer, getValue: (s: string) => string): string
 {
     var token = src.nextChar();
 

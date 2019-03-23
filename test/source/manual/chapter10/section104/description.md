@@ -15,12 +15,11 @@ In this case, n.c is called an intermediate file. Once make has decided to use t
 > ```makefile
 >     %.target:       %.intermediate; echo making $@ from $< && touch $@
 >     %.intermediate: %.src;          echo making $@ from $< && touch $@
->     clean:                        ; del foo.* && touch foo.src
 > ```
 >
-> Case | Files<br>(oldest first) | Goal | Expected output
-> ---|---|---|---
-> 1a | foo.src | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate
+> Case | Files<br>(oldest first) |    Goal    | Expected output
+> -----|-------------------------|------------|-----------------
+>  1a  |        foo.src          | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate<br>rm foo.intermediate
 
 Intermediate files are remade using their rules just like all other files. But intermediate files are treated differently in two ways.
 
@@ -30,43 +29,65 @@ The first difference is what happens if the intermediate file does not exist. If
 >
 > If the target is newer than the prerequisites make should skip building the intermediates
 >
-> Case | Files before<br>(oldest first) | Goal | Expected output 
-> ---|---|---|--- 
-> 1b | foo.src<br>foo.target | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate 
+> Case | Files<br>(oldest first) |    Goal    | Expected output
+> -----|-------------------------|------------|-----------------
+>  1b  |  foo.src<br>foo.target  | foo.target | foo.target is up-to-date
 
 The second difference is that if make does create b in order to update something else, it deletes b later on after it is no longer needed. Therefore, an intermediate file which did not exist before make also does not exist after make. make reports the deletion to you by printing a ‘rm -f’ command showing which file it is deleting.
 
 > ### Case 1c: Intermediate deletion
 >
-> Case | Files before<br>(oldest first) | Goal | Expected output | Files after
-> ---|---|---|--- | ---
-> 1c | foo.src<br>foo.target | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate | foo.src<br>foo.target
+> Case | Files<br>(oldest first) |    Goal    | Expected output | Files after
+> -----|-------------------------|------------|-----------------|--------------
+>  1c  |  foo.src<br>foo.target  | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate<br>rm foo.intermediate | foo.src<br>foo.target
 
 Ordinarily, a file cannot be intermediate if it is mentioned in the makefile as a target or prerequisite. However, you can explicitly mark a file as intermediate by listing it as a prerequisite of the special target .INTERMEDIATE. This takes effect even if the file is mentioned explicitly in some other way.
 
 > ### Case 4: Using `.INTERMEDIATE`.
+>
+> ```makefile
+>     foo.target:       foo.intermediate; echo making $@ from $< && touch $@ > nul
+>     foo.intermediate: foo.src;          echo making $@ from $< && touch $@ > nul
+>     .INTERMEDIATE:    foo.intermediate
+> ```
+>
+> Case | Files<br>(oldest first) |    Goal    | Expected output                                                                                        | Files after
+> -----|-------------------------|------------|--------------------------------------------------------------------------------------------------------|--------------
+>  4a  |        foo.src          | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate<br>rm foo.intermediate | foo.src<br>foo.target
+>  4b  |  foo.src<br>foo.target  | foo.target | foo.target is up-to-date                                                                               | foo.src<br>foo.target
+>  4c  |  foo.src<br>foo.target  | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate<br>rm foo.intermediate | foo.src<br>foo.target
 
 You can prevent automatic deletion of an intermediate file by marking it as a secondary file. To do this, list it as a prerequisite of the special target .SECONDARY. When a file is secondary, make will not create the file merely because it does not already exist, but make does not automatically delete the file. Marking a file as secondary also marks it as intermediate.
 
 > ### Case 5: Intermediate preservation using `.SECONDARY`
 >
-> Adding
+> ```makefile
+>     foo.target:       foo.intermediate; echo making $@ from $< && touch $@ > nul
+>     foo.intermediate: foo.src;          echo making $@ from $< && touch $@ > nul
+>     .SECONDARY:       foo.intermediate
+> ```
 >
-> ```
-> .SECONDARY: %.intermediate
-> ```
-> to the makefile should preserve `foo.intermediate`.
+> Case | Files<br>(oldest first) |    Goal    | Expected output                                                                 | Files after
+> -----|-------------------------|------------|---------------------------------------------------------------------------------|--------------
+>  5a  |        foo.src          | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate | foo.intermediate<br>foo.src<br>foo.target
+>  5b  |  foo.src<br>foo.target  | foo.target | foo.target is up-to-date                                                        | foo.intermediate<br>foo.src<br>foo.target
+>  5c  |  foo.src<br>foo.target  | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate | foo.intermediate<br>foo.src<br>foo.target
 
 You can list the target pattern of an implicit rule (such as ‘%.o’) as a prerequisite of the special target .PRECIOUS to preserve intermediate files made by implicit rules whose target patterns match that file’s name; see Interrupts.
 
 > ### Case 6: Intermediate preservation using `.PRECIOUS`
 >
-> Adding
+> ```makefile
+>     %.target:       %.intermediate; echo making $@ from $< && touch $@
+>     %.intermediate: %.src;          echo making $@ from $< && touch $@
+>     .PRECIOUS:      foo.intermediate
+> ```
 >
-> ```
-> .PRECIOUS: %.target
-> ```
-> to the makefile should preserve `foo.intermediate`.
+> Case | Files<br>(oldest first) |    Goal    | Expected output                                                                 | Files after
+> -----|-------------------------|------------|---------------------------------------------------------------------------------|--------------
+>  6a  |        foo.src          | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate | foo.intermediate<br>foo.src<br>foo.target
+>  6b  |  foo.src<br>foo.target  | foo.target | foo.target is up-to-date                                                        | foo.intermediate<br>foo.src<br>foo.target
+>  6c  |  foo.src<br>foo.target  | foo.target | making foo.intermediate from foo.src<br>making foo.target from foo.intermediate | foo.intermediate<br>foo.src<br>foo.target
 
 A chain can involve more than two implicit rules. For example, it is possible to make a file foo from RCS/foo.y,v by running RCS, Yacc and cc. Then both foo.y and foo.c are intermediate files that are deleted at the end.
 
